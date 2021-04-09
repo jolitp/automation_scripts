@@ -1,4 +1,43 @@
 * Automation Scritps TODOs
-** TODO create scafold of python files
+** TODO create template for new python files
 
-...
+the template should have a main script, unit and integration test modules in a folder
+
+** TODO create scafold of python files
+** directory operations
+*** TODO script to remove undesirable files from a directory
+*** TODO script to remove all python scripts from each emediate nested folders
+*** TODO script to call command on emediate nested folders
+*** TODO script to copy all python scripts from current directory into nested folders
+*** TODO script to mark a folder as of having a concatenated video inside
+
+a folder with a concatenated video has a video with the same name of the folder
+
+*** TODO script to remove videos from every emediate nested directory
+*** TODO script to separate folders of videos into [long] or [short]
+*** TODO script to sort folders by their "youtube upload viability" without concatenating
+** single file operations
+*** TODO script to change the extension of a given file
+*** TODO script to check if a file is a video
+*** TODO script to check if a video file is not corrupted
+*** TODO script to rename files or folders
+*** TODO script to get the length of a video
+*** TODO script to get the dimensions of a video
+*** TODO script to get the size of a file
+** multiple files operations
+*** TODO script to compress the files/ directory into a .7z file
+*** TODO script to remove empty folders recursivelly from a directory
+*** TODO script to move all folders in a directory to a files/ directory
+*** TODO script to concatenate videos into one video
+*** TODO script to create an org file with videos as sub-headers
+*** TODO script to get the accumulated length of all videos in a directory
+*** TODO script to convert videos to have the same codec and dimensions
+*** TODO script to measure the viability of uploading the videos without concatenating them before
+*** TODO script to pad zeroes in the name of files
+*** TODO script to separate videos in sections
+*** TODO script to create a .csv file containing each video's dimensions
+*** TODO script to move videos in nested folders to the current folder
+*** TODO acript to upload video files automatically to youtube
+** utils
+*** TODO script to remove special characters from a filename
+*** TODO script to filter a list of filenames to contain only files with a given extension
