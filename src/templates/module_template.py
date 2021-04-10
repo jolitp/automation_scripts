@@ -36,7 +36,7 @@ def function(parameter : str,
     return
 # endregion def function(...)
 
-def main():
+def main(debug_function: bool = False):
     """
     the main function for the script
     """
@@ -45,10 +45,14 @@ def main():
 
 # endregion def main(...)
 
-
-# region if __name__ == '__main__':
-if __name__ == '__main__':
+# region if __name__ == "__main__":
+if __name__ == "__main__":
+    debug_script : bool = False
+    debug_script : bool = True  # comment to toggle
     print("module_template.py.__main__")
     print()
-    function(" a string ",debug_function=True)
-# endregion if __name__ == '__main__':
+    main(
+        debug_function = debug_script
+        )
+    ...
+# endregion if __name__ == "__main__":
