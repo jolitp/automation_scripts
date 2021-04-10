@@ -1,8 +1,6 @@
 * Automation Scritps TODOs
 ** TODO create template for new python files
-
 the template should have a main script, unit and integration test modules in a folder
-
 ** TODO create scafold of python files
 ** directory operations
 *** TODO script to remove undesirable files from a directory
@@ -10,9 +8,7 @@ the template should have a main script, unit and integration test modules in a f
 *** TODO script to call command on emediate nested folders
 *** TODO script to copy all python scripts from current directory into nested folders
 *** TODO script to mark a folder as of having a concatenated video inside
-
 a folder with a concatenated video has a video with the same name of the folder
-
 *** TODO script to remove videos from every emediate nested directory
 *** TODO script to separate folders of videos into [long] or [short]
 *** TODO script to sort folders by their "youtube upload viability" without concatenating
@@ -41,3 +37,4 @@ a folder with a concatenated video has a video with the same name of the folder
 ** utils
 *** TODO script to remove special characters from a filename
 *** TODO script to filter a list of filenames to contain only files with a given extension
+*** TODO script to log the execution of files for debugging
