@@ -36,9 +36,19 @@ def function(parameter : str,
     return
 # endregion def function(...)
 
+def main():
+    """
+    the main function for the script
+    """
+# region def main(...)
 
 
+# endregion def main(...)
+
+
+# region if __name__ == '__main__':
 if __name__ == '__main__':
     print("module_template.py.__main__")
     print()
     function(" a string ",debug_function=True)
+# endregion if __name__ == '__main__':
