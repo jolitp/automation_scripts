@@ -11,11 +11,11 @@ sys.path.insert(0,'..')
 # cSpell: disable
 # pylint: disable=wrong-import-position
 # cSpell: enable
-import helpers
+# import helpers
 
 # cSpell: disable
 # pylint: disable=no-member
-helpers.function("parameter", debug_function=True)
+# helpers.function("parameter", debug_function=True)
 # cSpell: enable
 
 

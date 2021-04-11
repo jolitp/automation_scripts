@@ -38,3 +38,7 @@ a folder with a concatenated video has a video with the same name of the folder
 *** TODO script to remove special characters from a filename
 *** TODO script to filter a list of filenames to contain only files with a given extension
 *** TODO script to log the execution of files for debugging
+** TODO figure a way of using the scripts without copying to the folder
+this video may help
+
+https://www.youtube.com/watch?app=desktop&v=5CMmjNt_p48
