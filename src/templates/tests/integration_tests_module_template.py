@@ -1,100 +1,57 @@
 #! /usr/bin/python3
 """
-    tests for
+    tests for .py
 """
 
 import unittest
-# import helpers
-# from helpers_save_for_reference.tests.scaffold_tests import function
-import sys
-sys.path.insert(0,'..')
-# cSpell: disable
-# pylint: disable=wrong-import-position
-# cSpell: enable
-import helpers
+import importlib.util # needed for importing scripts using the scripts path
 
-# cSpell: disable
-# pylint: disable=no-member
-helpers.function("parameter", debug_function=True)
-# cSpell: enable
-
-
-# test function scaffold
-
-
-#     # region def test_(self):
-#     def test_(self):
-#         """
-
-#         """
-
-#         files : set(str) = {
-#         }
-
-#         expected_result : set(str) = {
-#         }
-
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
-
-#         self.assertSequenceEqual(videos, expected_result)
+# cSpell:disable
+python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+subfolder : str = "CHANGE_ME/"
+spec = importlib.util.spec_from_file_location("CHANGE_ME",
+    python_scripts_folder_path + subfolder + "CHANGE_ME.py")
+CHANGE_ME = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(CHANGE_ME)
 
 
 
-# region class IntegrationTest(unittest.TestCase):
+class IntegrationTest(unittest.TestCase):
+    """
+        integration tests for .py
 
-#     # region def test_dummy(self):
-#     def test_dummy(self):
-#         """
-#             dummy test
-#         """
-
-#         files : set(str) = {
-#             "a.mkv"
-#         }
-
-#         expected_result : set(str) = {
-#             "a.mkv"
-#         }
-
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
-
-#         self.assertSequenceEqual(videos, expected_result)
-# #     # endregion def test_dummy(self):
+        CHANGE ME
+    """
+# region tests CHANGE_ME_function(...):
 
 
+    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+    def test_(self):
+        """
+            dummy test
 
-# test class scaffold
+            CHANGE ME
+        """
+        # cSpell:disable
+        project_folder = "/home/jolitp/Projects/automation_scripts/"
+        tests_folder = \
+            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
+        test_bed_folder = "test_bed/"
+        this_test_folder = "test_is_folder_receives_a_valid_path_and_returns_true/"
 
-# # region test
-# class TestFirst(unittest.TestCase):
-#     """
+        folder = "valid_folder"
+        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
+        # cSpell:enable
 
-#     """
-
-
-#     # region def test_(self):
-#     def test_(self):
-#         """
-
-#         """
-
-#         files : set(str) = {
-#         }
-
-#         expected_result : set(str) = {
-#         }
-
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
-
-#         self.assertSequenceEqual(videos, expected_result)
+        result = False
+        self.assertTrue(result)
+    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
 
 
-#         ...
-#     # endregion def test_(self):
-#     ...
-# # endregion TestFirst(unittest.TestCase):
+# endregion tests CHANGE_ME_function(...):
+
 
 if __name__ == "__main__":
-    print("integration_tests_module_template.__main__")
+    print("CHANGE_ME.__main__")
     unittest.main()
-
