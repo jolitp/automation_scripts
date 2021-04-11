@@ -11,10 +11,10 @@ the template should have a main script, unit and integration test modules in a f
 a folder with a concatenated video has a video with the same name of the folder
 *** TODO script to remove videos from every emediate nested directory
 *** TODO script to separate folders of videos into [long] or [short]
-*** TODO script to sort folders by their "youtube upload viability" without concatenating
+*** STRT script to sort folders by their "youtube upload viability" without concatenating
 ** single file operations
 *** TODO script to change the extension of a given file
-*** TODO script to check if a file is a video
+*** STRT script to check if a file is a video
 *** TODO script to check if a video file is not corrupted
 *** TODO script to rename files or folders
 *** TODO script to get the length of a video
