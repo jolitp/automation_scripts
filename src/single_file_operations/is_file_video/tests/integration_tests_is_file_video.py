@@ -4,6 +4,7 @@
 """
 
 import unittest
+
 import importlib.util # needed for importing scripts using the scripts path
 
 # cSpell:disable

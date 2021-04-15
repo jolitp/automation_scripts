@@ -10,51 +10,320 @@ import importlib.util # needed for importing scripts using the scripts path
 python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
 # cSpell:enable
 subfolder : str = "src/single_file_operations/is_file_video/"
-spec = importlib.util.spec_from_file_location("is_file_video",
-    python_scripts_folder_path + subfolder + "is_file_video.py")
-is_file_video = importlib.util.module_from_spec(spec)
+script_name : str = "is_file_video.py"
+full_script_path : str = python_scripts_folder_path + subfolder + script_name
+print("Loading module from path : {}".format(full_script_path))
+module_name : str = "is_file_video_script"
+print("module name : {}".format(module_name))
+spec = importlib.util.spec_from_file_location(module_name, full_script_path)
+is_file_video_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(is_file_video_script)
 
-spec.loader.exec_module(is_file_video)
+print("as {}".format(is_file_video_script))
 
-
-
-
-class UnitTest(unittest.TestCase):
+class UnitTestIsVideo(unittest.TestCase):
     """
-        unit tests for .py
-
-        CHANGE ME
+        tests is_video function
     """
-# region tests CHANGE_ME_function(...):
+# region class TestIsVideo(unittest.TestCase):
 
 
-    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
-    def test_(self):
+    # region def test_video_mp4_should_return_true(self):
+    def test_filename_without_extension_should_return_false(self):
         """
-            dummy test
-
-            CHANGE ME
+            tests if is_video returns false for a filename without extension
         """
-        # cSpell:disable
-        project_folder = "/home/jolitp/Projects/automation_scripts/"
-        tests_folder = \
-            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
-        test_bed_folder = "test_bed/"
-        this_test_folder = "test_is_folder_receives_a_valid_path_and_returns_true/"
 
-        folder = "valid_folder"
-        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
-        # cSpell:enable
+        video_name : str = "file_without_extension"
 
-        result = True
-        self.assertTrue(result)
-    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertFalse(is_video)
+        ...
+    # endregion def test_video_mp4_should_return_true(self):
 
 
-# endregion tests CHANGE_ME_function(...):
+    # region def test_video_mp4_should_return_true(self):
+    def test_video_mp4_should_return_true(self):
+        """
+            tests if the video as mp4 returns true
+        """
+
+        video_name : str = "video.mp4"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_mp4_should_return_true(self):
 
 
-if __name__ == "__main__":
-    print("CHANGE_ME.__main__")
+    # region def test_video_m4v_should_return_true(self):
+    def test_video_m4v_should_return_true(self):
+        """
+            tests if the video as m4v returns true
+        """
+
+        video_name : str = "video.m4v"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_m4v_should_return_true(self):
+
+
+    # region def test_video_mkv_should_return_true(self):
+    def test_video_mkv_should_return_true(self):
+        """
+            tests if the video as mkv returns true
+        """
+
+        video_name : str = "video.mkv"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_mkv_should_return_true(self):
+
+
+    # region def test_video_ts_should_return_true(self):
+    def test_video_ts_should_return_true(self):
+        """
+            tests if the video as ts returns true
+        """
+
+        video_name : str = "video.ts"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_ts_should_return_true(self):
+
+
+    # region def test_video_avi_should_return_true(self):
+    def test_video_avi_should_return_true(self):
+        """
+            tests if the video as avi returns true
+        """
+
+        video_name : str = "video.avi"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_avi_should_return_true(self):
+
+
+    # region def test_video_flv_should_return_true(self):
+    def test_video_flv_should_return_true(self):
+        """
+            tests if the video as flv returns true
+        """
+
+        video_name : str = "video.flv"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_flv_should_return_true(self):
+
+
+    # region def test_video_mov_should_return_true(self):
+    def test_video_mov_should_return_true(self):
+        """
+            tests if the video as mov returns true
+        """
+
+        video_name : str = "video.mov"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_mov_should_return_true(self):
+
+
+    # region def test_video_wmv_should_return_true(self):
+    def test_video_wmv_should_return_true(self):
+        """
+            tests if the video as wmv returns true
+        """
+
+        video_name : str = "video.wmv"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_wmv_should_return_true(self):
+
+
+    # region def test_video_vob_should_return_true(self):
+    def test_video_vob_should_return_true(self):
+        """
+            tests if the video as vob returns true
+        """
+
+        video_name : str = "video.vob"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_vob_should_return_true(self):
+
+
+    # region def test_video_ogm_should_return_true(self):
+    def test_video_ogm_should_return_true(self):
+        """
+            tests if the video as ogm returns true
+        """
+
+        video_name : str = "video.ogm"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_ogm_should_return_true(self):
+
+
+    # region def test_video_mpg_should_return_true(self):
+    def test_video_mpg_should_return_true(self):
+        """
+            tests if the video as mpg returns true
+        """
+
+        video_name : str = "video.mpg"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_mpg_should_return_true(self):
+
+# cSpell: disable
+    # region def test_video_divx_should_return_true(self):
+    def test_video_divx_should_return_true(self):
+        """
+            tests if the video as divx returns true
+        """
+
+        video_name : str = "video.divx"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_divx_should_return_true(self):
+# cSpell: enable
+
+
+# cSpell: disable
+    # region def test_video_rmvb_should_return_true(self):
+    def test_video_rmvb_should_return_true(self):
+        """
+            tests if the video as rmvb returns true
+        """
+
+        video_name : str = "video.rmvb"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    # endregion def test_video_rmvb_should_return_true(self):
+# cSpell: enable
+
+
+# cSpell: disable
+    # region def test_video_name_from_real_file_was_not_recognized_but_should_work(self):
+    def test_video_name_from_real_file_was_not_recognized_but_should_work(self):
+        """
+            tests if the video as rmvb returns true
+        """
+
+        video_name : str = " 01. Família Dinossauros - O Poderoso Megalossauro.divx"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    ...
+    # endregion def test_video_name_from_real_file_was_not_recognized_but_should_work(self):
+# cSpell: enable
+
+
+    # region def test_video_name_with_trailing_space(self):
+    def test_video_name_with_trailing_space(self):
+        """
+            tests given a video with trailing space return true
+        """
+
+        video_name : str = "video with trailing space.mp4 "
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    ...
+    # endregion def test_video_name_with_trailing_space(self):
+
+
+    # region def test_video_name_with_trailing_new_line(self):
+    def test_video_name_with_trailing_new_line(self):
+        """
+            tests given a video with trailing new line return true
+        """
+
+        video_name : str = "video with trailing new line.mp4\n"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    ...
+    # endregion def test_video_name_with_trailing_new_line(self):
+
+
+    # region def test_file_name_is_not_video(self):
+    def test_file_name_is_not_video(self):
+        """
+            tests given a video with trailing new line return true
+        """
+
+        video_name : str = "file is not a video.txt"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertFalse(is_video)
+        ...
+    ...
+    # endregion def test_file_name_is_not_video(self):
+
+
+    # region def test_filename_is_an_absolute_path(self):
+    def test_filename_is_an_absolute_path(self):
+        """
+            tests given a video with trailing new line return true
+        """
+
+        video_name : str = "/home/user/videos/filename.mp4"
+
+        is_video : bool = is_file_video_script.is_video(video_name, debug_function = True)
+
+        self.assertTrue(is_video)
+        ...
+    ...
+    # endregion def test_filename_is_an_absolute_path(self):
+# endregion class TestIsVideo(unittest.TestCase):
+
+
+if __name__ == '__main__':
     unittest.main()
 

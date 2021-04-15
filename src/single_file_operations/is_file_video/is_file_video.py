@@ -3,37 +3,67 @@
     helper functions for use in various scripts
 """
 
-def function(parameter : str,
+def is_video(filename : str,
     debug_function : bool = False):
-    """
-        docstring for function
+    """wether or not a file is a video
 
     Args:
-        root_directory (str):
+        filename (str): the filename of the file
+
+        debug_function (bool, optional): if debug statements should be printed to console.
+            Defaults to False.
 
     Returns:
-        str:
+        bool: wether or not the file is a video
+
     """
 # region def function(...)
 
 # region debug_function
     if debug_function:
         print("[def] function(")
-        print("      parameter : str = {1}"\
-            .format(str(parameter)))
+        print("      filename : str = {}"\
+            .format(str(filename)))
         print("              )")
         print("{")
 # endregion
-
-
-
+# cSpell: disable
+    # region video_extensions
+    video_extensions = ['.mp4', '.m4v', '.mkv','.ts', '.avi',
+                        '.webm', '.flv', '.mov', '.wmv', '.vob',
+                        '.ogm', '.mpg', '.divx','.rmvb',
+                        ]
+    # endregion video_extensions
+# cSpell: enable
+    is_it_a_video : bool = False
+    # region for ext in video_extensions:
+    for ext in video_extensions:
+        ends_with_ext : bool = filename.lower().rstrip().endswith(ext)
+# region debug_function
+        if debug_function:
+            print()
+            print("> [for] ext in video_extensions:")
+            print(">       ext: " + str(ext))
+            print()
+            print("> > [if] ends_with_ext: " + str(ends_with_ext))
+# endregion
+        # region if ends_with_ext:
+        if ends_with_ext:
+            is_it_a_video = True
+# region debug_function
+            if debug_function:
+                print("> > > is_it_a_video : " + str(is_it_a_video))
+                print("> > > [break]")
+# endregion
+            break
+        # endregion if ends_with_ext:
+    # endregion for ext in video_extensions:
 # region debug_function
     if debug_function:
+        print("[return] is_it_a_video")
         print("}")
 # endregion
-
-
-    return
+    return is_it_a_video
 # endregion def function(...)
 
 def main(debug_function: bool = False):
@@ -42,6 +72,7 @@ def main(debug_function: bool = False):
     """
 # region def main(...)
 
+# TODO make the script be usable by calling it with arguments
 
 # endregion def main(...)
 
