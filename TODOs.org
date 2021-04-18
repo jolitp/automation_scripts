@@ -26,7 +26,7 @@ as in the ones that have the biggest size of videos and the lowest number of vid
 *** TODO script to get the size of a file
 ** multiple files operations
 *** TODO script to compress the files/ directory into a .7z file
-*** TODO script to add to the start of the name of every file
+*** DONE script to add to the start of the name of every file
 *** TODO script to remove empty folders recursivelly from a directory
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to concatenate videos into one video
