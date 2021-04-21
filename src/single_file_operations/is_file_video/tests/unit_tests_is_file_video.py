@@ -292,7 +292,7 @@ class UnitTestIsVideo(unittest.TestCase):
 
 
     # region def test_file_name_is_not_video(self):
-    def test_file_name_is_not_video(self):
+    def test_file_name_is_not_video_should_return_false(self):
         """
             tests given a video with trailing new line return true
         """
@@ -308,7 +308,7 @@ class UnitTestIsVideo(unittest.TestCase):
 
 
     # region def test_filename_is_an_absolute_path(self):
-    def test_filename_is_an_absolute_path(self):
+    def test_filename_is_an_absolute_path_should_return_false(self):
         """
             tests given a video with trailing new line return true
         """
