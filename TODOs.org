@@ -19,7 +19,7 @@ as in the ones that have the biggest size of videos and the lowest number of vid
 ** single file operations
 *** TODO script to change the extension of a given file
 *** STRT script to check if a file is a video
-*** TODO script to check if a video file is corrupted
+*** STRT script to check if a video file is corrupted
 *** TODO script to rename files or folders
 *** TODO script to get the length of a video
 *** TODO script to get the dimensions of a video
@@ -31,7 +31,7 @@ as in the ones that have the biggest size of videos and the lowest number of vid
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to concatenate videos into one video
 *** TODO script to create an org file with videos as sub-headers
-*** TODO script to get the accumulated length of all videos in a directory
+*** STRT script to get the accumulated length of all videos in a directory
 *** TODO script to convert videos to have the same codec and dimensions
 *** TODO script to measure the viability of uploading the videos without concatenating them before
 *** TODO script to converto, resize and concatenate videos

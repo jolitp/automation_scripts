@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 """
-    tests for .py
+    unit tests for get_video_length.py
 """
 
 import unittest
@@ -9,11 +9,11 @@ import importlib.util # needed for importing scripts using the scripts path
 # cSpell:disable
 python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
 # cSpell:enable
-subfolder : str = "CHANGE_ME/"
-spec = importlib.util.spec_from_file_location("CHANGE_ME",
-    python_scripts_folder_path + subfolder + "CHANGE_ME.py")
-CHANGE_ME = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(CHANGE_ME)
+subfolder : str = "src/single_file_operations/get_video_length/"
+spec = importlib.util.spec_from_file_location("get_video_length",
+    python_scripts_folder_path + subfolder + "get_video_length.py")
+get_video_length_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(get_video_length_script)
 
 
 
@@ -26,27 +26,15 @@ class UnitTest(unittest.TestCase):
 # region tests CHANGE_ME_function(...):
 
 
-    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
-    def test_(self):
+    # region def test_when_filename_is_relative_ValueError_should_be_raised(...):
+    def test_when_filename_is_relative_ValueError_should_be_raised(self):
         """
-            dummy test
-
-            CHANGE ME
+            when filename is relative ValueError should be raised.
         """
-        # cSpell:disable
-        project_folder = "/home/jolitp/Projects/automation_scripts/"
-        tests_folder = \
-            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
-        test_bed_folder = "test_bed/"
-        this_test_folder = "test_is_folder_receives_a_valid_path_and_returns_true/"
+        with self.assertRaises(ValueError):
+            get_video_length_script.get_video_length("unit_tests_get_video_length.py")
+    # endregion def test_when_filename_is_relative_ValueError_should_be_raised(...):
 
-        folder = "valid_folder"
-        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
-        # cSpell:enable
-
-        result = False
-        self.assertTrue(result)
-    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
 
 
 # endregion tests CHANGE_ME_function(...):

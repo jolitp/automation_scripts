@@ -1,13 +1,15 @@
 #! /usr/bin/python3
 """
-    helper functions for use in various scripts
+    script to get the length of a single video file
 """
+import os
 
-def function(parameter : str,
+def get_video_length(filename : str,
     debug_function : bool = False):
     """
-        docstring for function
+        get the length of a video of a given path, path should be absolute
 
+# NOTE should I return the number of seconds or the time formatted?
     Args:
         root_directory (str):
 
@@ -24,8 +26,20 @@ def function(parameter : str,
         print("              )")
         print("{")
 # endregion
+    is_filename_absolute : bool = os.path.isabs(filename)
+# region debug_function
+    if debug_function:
+        print("os.path.isabs(filename) = {1}"\
+            .format(is_filename_absolute))
+# endregion\
+    if not is_filename_absolute:
+        raise ValueError("argument filename should be an absolute path.")
 
-
+# cSpell: disable
+# TODO use either of the following methods: ffmpeg, moviepy, pymediainfo or opencv
+# source:
+# https://stackoverflow.com/questions/3844430/how-to-get-the-duration-of-a-video-in-python
+# cSpell: enable
 
 # region debug_function
     if debug_function:
@@ -35,6 +49,7 @@ def function(parameter : str,
 
     return
 # endregion def function(...)
+
 
 def main(debug_function: bool = False):
     """
