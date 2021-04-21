@@ -3,6 +3,9 @@
     helper functions for use in various scripts
 """
 
+# TODO add doctest for module
+
+# TODO add doctest for function
 def is_video(filename : str,
     debug_function : bool = False):
     """wether or not a file is a video

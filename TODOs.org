@@ -62,3 +62,4 @@ https://stackabuse.com/command-line-arguments-in-python/
 or use argparse for easy documentation
 
 https://realpython.com/python-command-line-arguments/#argparse
+** TODO use doctest in every script
