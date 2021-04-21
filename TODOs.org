@@ -53,3 +53,12 @@ as in the ones that have the biggest size of videos and the lowest number of vid
 this video may help
 
 https://www.youtube.com/watch?app=desktop&v=5CMmjNt_p48
+** TODO add versioning to scripts
+** TODO make scripts callable with argumetns
+use optparse for this
+
+https://stackabuse.com/command-line-arguments-in-python/
+
+or use argparse for easy documentation
+
+https://realpython.com/python-command-line-arguments/#argparse
