@@ -12,7 +12,7 @@ a folder with a concatenated video has a video with the same name of the folder
 *** TODO script to remove videos from every emediate nested directory
 *** TODO script to separate folders of videos into [long] or [short]
 *** STRT script to sort folders by their "youtube upload viability" without concatenating
-make a .csv file to be easy to compare all entries using calc's conditional formatting color ranges
+a folder that is viable have less than 15 videos and is of any size
 *** TODO script to separate the best courses to upload to youtube today
 get how many videos there are in each folder and separate the best --
 as in the ones that have the biggest size of videos and the lowest number of videos -- folders in a folder named [upload today(date)]
@@ -41,10 +41,15 @@ as in the ones that have the biggest size of videos and the lowest number of vid
 *** TODO script to create a .csv file containing each video's dimensions
 *** TODO script to move videos in nested folders to the current folder
 *** TODO script to upload video files automatically to youtube
-*** DONE script to separate videos in parts with 12 videos to upload
+*** DONE script to separate videos in parts with 15 videos to upload
+*** TODO script to restore videos from separated to download
 ** utils
 *** TODO script to remove special characters from a filename
+*** TODO script to check if a path is relative or absolute
 *** TODO script to filter a list of filenames to contain only files with a given extension
+*** TODO script to convert from seconds to formatted time
+*** TODO script to get the parts of a formatted time string
+like hours, minutes, seconds, etc
 *** TODO script to log the execution of files for debugging
 *** TODO script to log excecution to the terminal with "framming"
 *** TODO utility module to pretty print directories as a tree
