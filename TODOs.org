@@ -68,3 +68,4 @@ or use argparse for easy documentation
 
 https://realpython.com/python-command-line-arguments/#argparse
 ** TODO use doctest in every script
+** TODO add regression tests

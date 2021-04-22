@@ -3,6 +3,7 @@
     script to get the length of a single video file
 """
 import os
+import cv2
 
 def get_video_length(filename : str,
     debug_function : bool = False):
@@ -31,25 +32,39 @@ def get_video_length(filename : str,
     if debug_function:
         print("os.path.isabs(filename) = {1}"\
             .format(is_filename_absolute))
-# endregion\
+# endregion
     if not is_filename_absolute:
         raise ValueError("argument filename should be an absolute path.")
-
+# cSpell: disable
+    duration = _with_opencv(filename)
+# cSpell: enable
+# region debug_function
+    if debug_function:
+        print("duration = {1}"\
+            .format(duration))
+# endregion
 # cSpell: disable
 # TODO use either of the following methods: ffmpeg, moviepy, pymediainfo or opencv
 # source:
 # https://stackoverflow.com/questions/3844430/how-to-get-the-duration-of-a-video-in-python
 # cSpell: enable
-
+    return duration
 # region debug_function
     if debug_function:
         print("}")
 # endregion
-
-
     return
 # endregion def function(...)
 
+
+# cSpell: disable
+def _with_opencv(filename):
+# cSpell: enable
+    video = cv2.VideoCapture(filename)
+    fps = video.get(cv2.CAP_PROP_FPS)
+    frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
+    duration = frame_count/fps
+    return duration
 
 def main(debug_function: bool = False):
     """

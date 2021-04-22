@@ -52,7 +52,7 @@ class IntegrationTest(unittest.TestCase):
         test_bed_folder: str = python_scripts_folder_path + subfolder + "tests/test_bed/"
         all_files_or_directories: list = os.listdir(test_bed_folder)
         for element in all_files_or_directories:
-            shutil.delete(element)
+            shutil.rmtree(element)
             ...
         ...
 
@@ -67,8 +67,13 @@ class IntegrationTest(unittest.TestCase):
         path_to_video = self.copy_video_from_assets_to_test_bed("10_seconds_video.webm",
                                                 "10_seconds_video.webm")
         length = get_video_length_script.get_video_length(path_to_video)
-        expected_length = "10:00.000"
+
+        # assert
+        expected_length = 10.0
         self.assertEquals(length, expected_length)
+
+        # clean up
+        # self.clear_test_bed()
         ...
 # TODO testcase: ffmpeg could not be found
 # cSpell: enable
