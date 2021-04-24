@@ -25,6 +25,8 @@ class IntegrationTest(unittest.TestCase):
     """
 # region tests (...):
 
+
+
     def copy_video_from_assets_to_test_bed(self,old_name: str, new_name: str):
         """copy a video from the assets/videos/ folder of the project to the test_bed/
         folder of the scripts test
@@ -47,6 +49,8 @@ class IntegrationTest(unittest.TestCase):
         return destination_video_path
         ...
 
+
+
     def clear_test_bed(self):
         """deletes all files in the test bed directory"""
         test_bed_folder: str = python_scripts_folder_path + subfolder + "tests/test_bed/"
@@ -56,16 +60,19 @@ class IntegrationTest(unittest.TestCase):
             ...
         ...
 
-    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+
+
+    # region def test_given_a_small_video_should_return_10_seconds(...):
     def test_given_a_small_video_should_return_10_seconds(self):
         """
             when given a 10 seconds video, should return 10 seconds
         """
-
 # cSpell: disable
         # setup
         path_to_video = self.copy_video_from_assets_to_test_bed("10_seconds_video.webm",
                                                 "10_seconds_video.webm")
+
+        # act
         length = get_video_length_script.get_video_length(path_to_video)
 
         # assert
@@ -77,8 +84,26 @@ class IntegrationTest(unittest.TestCase):
         ...
 # TODO testcase: ffmpeg could not be found
 # cSpell: enable
-    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+    # endregion def test_given_a_small_video_should_return_10_seconds(...):
 
+    # region def test_given_a_corrupted_video_should_return_none(...):
+    def test_given_a_corrupted_video_should_return_none(self):
+        """
+            given a corrupted video should return None
+        """
+        # setup
+        path_to_video = self.copy_video_from_assets_to_test_bed("fake_video.mkv",
+                                                "fake_video.mkv")
+
+        # act
+        length = get_video_length_script \
+            .get_video_length(path_to_video, debug_function=True)
+
+        # assert
+        expected_length = None
+        self.assertEquals(length, expected_length)
+        ...
+    # endregion def test_given_a_corrupted_video_should_return_none(...):
 
 # endregion tests (...):
 

@@ -22,25 +22,25 @@ def get_video_length(filename : str,
 # region debug_function
     if debug_function:
         print("[def] function(")
-        print("      parameter : str = {1}"\
-            .format(str(parameter)))
+        print("      filename : str = {}"\
+            .format(str(filename)))
         print("              )")
         print("{")
 # endregion
     is_filename_absolute : bool = os.path.isabs(filename)
 # region debug_function
     if debug_function:
-        print("os.path.isabs(filename) = {1}"\
+        print("os.path.isabs(filename) = {}"\
             .format(is_filename_absolute))
 # endregion
     if not is_filename_absolute:
         raise ValueError("argument filename should be an absolute path.")
 # cSpell: disable
-    duration = _with_opencv(filename)
+    duration = _with_opencv(filename, debug_function=debug_function)
 # cSpell: enable
 # region debug_function
     if debug_function:
-        print("duration = {1}"\
+        print("duration = {}"\
             .format(duration))
 # endregion
 # cSpell: disable
@@ -58,12 +58,27 @@ def get_video_length(filename : str,
 
 
 # cSpell: disable
-def _with_opencv(filename):
+def _with_opencv(filename, debug_function=False):
 # cSpell: enable
     video = cv2.VideoCapture(filename)
-    fps = video.get(cv2.CAP_PROP_FPS)
     frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
-    duration = frame_count/fps
+    fps = video.get(cv2.CAP_PROP_FPS)
+# region debug_function
+    if debug_function:
+        print("frame_count = {}"\
+            .format(frame_count))
+        print("fps = {}"\
+            .format(fps))
+# endregion
+    if frame_count == 0.0 or fps == 0.0:
+        duration = None
+    else:
+        duration = frame_count/fps
+# region debug_function
+    if debug_function:
+        print("duration = {}"\
+            .format(duration))
+# endregion
     return duration
 
 def main(debug_function: bool = False):
