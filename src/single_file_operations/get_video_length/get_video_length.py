@@ -21,7 +21,7 @@ def get_video_length(filename : str,
 
 # region debug_function
     if debug_function:
-        print("[def] function(")
+        print("[def] get_video_length(")
         print("      filename : str = {}"\
             .format(str(filename)))
         print("              )")

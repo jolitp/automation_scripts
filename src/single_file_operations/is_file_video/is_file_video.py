@@ -24,7 +24,8 @@ def is_video(filename : str,
 
 # region debug_function
     if debug_function:
-        print("[def] function(")
+        print()
+        print("[def] is_video(")
         print("      filename : str = {}"\
             .format(str(filename)))
         print("              )")
@@ -63,7 +64,8 @@ def is_video(filename : str,
     # endregion for ext in video_extensions:
 # region debug_function
     if debug_function:
-        print("[return] is_it_a_video")
+        print("[return] is_it_a_video = {}"\
+               .format(is_it_a_video))
         print("}")
 # endregion
     return is_it_a_video
