@@ -9,29 +9,24 @@ import importlib.util # needed for importing scripts using the scripts path
 # cSpell:disable
 python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
 # cSpell:enable
-subfolder : str = "CHANGE_ME/"
-spec = importlib.util.spec_from_file_location("CHANGE_ME",
-    python_scripts_folder_path + subfolder + "CHANGE_ME.py")
-CHANGE_ME = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(CHANGE_ME)
-
+subfolder : str = "get_all_videos_in_a_directory/"
+spec = importlib.util.spec_from_file_location("get_all_videos_in_a_directory",
+    python_scripts_folder_path + subfolder + "get_all_videos_in_a_directory.py")
+get_all_videos_in_a_directory = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(get_all_videos_in_a_directory)
 
 
 class IntegrationTest(unittest.TestCase):
     """
-        integration tests for .py
-
-        CHANGE ME
+        integration tests for get_all_videos_in_a_directory.py
     """
-# region tests CHANGE_ME_function(...):
+# region tests get_all_videos_in_a_directory(...):
 
 
-    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+    # region def (...):
     def test_(self):
         """
             dummy test
-
-            CHANGE ME
         """
         # cSpell:disable
         project_folder = "/home/jolitp/Projects/automation_scripts/"
@@ -46,12 +41,12 @@ class IntegrationTest(unittest.TestCase):
 
         result = False
         self.assertTrue(result)
-    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+    # endregion def (...):
 
 
-# endregion tests CHANGE_ME_function(...):
+# endregion tests get_all_videos_in_a_directory(...):
 
 
 if __name__ == "__main__":
-    print("CHANGE_ME.__main__")
+    print("get_all_videos_in_a_directory.__main__")
     unittest.main()
