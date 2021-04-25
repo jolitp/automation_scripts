@@ -34,7 +34,7 @@ use the parametirized tests instead
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to concatenate videos into one video
 *** TODO script to create an org file with videos as sub-headers
-*** STRT script to get all videos in a directory
+*** DONE script to get all videos in a directory
 *** STRT script to get the accumulated length of all videos in a directory
 **** use processing pool executor from multiprocessing module
 from youtube video:
@@ -53,14 +53,13 @@ https://youtu.be/fKl2JW_qrso?t=1020
 *** TODO script to restore videos from separated to download
 ** utils
 *** TODO script to remove special characters from a filename
-*** TODO script to check if a path is relative or absolute
 *** TODO script to filter a list of filenames to contain only files with a given extension
 *** TODO script to convert from seconds to formatted time
 *** TODO script to get the parts of a formatted time string
 like hours, minutes, seconds, etc
 *** TODO script to log the execution of files for debugging
 *** TODO script to log excecution to the terminal with "framming"
-*** TODO utility module to pretty print directories as a tree
+*** TODO utility module to pretty print directories like powerlevel10k
 *** TODO unitily module to shrink names
 ** TODO figure a way of using the scripts without copying to the folder
 this video may help
@@ -79,3 +78,5 @@ https://realpython.com/python-command-line-arguments/#argparse
 ** TODO add regression tests
 ** TODO add debug test toggle to all test files
 ** TODO make scripts debuggable by passing -D/--debug flag to the command line
+** TODO use printing color to the terminal
+https://stackoverflow.com/questions/287871/how-to-print-colored-text-to-the-terminal
