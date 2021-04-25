@@ -3,6 +3,17 @@
     helper functions for use in various scripts
 """
 
+import importlib.util # needed for importing scripts using the scripts path
+
+# cSpell:disable
+python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+subfolder : str = "src/single_file_operations/get_video_length/"
+spec = importlib.util.spec_from_file_location("get_video_length",
+    python_scripts_folder_path + subfolder + "get_video_length.py")
+get_video_length_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(get_video_length_script)
+
 def function(parameter : str,
     debug_function : bool = False):
     """

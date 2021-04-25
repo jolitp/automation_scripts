@@ -9,11 +9,12 @@ import importlib.util # needed for importing scripts using the scripts path
 # cSpell:disable
 python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
 # cSpell:enable
-subfolder : str = "CHANGE_ME/"
-spec = importlib.util.spec_from_file_location("CHANGE_ME",
-    python_scripts_folder_path + subfolder + "CHANGE_ME.py")
-CHANGE_ME = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(CHANGE_ME)
+subfolder : str = \
+    "src/multiple_files_operations/get_accumulated_length_of_all_videos/"
+spec = importlib.util.spec_from_file_location("get_accumulated_length_of_all_videos",
+    python_scripts_folder_path + subfolder + "get_accumulated_length_of_all_videos.py")
+get_accumulated_length_of_all_videos_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(get_accumulated_length_of_all_videos_script)
 
 
 
