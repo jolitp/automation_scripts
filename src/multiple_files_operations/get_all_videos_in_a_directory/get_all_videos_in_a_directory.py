@@ -39,7 +39,6 @@ def get_all_videos(directory_path : str,
         print("              )")
         print("{")
 # endregion
-# TODO check if directory is absolute path
     directory_path_is_absolute : bool = os.path.isabs(directory_path)
 # region debug_function
     if debug_function:
@@ -72,7 +71,6 @@ def get_all_videos(directory_path : str,
         print("}")
 # endregion
 
-
     return only_videos
 # endregion def function(...)
 
@@ -81,8 +79,18 @@ def main(debug_function: bool = False):
     the main function for the script
     """
 # region def main(...)
+# region debug_function
+    if debug_function:
+        print()
+        print("[def] main(")
+        print("          )")
+        print("{")
+# endregion
 
-
+# region debug_function
+    if debug_function:
+        print("}")
+# endregion
 # endregion def main(...)
 
 # region if __name__ == "__main__":
