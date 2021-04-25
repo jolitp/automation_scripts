@@ -78,3 +78,4 @@ https://realpython.com/python-command-line-arguments/#argparse
 ** TODO use doctest in every script
 ** TODO add regression tests
 ** TODO add debug test toggle to all test files
+** TODO make scripts debuggable by passing -D/--debug flag to the command line

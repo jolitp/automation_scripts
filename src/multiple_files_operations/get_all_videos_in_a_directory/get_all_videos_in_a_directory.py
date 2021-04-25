@@ -73,7 +73,7 @@ def get_all_videos(directory_path : str,
 # endregion
 
 
-    return all_items_absolute_path
+    return only_videos
 # endregion def function(...)
 
 def main(debug_function: bool = False):
