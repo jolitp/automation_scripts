@@ -17,43 +17,62 @@ get_accumulated_length_of_all_videos_script = importlib.util.module_from_spec(sp
 spec.loader.exec_module(get_accumulated_length_of_all_videos_script)
 
 
+# cSpell:disable
+PROJECT_FOLDER = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+TESTS_FOLDER = \
+"src/multiple_files_operations/get_accumulated_length_of_all_videos/tests/"
+TEST_BED_FOLDER = PROJECT_FOLDER +  TESTS_FOLDER + "test_bed/"
 
-
-class IntegrationTest(unittest.TestCase):
+class IntegrationTest_get_accumulated_length_of_all_videos(unittest.TestCase):
     """
-        integration tests for .py
-
-        CHANGE ME
+        integration tests for get_accumulated_length_of_all_videos.py
     """
-# region tests CHANGE_ME_function(...):
+# region tests IntegrationTest_get_accumulated_length_of_all_videos(...):
 
-
-    # region def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
-    def test_(self):
+# TODO testcase: when given a folder without videos should return 0.0 seconds
+# TODO testcase: when given a folder with a corrupted video should return 0.0 seconds
+    # region def (...):
+    def test_directory_with_a_10_sec_video_should_return_10_seconds(self):
         """
-            dummy test
-
-            CHANGE ME
+            when giving a directory with only a 10 seconds video
+            should return 10 seconds
         """
-        # cSpell:disable
-        project_folder = "/home/jolitp/Projects/automation_scripts/"
-        tests_folder = \
-            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
-        test_bed_folder = "test_bed/"
-        this_test_folder = "test_is_folder_receives_a_valid_path_and_returns_true/"
+        # setup
+        this_test_folder = "test_directory_with_a_10_sec_video_should_return_10_seconds/"
+        folder = TEST_BED_FOLDER + this_test_folder
 
-        folder = "valid_folder"
-        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
-        # cSpell:enable
-
-        result = False
-        self.assertTrue(result)
-    # endregion def CHANGE_ME_test_is_folder_receives_a_valid_path_and_returns_true(...):
+        # act
+        accumulated_length : float = get_accumulated_length_of_all_videos_script \
+            .get_accumulated_length_of_all_videos(folder)
+        # assert
+        expected : float = 10.0
+        self.assertEqual(accumulated_length, expected)
+    # endregion def (...):
 
 
-# endregion tests CHANGE_ME_function(...):
+    # region def (...):
+    def test_directory_with_2_10_sec_videos_should_return_20_seconds(self):
+        """
+            when giving a directory with two 10 seconds videos
+            should return 20 seconds
+        """
+        # setup
+        this_test_folder = "test_directory_with_2_10_sec_videos_should_return_20_seconds/"
+        folder = TEST_BED_FOLDER + this_test_folder
 
+        # act
+        accumulated_length : float = get_accumulated_length_of_all_videos_script \
+            .get_accumulated_length_of_all_videos(folder)
+        # assert
+        expected : float = 20.0
+        self.assertEqual(accumulated_length, expected)
+    # endregion def (...):
+
+
+# endregion tests IntegrationTest_get_accumulated_length_of_all_videos(...):
 
 if __name__ == "__main__":
-    print("CHANGE_ME.__main__")
+    print("integration_test_get_accumulated_length_of_all_videos.__main__")
+    print()
     unittest.main()
