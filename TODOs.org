@@ -50,7 +50,7 @@ https://youtu.be/fKl2JW_qrso?t=1020
 *** TODO script to move videos in nested folders to the current folder
 *** TODO script to upload video files automatically to youtube
 *** DONE script to separate videos in parts with 15 videos to upload
-*** TODO script to restore videos from separated to download
+*** DONE script to restore videos from separated to download
 ** utils
 *** TODO script to remove special characters from a filename
 *** TODO script to filter a list of filenames to contain only files with a given extension

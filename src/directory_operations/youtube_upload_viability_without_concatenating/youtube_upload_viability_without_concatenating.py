@@ -1,69 +1,49 @@
 #! /usr/bin/python3
 """
-    measures how much a folder of videos is worth it to be uploaded to youtube
-    without being concatenated into smaller videos.
-
-    creates a file named: []
+    measures how viable each folder is to be uploaded to youtube
 """
 
 import os
+import importlib.util # needed for importing scripts using the scripts path
+
+# cSpell:disable
+python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+subfolder : str = "/src/multiple_files_operations/get_all_videos_in_a_directory/"
+spec = importlib.util.spec_from_file_location("get_all_videos_in_a_directory",
+    python_scripts_folder_path + subfolder + "get_all_videos_in_a_directory.py")
+get_all_videos_in_a_directory_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(get_all_videos_in_a_directory_script)
 
 
-def is_folder(root: str,
-                name: str):
-    """returns wether or not an item in a directory is a folder
+def is_viable(videos : list,
+            debug_function=False):
+    """process each folder passed to it
 
     Args:
-        item (str):
+        videos (list):
+            a list of videos inside a directory
+        debug_function (bool, optional):
+            if function should be debugged. Defaults to False.
 
     Returns:
-        bool: if item is folder or not
+        viability (float):
+            a measure of how viable this folder is to be uploaded
     """
-    # region def is_folder(item: str):
-    full_path = root + name
-    if not os.path.isabs(full_path):
-        raise ValueError("the path must be an absolute path.")
-    is_it_folder : bool = False
-    if os.path.isdir(full_path):
-        is_it_folder = True
-        ...
-    return is_it_folder
+    # debug_function = True # comment to toggle
+    viability : float = 0
+
+    number_of_videos = len(videos)
+    if number_of_videos < 16:
+        viability = 1
+
+# TODO get the size of each video
+
+# TODO get the length of each video?
+# delegate it to the video_length.py.get_length
+
+    return viability
     ...
-# endregion def is_folder(item: str):
-
-
-
-def filter_folders(root: str,
-                    all_files_and_folders: list,
-                    debug_function: bool = False) -> None:
-    """returns wether or not an item in a directory is a folder
-
-    Args:
-        item (str): the item to check
-
-    Returns:
-        bool: if item is folder or not
-    """
-# region def filter_folders(all_files_and_folders: list):
-
-# region debug_function
-    if debug_function:
-        print("> [def] process_folder(...)")
-        print("> all_files_and_folders: list = {}".format(all_files_and_folders))
-        print("> {")
-# endregion
-    only_folders : list = []
-    for item in all_files_and_folders:
-        if is_folder(root, item):
-            only_folders.append(item)
-        ...
-# region debug_function
-    if debug_function:
-        print("> }")
-# endregion
-    return only_folders
-# endregion def filter_folders(all_files_and_folders: list):
-
 
 def process_folder(root: str,
                     folder: str,
@@ -79,26 +59,75 @@ def process_folder(root: str,
         None
     """
 # region def process_folder(...):
+    # debug_function = True # comment to toggle
 # region debug_function
     if debug_function:
+        print()
         print("> [def] process_folder(...)")
         print("> root: str = {}".format(root))
         print("> folder: str = {}".format(folder))
         print("> {")
+        print()
 # endregion
-
-# TODO get the number of videos in the folder
-# delegate it to the is_file_video.py.is_video
-
-# TODO get the size of each video
-
-# TODO get the length of each video?
-# delegate it to the video_length.py.get_length
-
-
+    cwd = os.getcwd()
 # region debug_function
     if debug_function:
+        print()
+        print("> cwd: str = {}".format(cwd))
+        print()
+# endregion
+    videos : list = get_all_videos_in_a_directory_script \
+        .get_all_videos(root + folder)
+# region debug_function
+    if debug_function:
+        print()
+        print("> > videos : list = [")
+        for debug_index, debug_item in enumerate(videos):
+            print("> > videos[{}] = {}".format(debug_index, debug_item))
+        print("]")
+        print()
+# endregion
+    how_viable = is_viable(videos)
+# TODO move folder to subfolder
+
+    upload_now_folder_name = "[upload_now]"
+
+    os.chdir(root)
+    cwd = os.getcwd()
+# region debug_function
+    if debug_function:
+        print()
+        print("> cwd: str = {}".format(cwd))
+        print()
+# endregion
+    if not os.path.isdir(upload_now_folder_name):
+        os.mkdir(upload_now_folder_name)
+
+    if how_viable == 1:
+        source_path = root + folder
+        destination_path = root + upload_now_folder_name + "/" + folder
+# region debug_function
+    if debug_function:
+        print()
+        print("> source_path: str = {}".format(source_path))
+        print()
+        print("> destination_path: str = {}".format(destination_path))
+        print()
+# endregion
+        os.rename(source_path, destination_path)
+    os.chdir(cwd)
+    cwd = os.getcwd()
+# region debug_function
+    if debug_function:
+        print()
+        print("> cwd: str = {}".format(cwd))
+        print()
+# endregion
+# region debug_function
+    if debug_function:
+        print()
         print("> }")
+        print()
 # endregion
     ...
 # endregion def process_folder(...):
@@ -117,11 +146,15 @@ def main(debug_function: bool = False):
 # endregion
     current_directory_path = os.getcwd()
     all_files_and_folders = os.listdir(current_directory_path)
-    folders = filter_folders(current_directory_path, all_files_and_folders)
+    folders = []
+    for item in all_files_and_folders:
+        if os.path.isdir(item):
+            folders.append(item)
 
-# TODO parallelize the execution of each folder using subprocess
+# TODO parallelize the execution of each folder using processing pool executor
     for folder in folders:
-        process_folder(current_directory_path, folder,debug_function=True)
+        process_folder(current_directory_path, folder)
+
 
 # region debug_function
     if debug_function:

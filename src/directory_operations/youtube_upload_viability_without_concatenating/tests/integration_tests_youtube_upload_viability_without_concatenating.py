@@ -4,18 +4,25 @@
 """
 
 import os
+import shutil
 import unittest
 import importlib.util # needed for importing scripts using the scripts path
 
 # cSpell:disable
 python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
 # cSpell:enable
-subfolder : str = "src/multiple_files_operations/youtube_upload_viability_without_concatenating/"
+subfolder : str = "src/directory_operations/youtube_upload_viability_without_concatenating/"
 spec = importlib.util.spec_from_file_location("youtube_upload_viability_without_concatenating",
     python_scripts_folder_path + subfolder + "youtube_upload_viability_without_concatenating.py")
-youtube_upload_viability_without_concatenating = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(youtube_upload_viability_without_concatenating)
+youtube_upload_viability_without_concatenating_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(youtube_upload_viability_without_concatenating_script)
 
+# cSpell:disable
+PROJECT_FOLDER = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+TESTS_FOLDER = \
+    "src/directory_operations/youtube_upload_viability_without_concatenating/tests/"
+TEST_BED_FOLDER = PROJECT_FOLDER + TESTS_FOLDER + "test_bed/"
 
 
 # region class IntegrationTest(unittest.TestCase):
@@ -24,109 +31,48 @@ class IntegrationTestYoutubeUploadViabilityWithoutConcatenating(unittest.TestCas
     """
         integration tests for youtube_upload_viability_without_concatenating.py
     """
-# region tests is_folder(...):
 
-
-# DONE testcase: passing a relative path to is_folder() raise ValueError exception
-# TODO testcase: passing a folder that does not exist to is_folder() returns false
-# TODO testcase: passing a file to is_folder() returns false
-
-
-    # region def test_is_folder_receives_a_valid_path_and_returns_true(...):
-    def test_is_folder_receives_a_valid_path_and_returns_true(self):
+    def test_having_a_directory_with_one_video_moves_the_folder_to_viable_folder(self):
         """
-            dummy test
+            when having a folder with one video inside
+
+            should move the folder into a folder named [upload_now]/
         """
-        # cSpell:disable
-        project_folder = "/home/jolitp/Projects/automation_scripts/"
-        tests_folder = \
-            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
-        test_bed_folder = "test_bed/"
-        this_test_folder = "test_is_folder_receives_a_valid_path_and_returns_true/"
+        # setup
 
-        folder = "valid_folder"
-        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
-        # cSpell:enable
+        this_test_folder = \
+            "test_having_a_directory_with_one_video_moves_the_folder_to_viable_folder/"
+        folder = "folder_with_one_video/"
+        root_path = TEST_BED_FOLDER + this_test_folder
 
-        result = youtube_upload_viability_without_concatenating \
-            .is_folder(root_folder, folder)
+        video_filename = "dummy_video.mkv"
 
-        self.assertTrue(result)
-    # endregion def test_is_folder_receives_a_valid_path_and_returns_true(...):
+        os.chdir(root_path)
+        if not os.path.isdir(folder):
+            os.mkdir(folder)
+        os.chdir(folder)
+        if not os.path.isfile(video_filename):
+            file = open(video_filename, "w")
+            file.close()
 
+        # act
+        youtube_upload_viability_without_concatenating_script \
+            .process_folder(root_path, folder, debug_function=True)
 
-    # region def test_is_folder_receives_a_relative_path_and_raises_exception(...):
-    def test_is_folder_receives_a_relative_path_and_raises_exception(self):
-        """
-            dummy test
-        """
-        # cSpell:disable
-        project_folder = "project_folder"
-        folder = "only_one_folder"
-        # cSpell:enable
+        # assert
+        upload_now_folder = root_path + "[upload_now]/"
+        result_folder = upload_now_folder + folder
 
-        with self.assertRaises(ValueError):
-            youtube_upload_viability_without_concatenating.is_folder(project_folder, folder)
+        upload_now_folder_exists = os.path.isdir(upload_now_folder)
+        print("upload_now_folder_exists : " + str(upload_now_folder_exists))
+        os.chdir(upload_now_folder)
+        folder_was_moved = os.path.isdir(result_folder)
+        print("folder was moved : " + str(folder_was_moved))
+        self.assertTrue(upload_now_folder_exists and folder_was_moved)
 
-
-    # endregion def test_is_folder_receives_a_relative_path_and_raises_exception(...):
-
-
-# endregion tests is_folder(...):
-
-
-# TODO testcase: passing a relative path to filter_folders() raise ValueError exception
-# TODO testcase: passing a list with only a file inside returns empty list
-
-# region tests filter_folders(...):
-
-
-    # region def test_filter_folders_receives_1_folder_returns_same_folder(...):
-    def test_filter_folders_receives_1_folder_returns_same_folder(self):
-        """
-            dummy test
-        """
-        # cSpell:disable
-        project_folder = "/home/jolitp/Projects/automation_scripts/"
-        # cSpell:enable
-        tests_folder = \
-            "src/multiple_files_operations/youtube_upload_viability_without_concatenating/tests/"
-        test_bed_folder = "test_bed/"
-        this_test_folder = "test_filter_folders_receives_1_folder_returns_same_folder/"
-        root_folder = project_folder + tests_folder + test_bed_folder + this_test_folder
-
-        all_files_and_folders : set(str) = os.listdir(root_folder)
-
-        expected_result : set(str) = [
-            "only_one_folder"
-        ]
-
-        folders : set(str) = youtube_upload_viability_without_concatenating \
-            .filter_folders(root_folder , all_files_and_folders, debug_function=True)
-        self.assertSequenceEqual(folders, expected_result)
-    # endregion def test_filter_folders_receives_1_folder_returns_same_folder(...):
-
-
-# endregion tests filter_folders(...):
-
-
-# region tests process_folder(...)
-
-
-# TODO testcase: ...
-
-
-    # region def test_process_folder(self)
-    def test_process_folder(self):
-        """
-            tests process_folder() function
-        """
-
+        # cleanup
+        shutil.rmtree(upload_now_folder)
         ...
-
-    # endregion def test_process_folder(self)
-
-# endregion tests process_folder(...)
 
 
 if __name__ == "__main__":

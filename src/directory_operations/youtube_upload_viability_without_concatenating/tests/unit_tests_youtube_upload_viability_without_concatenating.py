@@ -1,100 +1,74 @@
 #! /usr/bin/python3
 """
-    tests for
+    unit tests for youtube_upload_viability_without_concatenating.py
 """
 
+import os
 import unittest
-# import helpers
-# from helpers_save_for_reference.tests.scaffold_tests import function
-import sys
-sys.path.insert(0,'..')
-# cSpell: disable
-# pylint: disable=wrong-import-position
-# cSpell: enable
-# import helpers
+import importlib.util # needed for importing scripts using the scripts path
 
-# cSpell: disable
-# pylint: disable=no-member
-# helpers.function("parameter", debug_function=True)
-# cSpell: enable
+# cSpell:disable
+python_scripts_folder_path : str = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+subfolder : str = "src/directory_operations/youtube_upload_viability_without_concatenating/"
+spec = importlib.util.spec_from_file_location("youtube_upload_viability_without_concatenating",
+    python_scripts_folder_path + subfolder + "youtube_upload_viability_without_concatenating.py")
+youtube_upload_viability_without_concatenating_script = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(youtube_upload_viability_without_concatenating_script)
 
-
-# test function scaffold
-
-
-#     # region def test_(self):
-#     def test_(self):
-#         """
-
-#         """
-
-#         files : set(str) = {
-#         }
-
-#         expected_result : set(str) = {
-#         }
-
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
-
-#         self.assertSequenceEqual(videos, expected_result)
-
+# cSpell:disable
+PROJECT_FOLDER = "/home/jolitp/Projects/automation_scripts/"
+# cSpell:enable
+TESTS_FOLDER = \
+    "src/directory_operations/youtube_upload_viability_without_concatenating/tests/"
+TEST_BED_FOLDER = PROJECT_FOLDER + TESTS_FOLDER + "test_bed/"
 
 
 # region class IntegrationTest(unittest.TestCase):
 
-#     # region def test_dummy(self):
-#     def test_dummy(self):
-#         """
-#             dummy test
-#         """
+class UnitTestsYoutubeUploadViabilityWithoutConcatenating(unittest.TestCase):
+    """
+        unit tests for youtube_upload_viability_without_concatenating.py
+    """
 
-#         files : set(str) = {
-#             "a.mkv"
-#         }
+    def test_when_passing_less_than_16_videos_to_is_viable_should_return_1(self):
+        """
+            when passing a list of videos that has less than 16 videos inside
 
-#         expected_result : set(str) = {
-#             "a.mkv"
-#         }
+            the result from is_viable should always be 1
+        """
 
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
+        # setup
+        list_of_args = []
+        for index, n in enumerate(range(15)):
+            args = []
+            for number in range(index + 1):
+                args.append(number)
+            list_of_args.append(args)
+        for args in list_of_args:
+            for index, item in enumerate(args):
+                args[index] = str(item) + ".mkv"
+        # for arg in list_of_args:
+            # print(arg)
 
-#         self.assertSequenceEqual(videos, expected_result)
-# #     # endregion def test_dummy(self):
+        # act
+        for index, args in enumerate(list_of_args):
+            result = youtube_upload_viability_without_concatenating_script \
+                .is_viable(args)
+            ...
+        # assert
+            self.assertEqual(result, 1)
 
-
-
-# test class scaffold
-
-# # region test
-# class TestFirst(unittest.TestCase):
-#     """
-
-#     """
-
-
-#     # region def test_(self):
-#     def test_(self):
-#         """
-
-#         """
-
-#         files : set(str) = {
-#         }
-
-#         expected_result : set(str) = {
-#         }
-
-#         videos : set(str) = helpers.filter_videos(files, debug_function=True)
-
-#         self.assertSequenceEqual(videos, expected_result)
+        ...
 
 
-#         ...
-#     # endregion def test_(self):
-#     ...
-# # endregion TestFirst(unittest.TestCase):
+
+
+
+
 
 if __name__ == "__main__":
-    print("unit_tests_module_template.__main__")
+    print("integration_tests_module_template.__main__")
     unittest.main()
+
 
