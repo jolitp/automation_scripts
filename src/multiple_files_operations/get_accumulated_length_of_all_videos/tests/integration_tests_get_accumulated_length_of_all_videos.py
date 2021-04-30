@@ -24,6 +24,9 @@ TESTS_FOLDER = \
 "src/multiple_files_operations/get_accumulated_length_of_all_videos/tests/"
 TEST_BED_FOLDER = PROJECT_FOLDER +  TESTS_FOLDER + "test_bed/"
 
+DEBUG_TESTS = True
+DEBUG_TESTS = False # comment to toggle
+
 class IntegrationTest_get_accumulated_length_of_all_videos(unittest.TestCase):
     """
         integration tests for get_accumulated_length_of_all_videos.py
@@ -44,7 +47,7 @@ class IntegrationTest_get_accumulated_length_of_all_videos(unittest.TestCase):
 
         # act
         accumulated_length : float = get_accumulated_length_of_all_videos_script \
-            .get_accumulated_length_of_all_videos(folder)
+            .get_accumulated_length_of_all_videos(folder, debug_function=DEBUG_TESTS)
         # assert
         expected : float = 10.0
         self.assertEqual(accumulated_length, expected)
@@ -63,7 +66,7 @@ class IntegrationTest_get_accumulated_length_of_all_videos(unittest.TestCase):
 
         # act
         accumulated_length : float = get_accumulated_length_of_all_videos_script \
-            .get_accumulated_length_of_all_videos(folder)
+            .get_accumulated_length_of_all_videos(folder, debug_function=DEBUG_TESTS)
         # assert
         expected : float = 20.0
         self.assertEqual(accumulated_length, expected)

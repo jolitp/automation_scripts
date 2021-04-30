@@ -50,7 +50,10 @@ def get_all_videos(directory_path : str,
     all_items : list = os.listdir(directory_path)
     all_items_absolute_path : list = []
     for item in all_items:
-        all_items_absolute_path.append(directory_path + item)
+        if "/" in item[-1]:
+            all_items_absolute_path.append(directory_path + item)
+        else:
+            all_items_absolute_path.append(directory_path + item + "/")
 # region debug_function
     if debug_function:
         print("     all_items = {}"\

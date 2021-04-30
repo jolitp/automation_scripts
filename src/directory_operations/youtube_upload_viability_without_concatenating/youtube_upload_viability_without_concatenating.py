@@ -36,6 +36,8 @@ def is_viable(videos : list,
     number_of_videos = len(videos)
     if number_of_videos < 16:
         viability = 1
+    if number_of_videos == 0:
+        viability = 0
 
 # TODO get the size of each video
 
@@ -77,7 +79,7 @@ def process_folder(root: str,
         print()
 # endregion
     videos : list = get_all_videos_in_a_directory_script \
-        .get_all_videos(root + folder)
+        .get_all_videos(root + "/" + folder)
 # region debug_function
     if debug_function:
         print()
@@ -104,15 +106,15 @@ def process_folder(root: str,
         os.mkdir(upload_now_folder_name)
 
     if how_viable == 1:
-        source_path = root + folder
-        destination_path = root + upload_now_folder_name + "/" + folder
+        source_path = root + "/" + folder
+        destination_path = root + "/" + upload_now_folder_name + "/" + folder
 # region debug_function
-    if debug_function:
-        print()
-        print("> source_path: str = {}".format(source_path))
-        print()
-        print("> destination_path: str = {}".format(destination_path))
-        print()
+        if debug_function:
+            print()
+            print("> source_path: str = {}".format(source_path))
+            print()
+            print("> destination_path: str = {}".format(destination_path))
+            print()
 # endregion
         os.rename(source_path, destination_path)
     os.chdir(cwd)
@@ -138,7 +140,6 @@ def main(debug_function: bool = False):
     the main function for the script
     """
 # region def main(...)
-
 # region debug_function
     if debug_function:
         print("[def] main()")
@@ -148,12 +149,20 @@ def main(debug_function: bool = False):
     all_files_and_folders = os.listdir(current_directory_path)
     folders = []
     for item in all_files_and_folders:
-        if os.path.isdir(item):
+        if os.path.isdir(item) and not "[upload_now]" in item:
             folders.append(item)
 
 # TODO parallelize the execution of each folder using processing pool executor
+# region debug_function
+    if debug_function:
+        print("> [for] folder in folders: ")
+# endregion
     for folder in folders:
-        process_folder(current_directory_path, folder)
+# region debug_function
+        if debug_function:
+            print("> > folder = {}".format(folder))
+# endregion
+        process_folder(current_directory_path, folder, debug_function=debug_function)
 
 
 # region debug_function

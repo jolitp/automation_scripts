@@ -66,13 +66,16 @@ def get_accumulated_length_of_all_videos(directory: str,
             print("> video = {}".format(video))
 # endregion
         length = get_video_length_script \
-            .get_video_length(video)
+            .get_video_length(video, debug_function=debug_function)
 # region debug_function
         if debug_function:
             print("> length = {}".format(length))
 # endregion
         videos_length_dict[video] = length
-        accumulated_length += length
+        try:
+            accumulated_length += length
+        except TypeError:
+            pass
 # region debug_function
     if debug_function:
         print()
@@ -92,6 +95,8 @@ def get_accumulated_length_of_all_videos(directory: str,
     return accumulated_length
 # endregion def function(...)
 
+
+
 def main(debug_function: bool = False):
     """
     the main function for the script
@@ -110,7 +115,8 @@ def main(debug_function: bool = False):
         print("     current_directory : str = {}"\
             .format(str(current_directory)))
 # endregion
-
+    get_accumulated_length_of_all_videos(current_directory, \
+                                debug_function=debug_function)
 # region debug_function
     if debug_function:
         print("}")
