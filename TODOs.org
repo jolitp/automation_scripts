@@ -13,10 +13,9 @@ a folder with a concatenated video has a video with the same name of the folder
 *** TODO script to remove videos from every emediate nested directory
 *** TODO script to separate folders of videos into [long] or [short]
 *** STRT script to sort folders by their "youtube upload viability" without concatenating
-a folder that is viable have less than 15 videos and is of any size
-*** TODO script to separate the best courses to upload to youtube today
-get how many videos there are in each folder and separate the best --
-as in the ones that have the biggest size of videos and the lowest number of videos -- folders in a folder named [upload today(date)]
+**** DONE a folder that has 15 videos or less is totally viable
+**** DONE a fodler that does not have videos is not viable
+**** TODO a folder that has the biggest videos and the smallest amount of videos is viable
 ** single file operations
 *** TODO script to change the extension of a given file
 *** STRT script to check if a file is a video
@@ -34,8 +33,12 @@ use the parametirized tests instead
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to concatenate videos into one video
 *** TODO script to create an org file with videos as sub-headers
-*** DONE script to get all videos in a directory
+*** STRT script to get all videos in a directory
+BUG
+problem with trailing / at the end of a name
+**** TODO make the function work with both trailing slash at the end or not
 *** STRT script to get the accumulated length of all videos in a directory
+BUG from get all videos in a directory
 **** use processing pool executor from multiprocessing module
 from youtube video:
 https://youtu.be/fKl2JW_qrso?t=1020
