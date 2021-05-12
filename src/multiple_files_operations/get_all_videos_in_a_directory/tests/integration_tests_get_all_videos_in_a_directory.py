@@ -197,6 +197,8 @@ class IntegrationTest_get_all_videos_in_a_directory(unittest.TestCase):
         ...
     # endregion def (...):
 
+# TODO testcase: handles the path given with or without trailing slash
+
 # endregion tests get_all_videos_in_a_directory(...):
 
 

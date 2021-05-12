@@ -1,34 +1,172 @@
 * Automation Scritps TODOs
-** TODO create template for new python files
+** DONE create template for new python files
 the template should have a main script, unit and integration test modules in a folder
-** TODO create scafold of python files
+** DONE create scafold of python files
 ** directory operations
 (use outside)
+
+using the common logic as the call script on every directory
+most of those scripts will become a multiple files operations
+*** common logic
+**** TODO get the current directory
+**** TODO get all items inside the current directory
+not recursively
+**** TODO filter only folders
+**** TODO for each folder
+***** TODO excecute script on folder
+***** TODO make script excecution run in parallel
+maybe have an argument be pased to the script to choose between sequential and parallel escecution
 *** TODO script to remove undesirable files from a directory
+**** algorithm
+***** common logic from parent
+****** TODO get every item in the directory recursivelly
+****** TODO if the item is in the undesirable files list
+the undesirable files list is as follows:
+
+- subtitle files (.srt/.vtt)
+- .url files in the folder (not recursive)
+- .py files from automation scripts
+****** TODO delete the file
+*** TODO script to separate downloaded torrent "types"
+separate in sub-folders if the contents of a folder is:
+- mp3 -> audiobook
+- mp4 -> videos
+- pdf -> books
+- exe -> games
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO get current directory
+****** TODO get all items inside the directory recursivelly
+****** TODO mark which types of files are more predominant in the directory
+****** TODO based on type of directory move it to a sub-folder in the parent directory
 *** TODO script to remove all python scripts from each emediate nested folders
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO get all items in the directory
+****** TODO filter only files
+****** TODO filter only .py files
+****** TODO delete every .py file
 *** TODO script to call command on emediate nested folders
+this script actually can be the common logic used by all the other scripts in the category
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO call the command passed to the script
 *** TODO script to copy all python scripts from current directory into nested folders
+ideally this script will not be needed
 *** TODO script to mark a folder as of having a concatenated video inside
 a folder with a concatenated video has a video with the same name of the folder
+
+there should be better ways of checking if the convertion and concatenation is finished
+like checking the number of videos in the converted directory against the videos directory
+
+there is also the problem of a concatenated video being invalid because some converted video is corrupted
+*** TODO script to check if the converted videos are all working
+**** algorithm
+***** TODO get all videos in the converted folder
+***** TODO try to get the length of the video
+***** TODO if the length is 0.0 the video is corrupted
 *** TODO script to remove videos from every emediate nested directory
+**** algotithm
+***** common logic
+for every folder
+****** get every video in the emediate directory
+****** get all videos in the videos/ and converted/ folders
+****** delete al the videos
 *** TODO script to separate folders of videos into [long] or [short]
+**** algorithm
+***** common logic
+for every folder
+****** get data from the videos data file created by another script
+it is a .csv file
+****** check the total duration of videos
+****** if the duration is greater than 12 hours
+******* the folder is long
+****** else
+******* the folder is short
+****** move the folder to the appropriate directory
 *** STRT script to sort folders by their "youtube upload viability" without concatenating
+**** algorithm
+***** common logic
+for each folder
+****** create a viability score variable
+this variable goes from 0 to 10 depending on the viability of the folder
+being uploaded to youtube without being processed first
+
+a score of 0 means it must be processed first
+
+a score of 10 means it must be uploaded as is without being processed
+
+a score in between needs to be tested to gauge the actual viability
+****** get all the videos in the directory
+****** count the number of videos
+****** if the count is 15 or less
+******* the viability score is 10
+****** if the count is bigger than 100
+******* the viability score is 0
+****** if the count is in from 16 to 99
+******* get the size all viideos
+******* get the avarage size of a video
+******* interpolate the viability
+based on the number of videos and the avarage size of a video
+
+the smaller the number of videos
+and the bigger the avarage size of a video
+the higher the score
+
+******** algorithm
+
+...
+
+******* and truncate to intiger
+****** move the folder based on the viability
+create folders for integers from 0 to 10
 **** DONE a folder that has 15 videos or less is totally viable
 **** DONE a fodler that does not have videos is not viable
 **** TODO a folder that has the biggest videos and the smallest amount of videos is viable
 ** single file operations
+those scripts should be turned into a library
 *** TODO script to change the extension of a given file
 *** STRT script to check if a file is a video
-**** DONE change tests that test accepted extensions
-use the parametirized tests instead
 *** STRT script to check if a video file is corrupted
-*** TODO script to rename files or folders
-*** TODO script to get the length of a video
+*** TODO script to search and replace filenames in a directory
+the script receives the parameters:
+
+-s/--search : the string to be searched on every file in the directory
+-r/--replace : the string to replace the searched string
+-R/--recursive : if the search should be done recursivelly (include sub-directories)
+-f/--files : flag to restrict search to only files
+-d/--dirs : flag to restrict search to only directories
+
+*** TODO script to get the duration of a video
 *** TODO script to get the dimensions of a video
 *** TODO script to get the size of a file
 ** multiple files operations
+*** common logic
+**** algorithm
 *** TODO script to compress the files/ directory into a .7z file
+**** algorithm
+***** get the working directory
+***** get all items in working directory
+***** filter only directories
+***** filter files/ directory
+***** call zip command with files/ directory as parameter
 *** TODO script to add to the start of the name of every file
+**** parameters
+-f/--files : flag to process only files
+-d/--dirs : flag to process only directories
+
+**** algorithm
+***** check parameters
+***** get the current working directory
+***** get all items in the directory
+***** filter files or direcories based on parameters
+if no parameter is given don't filter
+***** get the source path of every item
+current working directory + item
+
 *** TODO script to remove empty folders recursivelly from a directory
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to concatenate videos into one video
@@ -43,12 +181,25 @@ BUG from get all videos in a directory
 from youtube video:
 https://youtu.be/fKl2JW_qrso?t=1020
 *** TODO script to convert videos to have the same codec and dimensions
-*** TODO script to measure the viability of uploading the videos without concatenating them before
-*** TODO script to converto, resize and concatenate videos
+*** TODO script to resize videos
+use this script
+https://gist.github.com/shivasiddharth/3ee632ce6513bc6ae956f58476983659
+
+*** STRT script to measure the viability of uploading the videos without concatenating them before
+*** TODO script to convert and resize videos
 **** TODO solve the bug where the most frequent resolution is not being picked
+*** TODO script to concatenate videos
+batch concatenate using avidemux
+
+instructions from this video
+https://www.youtube.com/watch?v=pxMeIU-ghXY
+**** have the script mark the folder if the dimensions are different
+**** have the script mark the folder if the codecs are different
 *** TODO script to pad zeroes in the name of files
 *** TODO script to filter only direcories from a folder
 *** TODO script to separate videos in sections
+*** TODO script to move all subtitle files recursivelly to a subtitles/ folder
+*** TODO script to embed subtitles in each video using ffmpeg
 *** TODO script to create a .csv file containing each video's dimensions
 *** TODO script to move videos in nested folders to the current folder
 *** TODO script to upload video files automatically to youtube
@@ -64,6 +215,67 @@ like hours, minutes, seconds, etc
 *** TODO script to log excecution to the terminal with "framming"
 *** TODO utility module to pretty print directories like powerlevel10k
 *** TODO unitily module to shrink names
+** scrapers
+*** videos
+use the techniques from this video:
+https://www.youtube.com/watch?v=bytnxnZFLeg
+**** oreilly
+**** skillshare
+**** lynda
+**** pluralsight
+*** torrents
+**** audiobookbay.net
+*** books
+**** oreilly
+**** pdfdrive
+*** audio
+**** audible
+** tools
+*** scripts to create a calendar in plain text
+have it as a command line tool that receives arguments:
+
+-s/--start : the start date
+-e/--end : the end date
+-f/--format : the format of the calendar
+            it can be grid or list
+
+maybe generate org-mode formatted file?
+
+grid:
+          January
+Su	Mo	Tu	We	Th	Fr	Sa
+ 	 	 	 	 	1	2
+3	4	5	6	7	8	9
+10	11	12	13	14	15	16
+17	18	19	20	21	22	23
+24	25	26	27	28	29	30
+31
+
+week    M  T  W  H  F  S  X
+----------------------------
+17 MAY  26 27 28 29 30 01 02
+18 2021 03 04 05 06 07 08 09
+19      10 11 12 13 14 15 16
+20      17 18 19 20 21 22 23
+21      24 25 26 27 28 29 30
+22 JUN  31 01 02 03 04 05 06
+23      07 08 09 10 11 12 13
+24      14 15 16 17 18 19 20
+25      21 22 23 24 25 26 27
+
+list:
+
+...
+May
+week 17
+2021 / 04 / 01
+2021 / 04 / 02
+2021 / 04 / 03
+...
+
+or use this tool:
+https://github.com/jonstoler/calvin
+
 ** TODO figure a way of using the scripts without copying to the folder
 this video may help
 
@@ -83,3 +295,159 @@ https://realpython.com/python-command-line-arguments/#argparse
 ** TODO make scripts debuggable by passing -D/--debug flag to the command line
 ** TODO use printing color to the terminal
 https://stackoverflow.com/questions/287871/how-to-print-colored-text-to-the-terminal
+** TODO change the shebang on top of all files
+use:
+#! /usr/bin/env python3
+** TODO create deploy script
+
+will copy all the scripts from this project folder to
+/home/[username]/Scripts/bin/deployed
+
+the names of the files will be the names of the scripts without the .py extension
+*** TODO make it a proper command line utility using click library
+accept the following arguments:
+
+-l/--link : create links instead of copying the files
+
+** TODO start using pathlib to handle files and directories
+https://docs.python.org/3/library/pathlib.html
+
+import pathlib
+from pathlib import Path
+* pipeline
+** folder hierarcy:
+*** vid_auto_process
+**** 00_strait_out_of_torrents/
+
+the first folder where the completed downloads are moved (manually)
+
+**** 01_separate_torrent_types/
+
+run *separate_torrents* here
+
+*separate_torrents* should move the folders from *00_strait_out_of_torrents* to *02_separate_videos_subs_files* based on the type of file that is more prominent in the folder
+
+if there are files in this folder, create a folter with the same name of the file and move it in there before moving the created folder to *02_separate_videos_subs_files*
+
+**** 02_separated_torrent_types/
+
+this directory has the category folders:
+
+0_videos/
+0_books/
+0_audios/
+0_software/
+0_compressed/
+0_others/
+
+move folders in videos/ to V_Videos/02_separate_videos_subs_files
+**** V_Videos/
+***** 03_separate_videos_subs_files/
+
+folder containing only other folders
+each folder contains videos in subfolders or on the root folder
+
+run *separate_videos_subs_files* here
+
+*separate_videos_subs_files* should create 3 folders:
+
+videos/
+subs/
+files/
+
+*separate_videos_subs_files* should move the appropriate files to each folder.
+
+move all folders to 04_get_video_info
+***** 04_get_video_info_csv/
+
+this folder contains other folders with videos in their root
+
+run *get_video_info_csv* here
+
+*get_video_info_csv* should create a .csv file with the following columns:
+
+| filename | duration_in_seconds | duration_in_hours | accumulated_duration_in_seconds | accumulated_duration_in_hours | width | height | aspect_ratio | size | accumulated_size | codec info |
+
+use a combination of ffmpeg, ffmprobe, mediainfo and opencv
+
+also use multiprocessing
+
+***** 05_check_for_subtitles/
+
+*check_for_subtitles* checks the subs/ and the videos/ folder to check if each video has subtitle
+
+move the root folder to *06_embed_subtitles/* folder if has sub
+
+move the root folder to *07_separate_to_upload* if hasnt sub
+***** 06_embed_subtitles/
+****** look up how to do this
+Add video subtitles with ffmpeg
+https://www.youtube.com/watch?v=C6xa0RS0Ux8
+
+Use ffmpeg to add text subtitles [closed]
+https://stackoverflow.com/questions/8672809/use-ffmpeg-to-add-text-subtitles
+
+***** 07_separate_to_upload/
+
+a nested folder with less than 15 videos should be moved to *YT_upload_to_youtube*
+
+other folders move to *09_try_first_concatenation_on_same_dimmension_videos*
+
+***** 08_separate_videos_that_have_different_dimmensions/
+
+check the dimensions of every video from the .csv file
+
+if they are the same move folder to *09_try_first_concatenation_on_same_dimmension_videos*
+
+if they are different
+***** 09_try_first_concatenation_on_same_dimmension_videos/
+***** 10_check_videos_manually/
+***** 11_
+***** YT_upload_to_youtube
+** separate torrents into categories
+Courses, TV shows, Movies, Music, Audiobooks, Books, Games, etc.
+
+move courses and TV shows to vid_auto_process/01_separate_files
+** separate types of files into specific folders
+*** put all videos that are in sub directories in a videos/ folder
+move to 01_separate_files
+**** take care of proper ordering
+**** pad zeroes of files
+to get the proper order in the scripts
+*** put all subtitle files in a subtitles/ folder
+*** put all other files in a files/ folder
+** get information of each video and put into a .csv file
+if any file is corrupted move it to a broken_videos/ folder
+and make a .corrupted file
+*** filename
+*** duration_in_seconds
+*** duration_in_hours
+convert days to hours
+*** accumulated_duration_in_seconds
+*** accumulated_duration_in_hours
+*** width
+*** height
+*** size
+*** accumulated_size
+*** codec info
+*** aspect_ratio
+
+** separate the folders that have videos with subtitles from the ones that don't
+the folders that do have subtitles move them to 03_embed_subtitles/
+
+the folders that don't move to 04_separate_to_upload/
+** embed the subtitles into the videos
+** separate the directories that have less than 15 videos to be uploaded imediatelly
+** check if the videos have the same dimensions
+** try concatenating the videos without converting or scaling the videos
+using avidemux and tinypy
+
+this script will check for errors of codecs:
+
+if the codecs are different move the folder to 0
+** scale videos to the same to the same resolution
+** concatenate videos with same resolution
+** check if videos have the same codec
+https://stackoverflow.com/questions/5618363/is-there-a-way-to-use-ffmpeg-to-determine-the-encoding-of-a-file-before-transcod
+** convert videos that have different codecs
+** compress course files
