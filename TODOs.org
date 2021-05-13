@@ -431,13 +431,13 @@ a nested folder with less than 15 videos should be moved to *YT_upload_to_youtub
 
 other folders move to *08_separate_videos_that_have_different_dimmensions/*
 
-***** 07_separate_videos_that_have_different_dimmensions/
+***** 07_separate_videos_different_dimmensions/
 
 check the dimensions of every video from the .csv file
 
 if they are the same move folder to *AVIDEMUX_concatenate_videos/00_same_dimensions/*
 
-if they are different move folder to *09_different_dimensions/*
+if they are different move folder to *08_resize_different_dimensions*
 
 ***** 08_resize_different_dimensions/
 
@@ -467,6 +467,7 @@ move folder to *FFMPEG_converting_videos/*
 convert each video to .mp4 with HEVC/H. 265 codec, optimized for web
 
 move folder to *AVIDEMUX_concatenate_videos/02_same_codecs/*
+
 ***** FFMPEG_resizing_videos/
 ***** FFMPEG_converting_videos/
 ***** AVIDEMUX_concatenate_videos/
@@ -476,10 +477,11 @@ check for accumulated duration of videos
 if the duration exceeds 12 hours
 then the concatenation needs to be split in chunks of less than 12 hours each
 
-****** 00_try_concatenation_first_time
 ****** 01_same_dimensions/
+******* 000_try_concatenation_first_time
 ****** 02_same_codecs/
 ***** YT_upload_to_youtube/
+***** XXX_concatenated/
 **** A_Audios
 - cut long audio book files into smaller files
 **** B_Books
@@ -503,6 +505,59 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 **** call separate_video_files
 **** move folders from 02_unprocessed_videos/ to  04_get_video_info/
 **** call get_video_info_csv
+* pipeline diagram
+.                    strait_out_of_torrents/
+.                               |
+.                               v
+.                   separated_torrent_types/
+.                    /         |         \
+.         -----------          |          -------------------
+.         |                    |                            |
+.         v                    v                            v
+.      videos/               audio/                       books/
+.        |
+.        v
+. unprocessed_videos/
+.        |
+.        |   > run separate_videos_subs_files.py
+.        v
+. get_video_info_csv/
+.        |
+.        |   > run get_videos_info_csv.py
+.        v
+. check_for_subtitles/
+.        |
+.        |   > run check_for_subtitles.py
+.        v
+. embed_subtitles/
+.        |
+.        |   > run embed_subtitles.py
+.        v
+. separate_to_upload/ ----------------------------------------------------------\
+.        |                                                                      |
+.        |   > run separate_to_upload.py                                        |
+.        v                                                                      |
+. separate_videos_different_dimensions/                                         |
+.        |                        |                                             |
+.        |                        | > run separate_videos_different_dimensions  |
+.        V                        |                                             |
+. resize_different_dimensions/    |                                             |
+.                          |      |                                             |
+. > run resize_videos.py   |      |                                             |
+.                          V      v                                             |
+.                        AVIDEMUX_concatenate_videos/same_dimensions/           |
+.                          |                                       |            |
+.                          |    > run concatenate_videos.py        |            |
+.                          V                                       |            |
+.                      concatenated/                               |            |
+.                                 \____________________________    |            |
+.                                       check manually         \   |            |
+.                                                               V  V            V
+.                                                             YT_upload_to_youtube/
+.                                                                       |
+.                                           run upload_to_youtube.py    |
+.                                                                       V
+.                                                                  youtube.com
 * things to try
 ** TODO import module from deployed file
 
