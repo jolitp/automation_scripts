@@ -275,13 +275,13 @@ week 17
 
 or use this tool:
 https://github.com/jonstoler/calvin
-
-** TODO figure a way of using the scripts without copying to the folder
+** other
+*** TODO figure a way of using the scripts without copying to the folder
 this video may help
 
 https://www.youtube.com/watch?app=desktop&v=5CMmjNt_p48
-** TODO add versioning to scripts
-** TODO make scripts callable with argumetns
+*** TODO add versioning to scripts
+*** TODO make scripts callable with argumetns
 use optparse for this
 
 https://stackabuse.com/command-line-arguments-in-python/
@@ -289,47 +289,73 @@ https://stackabuse.com/command-line-arguments-in-python/
 or use argparse for easy documentation
 
 https://realpython.com/python-command-line-arguments/#argparse
-** TODO use doctest in every script
-** TODO add regression tests
-** TODO add debug test toggle to all test files
-** TODO make scripts debuggable by passing -D/--debug flag to the command line
-** TODO use printing color to the terminal
+*** TODO use doctest in every script
+*** TODO add regression tests
+*** TODO add debug test toggle to all test files
+*** TODO make scripts debuggable by passing -D/--debug flag to the command line
+*** TODO use printing color to the terminal
 https://stackoverflow.com/questions/287871/how-to-print-colored-text-to-the-terminal
-** TODO change the shebang on top of all files
+*** TODO change the shebang on top of all files
 use:
 #! /usr/bin/env python3
-** TODO create deploy script
+*** TODO create deploy script
 
 will copy all the scripts from this project folder to
 /home/[username]/Scripts/bin/deployed
 
 the names of the files will be the names of the scripts without the .py extension
-*** TODO make it a proper command line utility using click library
+**** TODO make it a proper command line utility using click library
 accept the following arguments:
 
 -l/--link : create links instead of copying the files
 
-** TODO start using pathlib to handle files and directories
+*** TODO start using pathlib to handle files and directories
 https://docs.python.org/3/library/pathlib.html
 
 import pathlib
 from pathlib import Path
+*** TODO make the scripts as folder watchers
+
+start script once and it watches a folder for changes
+
+when the execution of one script ends the caller script checks the folder again when the last folder was executed
+**** how to do this?
+
+Monitor Folders with Python Watchdog | #56 (Cyber Security #2)
+https://www.youtube.com/watch?v=U4uBcWFpMLk
+
+Using Watchdog to monitor a folder
+https://www.youtube.com/watch?v=3_0_9Rf1ouQ
+*** TODO make a main GUI application
+
+the app should:
+
+- manage the order of the pipeline
+- have fields to set the directories of each step
+- have controls to spawn/stop/pause scripts individually
+*** TODO make a pipeline of scripts that feed into each other
+
+when processing a folder, move that folder to a specific directory
+that way it's obivious which folder is being processed right now
+
 * pipeline
 ** folder hierarcy:
-*** vid_auto_process
+*** auto_process
 **** 00_strait_out_of_torrents/
+
+(folder in torrents drive)
 
 the first folder where the completed downloads are moved (manually)
 
-**** 01_separate_torrent_types/
+script *separate_torrent_types* watches this folder
 
-run *separate_torrents* here
-
-*separate_torrents* should move the folders from *00_strait_out_of_torrents* to *02_separate_videos_subs_files* based on the type of file that is more prominent in the folder
+*separate_torrents* should move the folders from *00_strait_out_of_torrents/* to *01_separated_torrent_types/* based on the type of file that is more prominent in the folder
 
 if there are files in this folder, create a folter with the same name of the file and move it in there before moving the created folder to *02_separate_videos_subs_files*
 
-**** 02_separated_torrent_types/
+**** 01_separated_torrent_types/
+
+(folder in torrents drive)
 
 this directory has the category folders:
 
@@ -340,9 +366,12 @@ this directory has the category folders:
 0_compressed/
 0_others/
 
-move folders in videos/ to V_Videos/02_separate_videos_subs_files
+move folders (manually) in *videos/* to *V_Videos/02_unprocessed_videos/*
+
 **** V_Videos/
-***** 03_separate_videos_subs_files/
+(folder in processing drive)
+
+***** 02_unprocessed_videos/
 
 folder containing only other folders
 each folder contains videos in subfolders or on the root folder
@@ -357,14 +386,18 @@ files/
 
 *separate_videos_subs_files* should move the appropriate files to each folder.
 
-move all folders to 04_get_video_info
-***** 04_get_video_info_csv/
+move all folders to *04_get_video_info/*
+
+***** 03_get_video_info_csv/
 
 this folder contains other folders with videos in their root
 
 run *get_video_info_csv* here
 
-*get_video_info_csv* should create a .csv file with the following columns:
+*get_video_info_csv* should:
+
+move the folder to a *00_getting_video_info_csv/* folder
+create a .csv file with the following columns:
 
 | filename | duration_in_seconds | duration_in_hours | accumulated_duration_in_seconds | accumulated_duration_in_hours | width | height | aspect_ratio | size | accumulated_size | codec info |
 
@@ -372,82 +405,109 @@ use a combination of ffmpeg, ffmprobe, mediainfo and opencv
 
 also use multiprocessing
 
-***** 05_check_for_subtitles/
+***** 04_check_for_subtitles/
 
 *check_for_subtitles* checks the subs/ and the videos/ folder to check if each video has subtitle
 
 move the root folder to *06_embed_subtitles/* folder if has sub
 
-move the root folder to *07_separate_to_upload* if hasnt sub
-***** 06_embed_subtitles/
+move the root folder to *YT_upload_to_youtube/* if hasnt sub
+
+***** 05_embed_subtitles/
 ****** look up how to do this
+
 Add video subtitles with ffmpeg
 https://www.youtube.com/watch?v=C6xa0RS0Ux8
 
 Use ffmpeg to add text subtitles [closed]
 https://stackoverflow.com/questions/8672809/use-ffmpeg-to-add-text-subtitles
 
-***** 07_separate_to_upload/
+ffmpeg docs
+https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
+
+***** 06_separate_to_upload/
 
 a nested folder with less than 15 videos should be moved to *YT_upload_to_youtube*
 
-other folders move to *09_try_first_concatenation_on_same_dimmension_videos*
+other folders move to *08_separate_videos_that_have_different_dimmensions/*
 
-***** 08_separate_videos_that_have_different_dimmensions/
+***** 07_separate_videos_that_have_different_dimmensions/
 
 check the dimensions of every video from the .csv file
 
-if they are the same move folder to *09_try_first_concatenation_on_same_dimmension_videos*
+if they are the same move folder to *AVIDEMUX_concatenate_videos/00_same_dimensions/*
 
-if they are different
-***** 09_try_first_concatenation_on_same_dimmension_videos/
-***** 10_check_videos_manually/
-***** 11_
-***** YT_upload_to_youtube
-** separate torrents into categories
-Courses, TV shows, Movies, Music, Audiobooks, Books, Games, etc.
+if they are different move folder to *09_different_dimensions/*
 
-move courses and TV shows to vid_auto_process/01_separate_files
-** separate types of files into specific folders
-*** put all videos that are in sub directories in a videos/ folder
-move to 01_separate_files
-**** take care of proper ordering
-**** pad zeroes of files
-to get the proper order in the scripts
-*** put all subtitle files in a subtitles/ folder
-*** put all other files in a files/ folder
-** get information of each video and put into a .csv file
-if any file is corrupted move it to a broken_videos/ folder
-and make a .corrupted file
-*** filename
-*** duration_in_seconds
-*** duration_in_hours
-convert days to hours
-*** accumulated_duration_in_seconds
-*** accumulated_duration_in_hours
-*** width
-*** height
-*** size
-*** accumulated_size
-*** codec info
-*** aspect_ratio
+***** 08_resize_different_dimensions/
 
-** separate the folders that have videos with subtitles from the ones that don't
-the folders that do have subtitles move them to 03_embed_subtitles/
+script *resize_videos* should:
 
-the folders that don't move to 04_separate_to_upload/
-** embed the subtitles into the videos
-** separate the directories that have less than 15 videos to be uploaded imediatelly
-** check if the videos have the same dimensions
-** try concatenating the videos without converting or scaling the videos
-using avidemux and tinypy
+move the folder to *FFMPEG_resizing_videos/* folder
 
-this script will check for errors of codecs:
+resize all videos in each folder to a single dimension.
+    choosing the most common dimension if there is a dominant dimension on the list
 
-if the codecs are different move the folder to 0
-** scale videos to the same to the same resolution
-** concatenate videos with same resolution
-** check if videos have the same codec
-https://stackoverflow.com/questions/5618363/is-there-a-way-to-use-ffmpeg-to-determine-the-encoding-of-a-file-before-transcod
-** convert videos that have different codecs
-** compress course files
+if there is no dominant dimension, scale to the lowest dimension
+
+remember to check aspect ratio
+
+move processed folder to *AVIDEMUX_concatenate_videos/01_same_dimensions/*
+
+***** 09_convert_videos/
+
+folder to put videos that didn't concatenate correctly
+
+watch folder for changes
+
+script *convert_videos* should:
+
+move folder to *FFMPEG_converting_videos/*
+
+convert each video to .mp4 with HEVC/H. 265 codec, optimized for web
+
+move folder to *AVIDEMUX_concatenate_videos/02_same_codecs/*
+***** FFMPEG_resizing_videos/
+***** FFMPEG_converting_videos/
+***** AVIDEMUX_concatenate_videos/
+
+check for accumulated duration of videos
+
+if the duration exceeds 12 hours
+then the concatenation needs to be split in chunks of less than 12 hours each
+
+****** 00_try_concatenation_first_time
+****** 01_same_dimensions/
+****** 02_same_codecs/
+***** YT_upload_to_youtube/
+**** A_Audios
+- cut long audio book files into smaller files
+**** B_Books
+- optimize .pdf files for size
+- remove useless elements from safaribooks books
+*** scripts:
+**** separate_torrent_types
+**** separate_video_files
+**** separate_videos_subs_files
+**** get_videos_info_csv
+**** check_for_subtitles
+**** embed_subtitles
+**** separate_to_upload
+**** separate_based_on_dimension
+**** resize_videos
+**** convert_videos
+**** concatenate_videos
+**** upload_videos
+*** manual labor
+**** move folders from 01_separated_torrent_types to 02_unprocessed_videos/
+**** call separate_video_files
+**** move folders from 02_unprocessed_videos/ to  04_get_video_info/
+**** call get_video_info_csv
+* things to try
+** TODO import module from deployed file
+
+will the imported module work when the script is moved?
+
+do I need to put both scripts in the same folder?
+
+can the module be in a nested folder?
