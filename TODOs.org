@@ -16,17 +16,6 @@ not recursively
 ***** TODO excecute script on folder
 ***** TODO make script excecution run in parallel
 maybe have an argument be pased to the script to choose between sequential and parallel escecution
-*** TODO script to remove undesirable files from a directory
-**** algorithm
-***** common logic from parent
-****** TODO get every item in the directory recursivelly
-****** TODO if the item is in the undesirable files list
-the undesirable files list is as follows:
-
-- subtitle files (.srt/.vtt)
-- .url files in the folder (not recursive)
-- .py files from automation scripts
-****** TODO delete the file
 *** TODO script to separate downloaded torrent "types"
 separate in sub-folders if the contents of a folder is:
 - mp3 -> audiobook
@@ -40,29 +29,12 @@ excecute script on each folder
 ****** TODO get all items inside the directory recursivelly
 ****** TODO mark which types of files are more predominant in the directory
 ****** TODO based on type of directory move it to a sub-folder in the parent directory
-*** TODO script to remove all python scripts from each emediate nested folders
-**** algorithm
-***** common logic from parent
-excecute script on each folder
-****** TODO get all items in the directory
-****** TODO filter only files
-****** TODO filter only .py files
-****** TODO delete every .py file
 *** TODO script to call command on emediate nested folders
 this script actually can be the common logic used by all the other scripts in the category
 **** algorithm
 ***** common logic from parent
 excecute script on each folder
 ****** TODO call the command passed to the script
-*** TODO script to copy all python scripts from current directory into nested folders
-ideally this script will not be needed
-*** TODO script to mark a folder as of having a concatenated video inside
-a folder with a concatenated video has a video with the same name of the folder
-
-there should be better ways of checking if the convertion and concatenation is finished
-like checking the number of videos in the converted directory against the videos directory
-
-there is also the problem of a concatenated video being invalid because some converted video is corrupted
 *** TODO script to check if the converted videos are all working
 **** algorithm
 ***** TODO get all videos in the converted folder
@@ -126,11 +98,6 @@ create folders for integers from 0 to 10
 **** DONE a folder that has 15 videos or less is totally viable
 **** DONE a fodler that does not have videos is not viable
 **** TODO a folder that has the biggest videos and the smallest amount of videos is viable
-** single file operations
-those scripts should be turned into a library
-*** TODO script to change the extension of a given file
-*** STRT script to check if a file is a video
-*** STRT script to check if a video file is corrupted
 *** TODO script to search and replace filenames in a directory
 the script receives the parameters:
 
@@ -140,9 +107,6 @@ the script receives the parameters:
 -f/--files : flag to restrict search to only files
 -d/--dirs : flag to restrict search to only directories
 
-*** TODO script to get the duration of a video
-*** TODO script to get the dimensions of a video
-*** TODO script to get the size of a file
 ** multiple files operations
 *** common logic
 **** algorithm
@@ -153,28 +117,9 @@ the script receives the parameters:
 ***** filter only directories
 ***** filter files/ directory
 ***** call zip command with files/ directory as parameter
-*** TODO script to add to the start of the name of every file
-**** parameters
--f/--files : flag to process only files
--d/--dirs : flag to process only directories
-
-**** algorithm
-***** check parameters
-***** get the current working directory
-***** get all items in the directory
-***** filter files or direcories based on parameters
-if no parameter is given don't filter
-***** get the source path of every item
-current working directory + item
-
 *** TODO script to remove empty folders recursivelly from a directory
 *** TODO script to move all folders in a directory to a files/ directory
-*** TODO script to concatenate videos into one video
 *** TODO script to create an org file with videos as sub-headers
-*** STRT script to get all videos in a directory
-BUG
-problem with trailing / at the end of a name
-**** TODO make the function work with both trailing slash at the end or not
 *** STRT script to get the accumulated length of all videos in a directory
 BUG from get all videos in a directory
 **** use processing pool executor from multiprocessing module
@@ -186,8 +131,6 @@ use this script
 https://gist.github.com/shivasiddharth/3ee632ce6513bc6ae956f58476983659
 
 *** STRT script to measure the viability of uploading the videos without concatenating them before
-*** TODO script to convert and resize videos
-**** TODO solve the bug where the most frequent resolution is not being picked
 *** TODO script to concatenate videos
 batch concatenate using avidemux
 
@@ -196,7 +139,6 @@ https://www.youtube.com/watch?v=pxMeIU-ghXY
 **** have the script mark the folder if the dimensions are different
 **** have the script mark the folder if the codecs are different
 *** TODO script to pad zeroes in the name of files
-*** TODO script to filter only direcories from a folder
 *** TODO script to separate videos in sections
 *** TODO script to move all subtitle files recursivelly to a subtitles/ folder
 *** TODO script to embed subtitles in each video using ffmpeg
@@ -206,6 +148,17 @@ https://www.youtube.com/watch?v=pxMeIU-ghXY
 *** DONE script to separate videos in parts with 15 videos to upload
 *** DONE script to restore videos from separated to download
 ** utils
+*** STRT script to get all videos in a directory
+BUG
+problem with trailing / at the end of a name
+**** TODO make the function work with both trailing slash at the end or not
+*** TODO script to filter only direcories from a folder
+*** TODO script to check if a file is a video
+*** TODO script to get the size of a file
+*** TODO script to get the dimensions of a video
+*** TODO script to get the duration of a video
+*** TODO script to check if a video file is corrupted
+*** TODO script to change the extension of a given file
 *** TODO script to remove special characters from a filename
 *** TODO script to filter a list of filenames to contain only files with a given extension
 *** TODO script to convert from seconds to formatted time
@@ -337,7 +290,43 @@ the app should:
 
 when processing a folder, move that folder to a specific directory
 that way it's obivious which folder is being processed right now
+** obsolete
+*** TODO script to remove undesirable files from a directory
+**** algorithm
+***** common logic from parent
+****** TODO get every item in the directory recursivelly
+****** TODO if the item is in the undesirable files list
+the undesirable files list is as follows:
 
+- subtitle files (.srt/.vtt)
+  (subtitles are not undesirable anymore)
+- .url files in the folder (not recursive)
+  (url files are too tiny to bother, pu them in the files folder)
+- .py files from automation scripts
+  (py files wont be on directories anymore)
+****** TODO delete the file
+*** TODO script to copy all python scripts from current directory into nested folders
+ideally this script will not be needed
+
+wont be needed anymore
+*** TODO script to remove all python scripts from each emediate nested folders
+py scripts wont be in the folders anymore
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO get all items in the directory
+****** TODO filter only files
+****** TODO filter only .py files
+****** TODO delete every .py file
+*** TODO script to mark a folder as of having a concatenated video inside
+obsolete, the new scripts will move the folder to a completed folder
+
+a folder with a concatenated video has a video with the same name of the folder
+
+there should be better ways of checking if the convertion and concatenation is finished
+like checking the number of videos in the converted directory against the videos directory
+
+there is also the problem of a concatenated video being invalid because some converted video is corrupted
 * pipeline
 ** folder hierarcy:
 *** auto_process
@@ -369,8 +358,7 @@ this directory has the category folders:
 move folders (manually) in *videos/* to *V_Videos/02_unprocessed_videos/*
 
 **** V_Videos/
-(folder in processing drive)
-
+(folder in processing drive (storage))
 ***** 02_unprocessed_videos/
 
 folder containing only other folders
@@ -386,7 +374,7 @@ files/
 
 *separate_videos_subs_files* should move the appropriate files to each folder.
 
-move all folders to *04_get_video_info/*
+move all folders to *0000_videos_separated/*
 
 ***** 03_get_video_info_csv/
 
@@ -508,6 +496,7 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 * pipeline diagram
 .                    strait_out_of_torrents/
 .                               |
+.                               |   > run separate_torrent_types.py
 .                               v
 .                   separated_torrent_types/
 .                    /         |         \
@@ -515,49 +504,164 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 .         |                    |                            |
 .         v                    v                            v
 .      videos/               audio/                       books/
-.        |
-.        v
-. unprocessed_videos/
+.        |                     |                            |
+.        v                     V                            V
+. unprocessed_videos/         ...                          ...
 .        |
 .        |   > run separate_videos_subs_files.py
 .        v
-. get_video_info_csv/
+. unprocessed_videos/ 0000_videos_separated/
 .        |
-.        |   > run get_videos_info_csv.py
+.        |   (move manually)
+.        v
+. get_videos_infos_csv/
+.        |
+.        |   > run get_videos_infos_csv.py
+.        v
+. get_video_info_csv/ 0000_info_extracted/
+.        |
+.        |   (move manually)
 .        v
 . check_for_subtitles/
-.        |
-.        |   > run check_for_subtitles.py
-.        v
-. embed_subtitles/
-.        |
-.        |   > run embed_subtitles.py
-.        v
-. separate_to_upload/ ----------------------------------------------------------\
-.        |                                                                      |
-.        |   > run separate_to_upload.py                                        |
-.        v                                                                      |
-. separate_videos_different_dimensions/                                         |
-.        |                        |                                             |
-.        |                        | > run separate_videos_different_dimensions  |
-.        V                        |                                             |
-. resize_different_dimensions/    |                                             |
-.                          |      |                                             |
-. > run resize_videos.py   |      |                                             |
-.                          V      v                                             |
-.                        AVIDEMUX_concatenate_videos/same_dimensions/           |
-.                          |                                       |            |
-.                          |    > run concatenate_videos.py        |            |
-.                          V                                       |            |
-.                      concatenated/                               |            |
-.                                 \____________________________    |            |
-.                                       check manually         \   |            |
-.                                                               V  V            V
-.                                                             YT_upload_to_youtube/
+.        |  \_______
+.        |          \ > run check_for_subtitles.py
+.        |          |
+.        | (no)     | (yes)
+.        |          v
+.        |       embed_subtitles/
+.        |               |
+.        |               |   > run embed_subtitles.py
+.        |               v
+.        |       embed_subtitles/ 0000_subtitles_embeded/
+.        |               |
+.        |               |   (move manually)
+.        |               v
+. separate_videos_to_upload/ ----------------------------------------------------------------\
+.        |                                                                                   |
+.        |   > run separate_to_upload.py                                                     |
+.        v                                                                                   |
+. separate_videos_12_hours/                                                                  |
+.        |    \_____________________________________                                         |
+.        |                                          \                                        |
+.        |   > run separate_videos_12_hours.py       |                                       |
+.        |                                           |                                       |
+.        | (if less than 12 hours)                   |  (if more than 12 hours)              |
+.        |                                           |                                       |
+.        v                                           V                                       |
+. separate_videos_12_hours/ 0000_short/       separate_videos_12_hours/ 0000_long/           |
+.               |                              |                                             |
+.               |  (move manually)             |   > run separate_videos_in_sections.py      |
+.               |                              V                                             |
+.               |                         videos_separated_in_sections/                      |
+.               |                              |                                             |
+.               |                              | (move manullay)                             |
+.               v                              V                                             |
+.              separate_videos_different_dimensions/                                         |
+.                   |                       \                                                |
+.                   |                        \                                               |
+.                   |                        | > run separate_videos_different_dimensions.py |
+.                   |                        |                                               |
+.                   |  (yes)                 |  (no)                                         |
+.                   V                        |                                               |
+. resize_different_dimensions/               |                                               |
+.                          |                 |                                               |
+. > run resize_videos.py   |                 |                                               |
+.                          V                 v                                               /
+.                        AVIDEMUX_concatenate_videos/ same_dimensions/                      /
+.                          |                                                               /
+.                          |    > run concatenate_videos.py                               /
+.                          V                                                             /
+. AVIDEMUX_concatenate_videos/ concatenated/                                            /
+.      |                          \____________________________                        /
+.      | (move manualy)                 (move manually)        \                      /
+.      | if vieos are mesed up          if videos are ok        \                    /
+.      V                                                         \                  /
+. convert_videos/                                                 \                /
+.             |                                                    |              /
+.             |   > run convert_videos.py                          |             /
+.             V                                                    |            /
+. AVIDEMUX_concatenate_videos/ same_codecs/                        |            |
+.      |                                                           V            V
+.      |  > run concatenate_videos.py                           YT_upload_to_youtube/
+.      |                                                                |       |
+.      \___________________________       > run upload_to_youtube.py    |       |
+.                                  \_______________________                V       |
+.                                                          \        youtube.com  |
+.                                                           |                   |
+.                                                           V                   V
+.                                                       YT_upload_to_youtube/ 0000_uploaded/
 .                                                                       |
-.                                           run upload_to_youtube.py    |
+.                                                                       |  > run compres_files.py
 .                                                                       V
-.                                                                  youtube.com
+.                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
+* scripts for pipeline
+** TODO separate_torrent_types.py
+*** logic
+**** get all files and folders in cwd
+**** separate files from folders
+**** with the files put each one with a folder of the same name
+**** append the new folders to the separated fodlers
+**** for each folder
+***** get all files recursivelly
+***** make a dict with file extension as key and number of files as value
+***** for each file
+****** put the extension in the dict as key
+****** increment the value of the extension if it is already added
+***** for each key in the dict
+****** get the biggest value of them all
+****** store the extension (key) of the biggest
+***** check the extension against a table of expected extension
+***** move the folder to the appropriate category folder
+** TODO separate_videos_subs_files.py
+*** logic
+**** get the path of all files and folders recursivelly
+**** ...
+
+** TODO get_videos_info_csv.py
+** TODO check_for_subtitles.py
+** TODO embed_subtitles.py
+** TODO separate_to_upload.py
+** TODO separate_videos_12_hours.py
+** TODO separate_videos_in_sections.py
+** TODO separate_videos_different_dimensions.py
+** TODO resize_videos.py
+** TODO concatenate_videos.py
+*** logic
+**** get all videos in the converted/ folder if it exists
+**** get all videos in the videos/ folder if it doesn't
+**** ...
+
+** TODO convert_videos.py
+** TODO upload_to_youtube.py
+** TODO compres_files.py
+* folders for pipeline
+** strait_out_of_torrents/
+** separated_torrent_types/
+*** videos/
+*** audio/
+*** books/
+** unprocessed_videos/
+*** 0000_videos_separated/
+** get_videos_infos_csv
+*** 0000_info_extracted/
+** check_for_subtitles/
+** embed_subtitles/
+*** 0000_subtitles_embeded/
+** separate_videos_to_upload/
+** separate_videos_12_hours/
+*** short/
+*** long/
+*** no_data/
+** videos_separated_in_sections/
+** separate_videos_different_dimensions/
+** esize_different_dimensions/
+** AVIDEMUX_concatenate_videos/
+*** same_dimensions/
+*** same_codecs/
+*** concatenated/
+** YT_upload_to_youtube/
+*** 0000_uploaded/
+**** 0000_files_compressed/
 * things to try
 ** TODO import module from deployed file
 
@@ -566,3 +670,10 @@ will the imported module work when the script is moved?
 do I need to put both scripts in the same folder?
 
 can the module be in a nested folder?
+** TODO try using py.test module
+** TODO setup the project using setuptools
+** TODO try using moviepy to concatenate videos
+
+worse idea ever, it reencodes the video if it is different
+and it becomes unwatchable, and it doesn't give a sign of
+failure
