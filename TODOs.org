@@ -496,6 +496,8 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 * pipeline diagram
 .                    strait_out_of_torrents/
 .                               |
+.                               |   > run remove_special_characters.py
+.                               |
 .                               |   > run separate_torrent_types.py
 .                               v
 .                   separated_torrent_types/
@@ -595,7 +597,8 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 .                                                                       V
 .                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
 * scripts for pipeline
-** TODO separate_torrent_types.py
+** TODO remove_special_character.py
+** STRT separate_torrent_types.py
 *** logic
 **** get all files and folders in cwd
 **** separate files from folders
@@ -612,12 +615,86 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 ****** store the extension (key) of the biggest
 ***** check the extension against a table of expected extension
 ***** move the folder to the appropriate category folder
-** TODO separate_videos_subs_files.py
+** STRT separate_videos_subs_files.py
 *** logic
 **** get the path of all files and folders recursivelly
-**** ...
+**** filter only files
+**** create 3 lists: videos, subs, files
+**** for each file:
+***** if the extension is a video extension
+video extensions =
+.WEBM
+.MPG, .MP2, .MPEG, .MPE, .MPV
+.ogv, .ogg
+.MP4, .M4P, .M4V
+.AVI
+.WMV
+.MOV, .QT
+.FLV, .SWF, .f4v
+.flv .f4v .f4p .f4a .f4b
+AVCHD
+.rmvb, .rm
+.vob
+.mkv
+.MTS, .M2TS, .TS
+.mng
+.gifv
+.gif
+.drc
+.xvid
+.asf
+.amv
+.mpg, .mpeg, .m2v
+.svi
+.3gp
+.mxf
+.roq
+.nsv
+.3g2
 
+video_extensions = ['.mp4', '.m4v', '.f4v', '.mkv', '.ts', '.avi', '.webm', '.flv', '.mov', '.wmv', '.vob', '.rmvb']
+
+maybe more
+****** add the file to the videos list
+***** if the extension is a subtitle extension
+sub extensins = srt, vtt, ssa, ttml, sbv, dfxp, txt*
+****** add the file to the subs list
+***** else
+****** add the file to the files list
+***** remove the file from the only files list
+**** create the folders
+videos/, subs/ and files/
+***** if any of the corresponding lists are empty
+don't create a folder
+**** for each video in the videos list:
+***** separate the part of the path that does not have the cwd
+***** add the cwd + /videos/ + "the last part"
+***** substitute the element for a tupple (src_path, dst_path)
+**** do the same as above to subs
+**** do the same as above to files
+**** for each of the lists move/rename the files from src > dst
 ** TODO get_videos_info_csv.py
+*** logic
+**** check if the folder has the right structure
+contains: videos/
+**** get every video into a list
+**** for each video:
+***** create an empty dict
+***** get the full path of the file
+***** get length_sec, width, height, aspect_ratio using openCV
+***** convert length_sec to length_hour
+***** get the accumulated_duration_in_seconds
+***** convert accumulated_duration_in_seconds in accumulated_duration_in_hours
+***** get the size of the video
+***** get the accumulated_size
+***** add all the variables to the dict
+***** put the dict in place of the element
+**** create the csv file
+**** for each video
+***** write on the csv file
+*** note
+**** use subprocess
+
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
 ** TODO separate_to_upload.py
@@ -630,6 +707,7 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 **** get all videos in the converted/ folder if it exists
 **** get all videos in the videos/ folder if it doesn't
 **** ...
+should I create a .py file to run the avidemux command with?
 
 ** TODO convert_videos.py
 ** TODO upload_to_youtube.py
@@ -670,10 +748,18 @@ will the imported module work when the script is moved?
 do I need to put both scripts in the same folder?
 
 can the module be in a nested folder?
+
 ** TODO try using py.test module
-** TODO setup the project using setuptools
-** TODO try using moviepy to concatenate videos
+** DONE setup the project using setuptools
+
+too complicated
+
+** DONE try using moviepy to concatenate videos
 
 worse idea ever, it reencodes the video if it is different
 and it becomes unwatchable, and it doesn't give a sign of
 failure
+** TODO try using avidemux python scripting to concatenate videos
+** TODO try using pathlib module to handle files
+** TODO check the best way of getting video data
+** TODO remember how to cleanly get dict values into csv file
