@@ -3,8 +3,11 @@
 separate folders and files into categories
 """
 
-def main():
+import os
 
+def main():
+    cwd = os.getcwd()
+    print(cwd)
     ...
 
 if __name__ == "__main__":
