@@ -10,7 +10,7 @@ files/
 import os
 
 
-def get_nested_files(path: str = "."):
+def get_nested_files(path: str):
     """
     gets the nested files in the directory recursively
 
@@ -21,7 +21,7 @@ def get_nested_files(path: str = "."):
 
     Returns:
         nested_files (list(str)):
-            a list containing the path to all the files.
+            a list of paths containing the absolute path to each file.
     """
     nested_files = []
     for root, _, files in os.walk(path, topdown=False):
@@ -39,7 +39,7 @@ def main():
     cwd = os.getcwd()
     print()
     print("current_working_directory:")
-    print(cwd)
+    # print(cwd)
     print()
     print()
     print("END main() END")
