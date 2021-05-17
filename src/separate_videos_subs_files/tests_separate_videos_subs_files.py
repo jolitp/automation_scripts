@@ -58,8 +58,54 @@ class Tests_separate_videos_subs_files(unittest.TestCase):
             for file in expected_results_only_names[index]:
                 expected_file_list.append(str(test_folder) + "/" + folder + "/" + file)
 
-            # assert
+        # assert
             self.assertCountEqual(files_in_folder, expected_file_list)
+
+
+    def test_filter_files_by_extension_should_return_expected_values(self):
+        """
+        do a battery of tests with lists of files and lists of extensions.
+        should return expected values.
+        """
+        # setup
+        lists_of_files = [
+            [],
+            ["text.txt"],
+            ["text.txt", "no_extension_file"],
+            ["/home/user/absolute_path_file.txt"],
+            ["text.txt", "file_with_close_extension.tx"],
+            ["text.txt", "file_with_close_extension._txt"],
+        ]
+        lists_of_extensions = [
+            [],
+            ["txt"],
+            ["txt"],
+            ["txt"],
+            ["txt"],
+            ["txt"],
+        ]
+
+        lists_of_expected_results = [
+            [],
+            ["text.txt"],
+            ["text.txt"],
+            ["/home/user/absolute_path_file.txt"],
+            ["text.txt"],
+            ["text.txt"],
+        ]
+# TODO testcase: mismatch case
+# TODO change tests to parameterized tests
+        # act
+        for index, list_ in enumerate(lists_of_files):
+            result = separate_videos_subs_files \
+                .filter_files_by_extension(list_, lists_of_extensions[index])
+            expected_result = lists_of_expected_results[index]
+
+        # assert
+            self.assertCountEqual(result, expected_result)
+            ...
+        ...
+
 
 if __name__ == "__main__":
     unittest.main()
