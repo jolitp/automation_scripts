@@ -128,5 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# custom
-*/test_bed/*
+# my own
+**/test_bed/**
+*.mp4
