@@ -616,11 +616,11 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 ***** check the extension against a table of expected extension
 ***** move the folder to the appropriate category folder
 ** STRT separate_videos_subs_files.py
-*** logic
-**** get the path of all files and folders recursivelly
-**** filter only files
-**** create 3 lists: videos, subs, files
-**** for each file:
+*** logic [2/9] [22%]
+**** DONE get the path of all files and folders recursivelly
+**** DONE filter only files
+**** TODO create 3 lists: videos, subs, files
+**** TODO for each file:
 ***** if the extension is a video extension
 video extensions =
 .WEBM
@@ -662,17 +662,17 @@ sub extensins = srt, vtt, ssa, ttml, sbv, dfxp, txt*
 ***** else
 ****** add the file to the files list
 ***** remove the file from the only files list
-**** create the folders
+**** TODO create the folders
 videos/, subs/ and files/
 ***** if any of the corresponding lists are empty
 don't create a folder
-**** for each video in the videos list:
+**** TODO for each video in the videos list:
 ***** separate the part of the path that does not have the cwd
 ***** add the cwd + /videos/ + "the last part"
 ***** substitute the element for a tupple (src_path, dst_path)
-**** do the same as above to subs
-**** do the same as above to files
-**** for each of the lists move/rename the files from src > dst
+**** TODO do the same as above to subs
+**** TODO do the same as above to files
+**** TODO for each of the lists move/rename the files from src > dst
 ** TODO get_videos_info_csv.py
 *** logic
 **** check if the folder has the right structure
