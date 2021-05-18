@@ -11,7 +11,9 @@ import os
 import os.path
 from blessings import Terminal
 
-def get_nested_files(path: str):
+def get_nested_files(
+    path: str
+):
     """
     gets the nested files in the directory recursively
 
@@ -32,8 +34,10 @@ def get_nested_files(path: str):
     return nested_files
 
 
-def filter_files_by_extension(files: list ,
-                            extensions: list):
+def filter_files_by_extension(
+    files: list ,
+    extensions: list
+):
     """
     filter the files in a list to have only files of the given extensions
 
@@ -50,9 +54,9 @@ def filter_files_by_extension(files: list ,
     filtered_files = []
     for file in files:
         file_ext = os.path.splitext(file)[-1].lower()
-        file_ext = remove_dot_from_extension(file_ext)
+        file_ext = _remove_dot_from_extension(file_ext)
         for extension in extensions:
-            ext = remove_dot_from_extension(extension).lower()
+            ext = _remove_dot_from_extension(extension).lower()
             # print("ext \n", ext)
             # print("file_ext \n", file_ext)
             if file_ext == ext:
@@ -62,7 +66,24 @@ def filter_files_by_extension(files: list ,
     ...
 
 
-def remove_dot_from_extension(extensions):
+def filter_videos(
+    files: list
+):
+    """filter a list of files to contain only video type files of
+    the filtering happens based on the extension of the files
+
+    Args:
+        files (list): the list of files
+
+    Returns:
+        videos (list): the list of videos
+    """
+
+    ...
+
+def _remove_dot_from_extension(
+    extensions
+):
     """remove the dot from an extension
 
     Args:
@@ -95,6 +116,8 @@ def main():
     for element in all_nested_files:
         print("  {}".format(element))
     print("]")
+
+
 
     print()
     print("END main() END")
