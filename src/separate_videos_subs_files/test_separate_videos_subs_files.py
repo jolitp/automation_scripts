@@ -12,9 +12,15 @@ import getpass
 import separate_videos_subs_files as script
 
 USERNAME = getpass.getuser()
-PROJECT_FOLDER = Path("/home/") / USERNAME / "Projects/automation_scripts/"
+PROJECT_FOLDER \
+    = Path("/home/") \
+    / USERNAME \
+    / "Projects/automation_scripts/"
 TEST_BED_FOLDER_PATH = \
-    PROJECT_FOLDER / "src" / "separate_videos_subs_files" / "test_bed"
+    PROJECT_FOLDER \
+    / "src" \
+    / "separate_videos_subs_files" \
+    / "test_bed"
 
 
 

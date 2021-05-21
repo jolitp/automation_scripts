@@ -12,6 +12,8 @@ files/
 import os
 import os.path
 
+# TODO put function in a library
+# TODO make a non recursive version
 # region get_nested_files
 def get_nested_files(
     path: str
@@ -37,6 +39,7 @@ def get_nested_files(
 # endregion get_nested_files
 
 
+# TODO put function in a library
 # region filter_files_by_extension
 def filter_files_by_extension(
     files: list ,
@@ -71,6 +74,7 @@ def filter_files_by_extension(
 # endregion filter_files_by_extension
 
 
+# TODO put function in a library
 # region filter_subtitles
 def filter_subtitles(
     files: list
@@ -98,6 +102,7 @@ def filter_subtitles(
 # endregion filter_videos
 
 
+# TODO put function in a library
 # region filter_videos
 def filter_videos(
     files: list
@@ -148,6 +153,7 @@ def filter_videos(
 # endregion filter_videos
 
 
+# TODO put function in a library
 # region _remove_dot_from_extension
 def _remove_dot_from_extension(
     extensions
@@ -166,6 +172,7 @@ def _remove_dot_from_extension(
 # endregion _remove_dot_from_extension
 
 
+# TODO put function in a library
 # region ignore_project_files
 def ignore_project_files(files: list):
     """remove the files that should
@@ -220,6 +227,8 @@ def main():
     print("current_working_directory:")
     print(cwd)
     print()
+
+# TODO refactor repetitive statements
 
     all_nested_files = get_nested_files(cwd)
     all_nested_files = ignore_project_files(all_nested_files)
@@ -371,9 +380,6 @@ def main():
     for file in files_src_dst_paths:
         print("moving: {}".format(file["name"]))
         os.rename(file["src"], file["dst"])
-
-
-
 # endregion main
 
 
