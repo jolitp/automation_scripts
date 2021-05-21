@@ -133,3 +133,7 @@ dmypy.json
 *.mp4
 *.mkv
 testing_things_out/**
+
+.vscode/**
+.vscode/*
+.vscode/

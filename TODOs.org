@@ -290,6 +290,7 @@ the app should:
 
 when processing a folder, move that folder to a specific directory
 that way it's obivious which folder is being processed right now
+*** TODO put generated files inside a .generated/ folder instead of in the root directory
 ** obsolete
 *** TODO script to remove undesirable files from a directory
 **** algorithm
@@ -672,29 +673,70 @@ don't create a folder
 **** DONE do the same as above to subs
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
-** STRT get_videos_info_csv.py
+** DONE get_videos_info_csv.py
 *** logic
-**** check if the folder has the right structure
+**** DONE check if the folder has the right structure
 contains: videos/
-**** get every video into a list
-**** for each video:
-***** create an empty dict
-***** get the full path of the file
-***** get length_sec, width, height, aspect_ratio using openCV
-***** convert length_sec to length_hour
-***** get the accumulated_duration_in_seconds
-***** convert accumulated_duration_in_seconds in accumulated_duration_in_hours
-***** get the number of frames in the video
-***** get the accumulated number of frames of the video
-***** get the size of the video
-***** get the accumulated_size
-***** add all the variables to the dict
-***** put the dict in place of the element
-**** create the csv file
-**** for each video
-***** write on the csv file
+***** if there is no videos/ folder but there are videos in the root folder
+use the root folder as woring directory
+***** better yet get info for both
+**** DONE get every video into a list
+**** DONE naturally sort the list
+**** DONE for each video:
+***** DONE create an empty dict
+***** DONE get wether or not the video could be open
+working
+***** DONE video count (passed as parameter)
+***** DONE filename
+***** DONE get the full path of the file
+***** DONE convert length_sec to length_hour
+***** DONE get the number of frames in the video
+frame count
+***** DONE get length_sec
+***** DONE get width
+***** DONE get height
+***** DONE get aspect_ratio
+***** DONE get the size of the video
+***** DONE add all the variables to the dict
+**** DONE use subprocess
+**** DONE get the accumulated values
+***** DONE get the accumulated_duration_in_seconds
+***** DONE get the accumulated number of frames of the video
+***** DONE convert accumulated_duration_in_seconds in accumulated_duration_in_hours
+***** DONE get the accumulated_size
+***** DONE get the accumulated_size_bytes
+**** DONE create the csv file
+***** DONE write on the csv file
+to be used later by other scripts
+**** DONE create org file
+***** DONE write .org file
+to be used later by me to debug or fix problems
+
+each header containing a table
+****** DONE date/time of creation
+example:
+#+DATE: <2006-11-01 Wed 19:15>
+****** DONE top level header: name of the folder
+****** DONE sub header #1: durations
+alph_ord?
+working
+name, duration_sec, duration_hours, acc_duration, acc_duration_hours
+******* shrink the header names
+use:
+acc_dur_hrs, dur_hrs, acc_dur_sec, dur_sec
+****** DONE sub header #3: dimensions
+alph_ord, working
+name, width, height, aspect_ratio
+******* shrink header names
+a_r = aspect ratio
+a_r_fr = aspect ratio fraction
+
+****** DONE sub header #4: size
+alphabetical_order
+name, size, acc_size
+**** DONE add video count to files
+
 *** note
-**** use subprocess
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
 ** TODO separate_to_upload.py
@@ -1159,5 +1201,91 @@ https://www.avidemux.org/admWiki/doku.php?id=tinypy:tinypybatch2
 
 ** TODO try using pathlib module to handle files
 ** TODO check the best way of getting video data
-** TODO remember how to cleanly get dict values into csv file
+** DONE remember how to cleanly get dict values into csv file
+https://www.youtube.com/watch?v=q5uM4VKywbA
+
+dictionary reader and writer:
+
+#+NAME write_dict_into_csv.py
+#+BEGIN_SRC python
+
+# raed a csv
+import csv
+with open("output.csv", "w") as output_file:
+    fieldnames = ["first_name", "last_name", "email"]
+
+    csv_writer = csv.DictWriter(output_file,
+                                fieldnames=fieldnames,
+                                delimiter=" | ")
+
+    csv_writer.writeheader()
+
+    for line in csv_reader:
+       # to delete a field before writing use:
+       # del line['email']
+
+       csv_writer.writerow(line)
+
+#+END_SRC
+
+#+NAME read_scv_into_dict.py
+#+BEGIN_SRC python
+
+# raed a csv
+import csv
+with open("file.csv", "r") as scv_file:
+    scv_reader = csv.DictReader(scv_file)
+
+    for ordered_dict in scv_reader:
+        prin(ordered_dict)
+#+END_SRC
+
 ** TODO capture the output of the programs like ffmpeg and avidemux and put them into text files and also display them while they run
+** DONE remember how to use multiprocessing
+
+using the concurrent.futures std library
+
+*** ProcessPoolExecutor:
+
+#+BEGIN_SRC python
+
+import concurrent.futures
+
+def do_something(seconds):
+    time.sleep(seconds)
+    return "done sleeping"
+    ...
+
+with concurrent.futures.ProcessPoolExecutor() as executor:
+    # execute just one subprocess(not very useful)
+    # sxecutor.submit() schedules a function to be executed
+    # and returns a futures object
+    f1 = executor.submit(do_something, [args])
+    print(f1.result())
+
+    # executing a list of processies
+    # one for each element of the list
+    # using list comprehension:
+    results = [executor.submit(do_something, 1) for _ range(10)]
+    # using a loop: (translated by me, might be wrong)
+    results = []
+    for _ in range(10):
+       results.append(executor.submit(do_something, 1))
+
+    # prints the results in the order they are completed
+    for f in concurrent.futures.as_completed(results):
+        print(f.result())
+        ...
+
+    ...
+
+    # using ProcessPoolExecutor.map():
+
+    # return the items in the order they were started
+    secs = [1,2,3,4,5]
+    results = executor.map(do_something, secs)
+
+    for result in results:
+        print(result)
+        # handle exceptions here, not inside the function
+#+END_SRC
