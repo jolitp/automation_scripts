@@ -672,7 +672,7 @@ don't create a folder
 **** DONE do the same as above to subs
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
-** TODO get_videos_info_csv.py
+** STRT get_videos_info_csv.py
 *** logic
 **** check if the folder has the right structure
 contains: videos/
@@ -684,6 +684,8 @@ contains: videos/
 ***** convert length_sec to length_hour
 ***** get the accumulated_duration_in_seconds
 ***** convert accumulated_duration_in_seconds in accumulated_duration_in_hours
+***** get the number of frames in the video
+***** get the accumulated number of frames of the video
 ***** get the size of the video
 ***** get the accumulated_size
 ***** add all the variables to the dict
@@ -693,7 +695,6 @@ contains: videos/
 ***** write on the csv file
 *** note
 **** use subprocess
-
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
 ** TODO separate_to_upload.py
@@ -748,7 +749,7 @@ do I need to put both scripts in the same folder?
 
 can the module be in a nested folder?
 
-** TODO try using py.test module
+** DONE try using py.test module
 ** DONE setup the project using setuptools
 
 too complicated
@@ -759,6 +760,404 @@ worse idea ever, it reencodes the video if it is different
 and it becomes unwatchable, and it doesn't give a sign of
 failure
 ** TODO try using avidemux python scripting to concatenate videos
+do the process outlined in this video
+
+https://www.youtube.com/watch?v=pxMeIU-ghXY&t=1445s
+
+instead of calling avidemux with parameters for each video
+
+*** findings
+**** I can open avidemux on the command line with --help to get help info on arguments
+it prints in the middle of alot of junk but it is there
+**** use the flag --run script_name.py to "load a project"
+a project in this case is a series of steps to be done in the gui program
+**** the flag --quit can be used to quit the program when done
+**** need to install libvdpau-va-gl1 from apt
+sudo apt install libvdpau-va-gl1
+**** the popup saying the codecs are different doesn't appear now
+but the video does not get concatenated
+*** steps
+**** get the current working directory
+**** get all the videos in the videos/ folder
+**** sort the videos
+**** contents of project.py:
+***** get an Avidemux() instance
+avidemux = Avidemux()
+***** load each video
+if not avidemux.loadVideo("/path/to/video.mp4"):
+    raise("Cannot load /path/to/video.mp4")
+***** clear segments
+avidemux.clearSegments()
+***** add a segment from each video
+avidemux.addSegment([video index], [start](always 0), [end](number of frames in the video))
+***** add markers for start and end
+avidemux.markerA = 0
+avidemux.markerB = [accumulated number of frames of last video]
+***** add codec info
+avidemux.videoCodec("Copy")
+***** clear audio tracks
+avidemux.audioClearTracks()
+***** set language for sound tracks
+avidemux.setSourceTrackLanguage(0, "und")
+***** check if video has audio track
+if adm.audioTotalTracksCount() <= 0:
+    raise("Cannot add audio track 0, total tracks: " + str(adm.audioTotalTracksCount()))
+***** add audio info
+adm.audioAddTrack(0)
+adm.audioCodec(0, "copy")
+adm.audioSetDrc(0, 0)
+adm.audioSetShift(0, 0, 0)
+***** container info
+adm.setContainer("MKV",
+                "forceAspectRatio=False",
+                "displayWidth=1280",
+                "displayAspectRatio=2",
+                "addColourInfo=False",
+                "colMatrixCoeff=2",
+                "colRange=0",
+                "colTransfer=2",
+                "colPrimaries=2")
+**** make project.py file in the directory
+*** reference/search links:
+**** Avidemux Append Loop Script
+https://www.youtube.com/watch?v=LI0DagwkLqg
+
+Here's a script I used to append several Everlong gameplay clips, which is far less error prone than appending each video manually.
+
+For most of the script, I just copied and pasted from generated scripts. The only part I did was the for loop to append all of the numbered videos in the folder.
+
+Whenever I need to reuse this script, I just change the dir and vid_count variables.
+
+***** script
+
+#+NAME: ever33.py
+#+BEGIN_SRC python
+
+#PY  <- Needed to identify #
+#--automatically built--
+
+adm = Avidemux()
+dir = "C:/Users/Example/Videos/EverlongVids/P33/"
+vid_count = 19
+container = ".flv"
+adm.loadVideo(dir + "01" + container)
+
+for i in range(2, vid_count + 1):
+   path = dir
+   if i < 10:
+      path = path + "0"
+   path = path + str(i) + container
+   adm.appendVideo(path)
+
+adm.videoCodec("x264",
+               "useAdvancedConfiguration=True",
+               "general.params=AQ=15",
+               "general.threads=0",
+               "general.preset=ultrafast",
+               "general.tuning=",
+               "general.profile=baseline",
+               "general.fast_decode=False",
+               "general.zero_latency=False",
+               "general.fast_first_pass=True",
+               "general.blueray_compatibility=False",
+               "general.fake_interlaced=False",
+               "level=-1",
+               "vui.sar_height=1",
+               "vui.sar_width=1",
+               "MaxRefFrames=3",
+               "MinIdr=25",
+               "MaxIdr=250", "i_scenecut_threshold=40",
+               "intra_refresh=False",
+               "MaxBFrame=3",
+               "i_bframe_adaptive=1",
+               "i_bframe_bias=0",
+               "i_bframe_pyramid=2",
+               "b_deblocking_filter=True",
+               "i_deblocking_filter_alphac0=0",
+               "i_deblocking_filter_beta=0",
+               "cabac=True",
+               "interlaced=False",
+               "constrained_intra=False",
+               "tff=True",
+               "fake_interlaced=False",
+               "analyze.b_8x8=True",
+               "analyze.b_i4x4=True",
+               "analyze.b_i8x8=True",
+               "analyze.b_p8x8=True",
+               "analyze.b_p16x16=False",
+               "analyze.b_b16x16=False",
+               "analyze.weighted_pred=2",
+               "analyze.weighted_bipred=True",
+               "analyze.direct_mv_pred=1",
+               "analyze.chroma_offset=0",
+               "analyze.me_method=1",
+               "analyze.me_range=16",
+               "analyze.mv_range=-1",
+               "analyze.mv_range_thread=-1", "analyze.subpel_refine=7",
+               "analyze.chroma_me=True",
+               "analyze.mixed_references=True",
+               "analyze.trellis=1",
+               "analyze.psy_rd=1.000000",
+               "analyze.psy_trellis=0.000000",
+               "analyze.fast_pskip=True",
+               "analyze.dct_decimate=True",
+               "analyze.noise_reduction=0",
+               "analyze.psy=True",
+               "analyze.intra_luma=11",
+               "analyze.inter_luma=21",
+               "ratecontrol.rc_method=0",
+               "ratecontrol.qp_constant=0",
+               "ratecontrol.qp_min=10",
+               "ratecontrol.qp_max=51",
+               "ratecontrol.qp_step=4",
+               "ratecontrol.bitrate=0",
+               "ratecontrol.rate_tolerance=1.000000",
+               "ratecontrol.vbv_max_bitrate=0",
+               "ratecontrol.vbv_buffer_size=0",
+               "ratecontrol.vbv_buffer_init=1",
+               "ratecontrol.ip_factor=1.400000",
+               "ratecontrol.pb_factor=1.300000",
+               "ratecontrol.aq_mode=1",
+               "ratecontrol.aq_strength=1.000000",
+               "ratecontrol.mb_tree=True",
+               "ratecontrol.lookahead=40")
+adm.audioClearTracks()
+adm.setSourceTrackLanguage(0,"
+unknown")
+adm.audioAddTrack(0)
+adm.audioCodec(0, "LavAAC", "bitrate=160");
+adm.audioSetDrc(0, 0)
+adm.audioSetShift(0, 0,0)
+adm.setContainer("MP4V2", "optimize=0", "add_itunes_metadata=0")
+
+#+END_SRC
+
+**** automkv.py
+https://fossies.org/linux/avidemux/scripts/automkv.py
+
+it is a conversion script with popup to choose aspect ratio
+
+***** script
+
+#+NAME: automkv.py
+#+BEGIN_SRC python
+
+# simple tinypy script that creates a MKV/AC3 file from input
+ #  a PAL DVB capture
+
+ adm=Avidemux()
+ gui=Gui()
+ #** Audio **
+ adm.audioReset()
+ adm.audioCodec("LavAC3",192)
+ #** Muxer **
+ adm.setContainer("MKV")
+ # Do we need to resize ?
+ width=adm.getWidth()
+ height=adm.getHeight()
+ fps=adm.getFps1000()
+ aspectW=adm.getPARWidth()
+ aspectH=adm.getPARHeight()
+ print('Aspect: ',aspectW,', ',aspectH,'\n')
+ #
+ aspect=(aspectW,aspectH)
+ ar=0
+ if aspect == (1,1):
+         ar=0
+ elif aspect == (16,15):
+         ar=1
+ elif aspect == (64,45):
+         ar=2
+ else:
+         print('Cannot guess aspect ratio')
+ ####################################################
+ # Create a display menu to select Aspect ratio
+ # And resize type 576p, 720p, ...
+ ####################################################
+ listOfWidth=[720,1280]
+ mnuSourceRatio = DFMenu("Source Aspect Ratio:");
+ mnuSourceRatio.addItem("1:1")
+ mnuSourceRatio.addItem("4:3")
+ mnuSourceRatio.addItem("16:9")
+ mnuSourceRatio.index=ar
+
+ mnuResize = DFMenu("Video to create :");
+ mnuResize.addItem("720 pixels")
+ mnuResize.addItem("1280 pixels")
+
+ toggleDeint = DFToggle("Deinterlace:");
+
+ dlgWizard = DialogFactory("Automkv Source Aspect Ratio ");
+ dlgWizard.addControl(mnuSourceRatio);
+ dlgWizard.addControl(mnuResize);
+ dlgWizard.addControl(toggleDeint);
+
+ res=dlgWizard.show()
+ if res==1:
+         ar=mnuSourceRatio.index
+         rsz=listOfWidth[mnuResize.index]
+         deinterlace=toggleDeint.value
+ else:
+         return
+ #################################################################
+ #  We have resize width, get resize Height from aspect ratio
+ #################################################################
+ if(ar==0) : # 1:1
+         newHeight=rsz
+ elif(ar==1): # 4:3
+         newHeight=(rsz*3)/4
+ elif(ar==2): # 16:9
+         newHeight=(rsz*9)/16
+ # roundup newHeight to closer multiple of 16
+ newHeight=newHeight>>4
+ newHeight=newHeight<<4
+ print("The end ar:",ar,"Width :",rsz," height:",newHeight)
+ # if deinterlace is set do it with vdpau
+ if(deinterlace):
+         str1="targetWidth="+str(rsz)
+         str2="targetHeight="+str(newHeight)
+         adm.addVideoFilter("vdpauDeint","resizeToggle=True","deintMode=2",str1,str2)
+ #else plain resize
+ else:
+         str1="width="+str(rsz)
+         str2="height="+str(newHeight)
+         adm.addVideoFilter("swscale",str1,str2,"algo=2","sourceAR=1","targetAR=1")
+
+ # Set video codec
+ adm.videoCodec("x264","params=AQ=18","MaxRefFrames=2","MinIdr=10","MaxIdr=150","threads=99","_8x8=True","_8x8P=True","_8x8B=True","_4x4=True" ,"_8x8I=True","_4x4I=True","MaxBFrame=2","profile=30","CABAC=True","Trellis=True")
+
+ # popup user
+ popupString="All set for "+str(rsz)+" wide video, x264/AC3/MKV."
+ if(deinterlace):
+         popupString=popupString+"\nDeinterlace is on (vdpau)."
+ gui.displayInfo("Ok",popupString)
+
+#+END_SRC
+
+**** others
+***** clemthi / avidemux-scripting / bulk-convert.py
+uses python
+
+****** script
+
+#+NAME: bulk-convert.py
+#+BEGIN_SRC python
+
+adm = Avidemux()
+gui = Gui()
+
+# file extension of input files
+input_ext = 'AVI'
+
+# file extension for output files
+output_ext = 'mp4'
+
+def convert_file(input_file, output_folder):
+    output_file = output_folder + '/' + basename(input_file)
+
+    adm.loadVideo(input_file)
+
+    # set the video codec
+    # adm.videoCodec("copy")
+    # video perso
+    adm.videoCodec("x264", "useAdvancedConfiguration=True", "general.params=AQ=25", "general.threads=0", "general.preset=ultrafast", "general.tuning=none", "general.profile=baseline", "general.fast_decode=False", "general.zero_latency=False"
+    , "general.fast_first_pass=True", "general.blueray_compatibility=False", "general.fake_interlaced=False", "level=31", "vui.sar_height=1", "vui.sar_width=1", "MaxRefFrames=2", "MinIdr=23", "MaxIdr=250"
+    , "i_scenecut_threshold=40", "intra_refresh=False", "MaxBFrame=3", "i_bframe_adaptive=1", "i_bframe_bias=0", "i_bframe_pyramid=2", "b_deblocking_filter=True", "i_deblocking_filter_alphac0=0", "i_deblocking_filter_beta=0"
+    , "cabac=True", "interlaced=False", "constrained_intra=False", "tff=True", "fake_interlaced=False", "analyze.b_8x8=True", "analyze.b_i4x4=True", "analyze.b_i8x8=True", "analyze.b_p8x8=False", "analyze.b_p16x16=True"
+    , "analyze.b_b16x16=True", "analyze.weighted_pred=1", "analyze.weighted_bipred=True", "analyze.direct_mv_pred=1", "analyze.chroma_offset=0", "analyze.me_method=1", "analyze.me_range=16", "analyze.mv_range=-1"
+    , "analyze.mv_range_thread=-1", "analyze.subpel_refine=6", "analyze.chroma_me=True", "analyze.mixed_references=True", "analyze.trellis=1", "analyze.psy_rd=1.000000", "analyze.psy_trellis=0.000000", "analyze.fast_pskip=True"
+    , "analyze.dct_decimate=True", "analyze.noise_reduction=0", "analyze.psy=True", "analyze.intra_luma=11", "analyze.inter_luma=21", "ratecontrol.rc_method=0", "ratecontrol.qp_constant=0", "ratecontrol.qp_min=0"
+    , "ratecontrol.qp_max=69", "ratecontrol.qp_step=4", "ratecontrol.bitrate=0", "ratecontrol.rate_tolerance=1.000000", "ratecontrol.vbv_max_bitrate=0", "ratecontrol.vbv_buffer_size=0", "ratecontrol.vbv_buffer_init=0"
+    , "ratecontrol.ip_factor=1.400000", "ratecontrol.pb_factor=1.300000", "ratecontrol.aq_mode=1", "ratecontrol.aq_strength=1.000000", "ratecontrol.mb_tree=True", "ratecontrol.lookahead=30")
+
+    adm.audioClearTracks()
+    adm.setSourceTrackLanguage(0,"eng")
+    adm.audioAddTrack(0)
+
+    # set the audio codec
+    # adm.audioCodec(0, "copy")
+    adm.audioCodec(0, "FDK_AAC", "bitrate=128", "afterburner=True", "profile=2", "sbr=False");
+
+    adm.audioSetDrc(0, 0)
+    adm.audioSetShift(0, 0,0)
+
+    # adm.setContainer("MKV", "forceDisplayWidth=False", "displayWidth=1280", "displayAspectRatio=0")
+    adm.setContainer("MP4V2", "optimize=0", "add_itunes_metadata=0")
+    adm.save(output_file)
+
+def main():
+    input_folder = gui.dirSelect("Select the source folder")
+    files = get_folder_content(input_folder, input_ext)
+
+    if files is None:
+        gui.displayError("Error", "Folder doesn't containt any ." + input_ext " file")
+        return 0
+
+    output_folder = gui.dirSelect("Select the output folder")
+
+    for one_file in files:
+            convert_file(one_file, output_folder)
+
+    print("Done")
+
+main()
+
+#+END_SRC
+***** avidemux wiki: scripting tutorial (javascript) (outdated)
+https://www.avidemux.org/admWiki/doku.php?id=tutorial:scripting_tutorial
+
+***** sourceforge documentation for avidemux (more recent?)
+gives exemples
+http://avidemux.sourceforge.net/doc/en/script.xml.html
+
+***** avidemux wiki: batch processing
+only bash(already tried, didnt quite work) and javascript
+https://www.avidemux.org/admWiki/doku.php?id=tutorial:batch_processing
+
+**** Using tinypy scripting documentation from wiki
+***** documentation fo the functions:
+****** Avidemux Class
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:avidemux
+****** GUI Class
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:gui
+
+***** Skeleton for batch processing
+
+
+#+NAME: bulk-convert.py
+#+BEGIN_SRC python
+
+#
+# Load all the files in c:\tmp with .mp4 extension.
+# That's it.
+#
+ext="mp4"
+inputFolder="c:\\tmp\\"
+#
+def convert(filein):
+    if(0 == adm.loadVideo(filein)):
+        ui.displayError("oops","cannot load "+filein)
+        raise
+    print("Done")
+
+#
+# Main
+#
+ui=Gui()
+adm=Avidemux()
+#
+list=get_folder_content(inputFolder,ext)
+if(list is None):
+    raise
+for i in list:
+        convert(i)
+print("Done")
+
+#+END_SRC
+***** Enhancing batch processing
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:tinypybatch2
+
 ** TODO try using pathlib module to handle files
 ** TODO check the best way of getting video data
 ** TODO remember how to cleanly get dict values into csv file
+** TODO capture the output of the programs like ffmpeg and avidemux and put them into text files and also display them while they run
