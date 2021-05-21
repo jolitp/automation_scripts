@@ -131,4 +131,5 @@ dmypy.json
 # my own
 **/test_bed/**
 *.mp4
+*.mkv
 testing_things_out/**
