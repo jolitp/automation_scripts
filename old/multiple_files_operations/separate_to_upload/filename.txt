@@ -1,0 +1,72 @@
+This message will be written to a file.
+[def] main()
+{
+
+> [FOR] video in all_files_and_folders:
+
+> > [iteration] START
+> > file_or_folder: filename.txt
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: [upload_00]
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: tests
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: [upload_01]
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: [upload_02]
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: __init__.py
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: __pycache__
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+> > [iteration] START
+> > file_or_folder: separate_to_upload.py
+
+> > [if] is_video(file_or_folder): False
+
+> > [iteration] END
+
+
+> [FOR] video in videos_only:
+
+
+> [FOR] index, batch in enumerate(batches):
+
+
+> > if not os.path.isdir(uploaded_folder): True
+
+}

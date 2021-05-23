@@ -1,57 +1,168 @@
 * Automation Scritps TODOs
-** TODO create template for new python files
+** DONE create template for new python files
 the template should have a main script, unit and integration test modules in a folder
-** TODO create scafold of python files
+** DONE create scafold of python files
 ** directory operations
 (use outside)
-*** TODO script to remove undesirable files from a directory
-*** TODO script to remove all python scripts from each emediate nested folders
+
+using the common logic as the call script on every directory
+most of those scripts will become a multiple files operations
+*** common logic
+**** TODO get the current directory
+**** TODO get all items inside the current directory
+not recursively
+**** TODO filter only folders
+**** TODO for each folder
+***** TODO excecute script on folder
+***** TODO make script excecution run in parallel
+maybe have an argument be pased to the script to choose between sequential and parallel escecution
+*** TODO script to separate downloaded torrent "types"
+separate in sub-folders if the contents of a folder is:
+- mp3 -> audiobook
+- mp4 -> videos
+- pdf -> books
+- exe -> games
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO get current directory
+****** TODO get all items inside the directory recursivelly
+****** TODO mark which types of files are more predominant in the directory
+****** TODO based on type of directory move it to a sub-folder in the parent directory
 *** TODO script to call command on emediate nested folders
-*** TODO script to copy all python scripts from current directory into nested folders
-*** TODO script to mark a folder as of having a concatenated video inside
-a folder with a concatenated video has a video with the same name of the folder
+this script actually can be the common logic used by all the other scripts in the category
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO call the command passed to the script
+*** TODO script to check if the converted videos are all working
+**** algorithm
+***** TODO get all videos in the converted folder
+***** TODO try to get the length of the video
+***** TODO if the length is 0.0 the video is corrupted
 *** TODO script to remove videos from every emediate nested directory
+**** algotithm
+***** common logic
+for every folder
+****** get every video in the emediate directory
+****** get all videos in the videos/ and converted/ folders
+****** delete al the videos
 *** TODO script to separate folders of videos into [long] or [short]
+**** algorithm
+***** common logic
+for every folder
+****** get data from the videos data file created by another script
+it is a .csv file
+****** check the total duration of videos
+****** if the duration is greater than 12 hours
+******* the folder is long
+****** else
+******* the folder is short
+****** move the folder to the appropriate directory
 *** STRT script to sort folders by their "youtube upload viability" without concatenating
-a folder that is viable have less than 15 videos and is of any size
-*** TODO script to separate the best courses to upload to youtube today
-get how many videos there are in each folder and separate the best --
-as in the ones that have the biggest size of videos and the lowest number of videos -- folders in a folder named [upload today(date)]
-** single file operations
-*** TODO script to change the extension of a given file
-*** STRT script to check if a file is a video
-**** DONE change tests that test accepted extensions
-use the parametirized tests instead
-*** STRT script to check if a video file is corrupted
-*** TODO script to rename files or folders
-*** TODO script to get the length of a video
-*** TODO script to get the dimensions of a video
-*** TODO script to get the size of a file
+**** algorithm
+***** common logic
+for each folder
+****** create a viability score variable
+this variable goes from 0 to 10 depending on the viability of the folder
+being uploaded to youtube without being processed first
+
+a score of 0 means it must be processed first
+
+a score of 10 means it must be uploaded as is without being processed
+
+a score in between needs to be tested to gauge the actual viability
+****** get all the videos in the directory
+****** count the number of videos
+****** if the count is 15 or less
+******* the viability score is 10
+****** if the count is bigger than 100
+******* the viability score is 0
+****** if the count is in from 16 to 99
+******* get the size all viideos
+******* get the avarage size of a video
+******* interpolate the viability
+based on the number of videos and the avarage size of a video
+
+the smaller the number of videos
+and the bigger the avarage size of a video
+the higher the score
+
+******** algorithm
+
+...
+
+******* and truncate to intiger
+****** move the folder based on the viability
+create folders for integers from 0 to 10
+**** DONE a folder that has 15 videos or less is totally viable
+**** DONE a fodler that does not have videos is not viable
+**** TODO a folder that has the biggest videos and the smallest amount of videos is viable
+*** TODO script to search and replace filenames in a directory
+the script receives the parameters:
+
+-s/--search : the string to be searched on every file in the directory
+-r/--replace : the string to replace the searched string
+-R/--recursive : if the search should be done recursivelly (include sub-directories)
+-f/--files : flag to restrict search to only files
+-d/--dirs : flag to restrict search to only directories
+
 ** multiple files operations
+*** common logic
+**** algorithm
 *** TODO script to compress the files/ directory into a .7z file
+<<<<<<< HEAD
 *** DONE script to add to the start of the name of every file
+=======
+**** algorithm
+***** get the working directory
+***** get all items in working directory
+***** filter only directories
+***** filter files/ directory
+***** call zip command with files/ directory as parameter
+>>>>>>> 103ae93fc5ff54ecf503c03be4c6cb8690b5a312
 *** TODO script to remove empty folders recursivelly from a directory
 *** TODO script to move all folders in a directory to a files/ directory
-*** TODO script to concatenate videos into one video
 *** TODO script to create an org file with videos as sub-headers
-*** DONE script to get all videos in a directory
 *** STRT script to get the accumulated length of all videos in a directory
+BUG from get all videos in a directory
 **** use processing pool executor from multiprocessing module
 from youtube video:
 https://youtu.be/fKl2JW_qrso?t=1020
 *** TODO script to convert videos to have the same codec and dimensions
-*** TODO script to measure the viability of uploading the videos without concatenating them before
-*** TODO script to converto, resize and concatenate videos
-**** TODO solve the bug where the most frequent resolution is not being picked
+*** TODO script to resize videos
+use this script
+https://gist.github.com/shivasiddharth/3ee632ce6513bc6ae956f58476983659
+
+*** STRT script to measure the viability of uploading the videos without concatenating them before
+*** TODO script to concatenate videos
+batch concatenate using avidemux
+
+instructions from this video
+https://www.youtube.com/watch?v=pxMeIU-ghXY
+**** have the script mark the folder if the dimensions are different
+**** have the script mark the folder if the codecs are different
 *** TODO script to pad zeroes in the name of files
-*** TODO script to filter only direcories from a folder
 *** TODO script to separate videos in sections
+*** TODO script to move all subtitle files recursivelly to a subtitles/ folder
+*** TODO script to embed subtitles in each video using ffmpeg
 *** TODO script to create a .csv file containing each video's dimensions
 *** TODO script to move videos in nested folders to the current folder
 *** TODO script to upload video files automatically to youtube
 *** DONE script to separate videos in parts with 15 videos to upload
-*** TODO script to restore videos from separated to download
+*** DONE script to restore videos from separated to download
 ** utils
+*** STRT script to get all videos in a directory
+BUG
+problem with trailing / at the end of a name
+**** TODO make the function work with both trailing slash at the end or not
+*** TODO script to filter only direcories from a folder
+*** TODO script to check if a file is a video
+*** TODO script to get the size of a file
+*** TODO script to get the dimensions of a video
+*** TODO script to get the duration of a video
+*** TODO script to check if a video file is corrupted
+*** TODO script to change the extension of a given file
 *** TODO script to remove special characters from a filename
 *** TODO script to filter a list of filenames to contain only files with a given extension
 *** TODO script to convert from seconds to formatted time
@@ -61,12 +172,73 @@ like hours, minutes, seconds, etc
 *** TODO script to log excecution to the terminal with "framming"
 *** TODO utility module to pretty print directories like powerlevel10k
 *** TODO unitily module to shrink names
-** TODO figure a way of using the scripts without copying to the folder
+** scrapers
+*** videos
+use the techniques from this video:
+https://www.youtube.com/watch?v=bytnxnZFLeg
+**** oreilly
+**** skillshare
+**** lynda
+**** pluralsight
+*** torrents
+**** audiobookbay.net
+*** books
+**** oreilly
+**** pdfdrive
+*** audio
+**** audible
+** tools
+*** scripts to create a calendar in plain text
+have it as a command line tool that receives arguments:
+
+-s/--start : the start date
+-e/--end : the end date
+-f/--format : the format of the calendar
+            it can be grid or list
+
+maybe generate org-mode formatted file?
+
+grid:
+          January
+Su	Mo	Tu	We	Th	Fr	Sa
+ 	 	 	 	 	1	2
+3	4	5	6	7	8	9
+10	11	12	13	14	15	16
+17	18	19	20	21	22	23
+24	25	26	27	28	29	30
+31
+
+week    M  T  W  H  F  S  X
+----------------------------
+17 MAY  26 27 28 29 30 01 02
+18 2021 03 04 05 06 07 08 09
+19      10 11 12 13 14 15 16
+20      17 18 19 20 21 22 23
+21      24 25 26 27 28 29 30
+22 JUN  31 01 02 03 04 05 06
+23      07 08 09 10 11 12 13
+24      14 15 16 17 18 19 20
+25      21 22 23 24 25 26 27
+
+list:
+
+...
+May
+week 17
+2021 / 04 / 01
+2021 / 04 / 02
+2021 / 04 / 03
+...
+
+or use this tool:
+https://github.com/jonstoler/calvin
+** other
+*** TODO figure a way of using the scripts without copying to the folder
 this video may help
 
 https://www.youtube.com/watch?app=desktop&v=5CMmjNt_p48
-** TODO add versioning to scripts
-** TODO make scripts callable with argumetns
+*** TODO add versioning to scripts
+*** TODO make scripts callable with argumetns
 use optparse for this
 
 https://stackabuse.com/command-line-arguments-in-python/
@@ -74,9 +246,1050 @@ https://stackabuse.com/command-line-arguments-in-python/
 or use argparse for easy documentation
 
 https://realpython.com/python-command-line-arguments/#argparse
-** TODO use doctest in every script
-** TODO add regression tests
-** TODO add debug test toggle to all test files
-** TODO make scripts debuggable by passing -D/--debug flag to the command line
-** TODO use printing color to the terminal
+*** TODO use doctest in every script
+*** TODO add regression tests
+*** TODO add debug test toggle to all test files
+*** TODO make scripts debuggable by passing -D/--debug flag to the command line
+*** TODO use printing color to the terminal
 https://stackoverflow.com/questions/287871/how-to-print-colored-text-to-the-terminal
+*** TODO change the shebang on top of all files
+use:
+#! /usr/bin/env python3
+*** TODO create deploy script
+
+will copy all the scripts from this project folder to
+/home/[username]/Scripts/bin/deployed
+
+the names of the files will be the names of the scripts without the .py extension
+**** TODO make it a proper command line utility using click library
+accept the following arguments:
+
+-l/--link : create links instead of copying the files
+
+*** TODO start using pathlib to handle files and directories
+https://docs.python.org/3/library/pathlib.html
+
+import pathlib
+from pathlib import Path
+*** TODO make the scripts as folder watchers
+
+start script once and it watches a folder for changes
+
+when the execution of one script ends the caller script checks the folder again when the last folder was executed
+**** how to do this?
+
+Monitor Folders with Python Watchdog | #56 (Cyber Security #2)
+https://www.youtube.com/watch?v=U4uBcWFpMLk
+
+Using Watchdog to monitor a folder
+https://www.youtube.com/watch?v=3_0_9Rf1ouQ
+*** TODO make a main GUI application
+
+the app should:
+
+- manage the order of the pipeline
+- have fields to set the directories of each step
+- have controls to spawn/stop/pause scripts individually
+*** TODO make a pipeline of scripts that feed into each other
+
+when processing a folder, move that folder to a specific directory
+that way it's obivious which folder is being processed right now
+*** TODO put generated files inside a .generated/ folder instead of in the root directory
+** obsolete
+*** TODO script to remove undesirable files from a directory
+**** algorithm
+***** common logic from parent
+****** TODO get every item in the directory recursivelly
+****** TODO if the item is in the undesirable files list
+the undesirable files list is as follows:
+
+- subtitle files (.srt/.vtt)
+  (subtitles are not undesirable anymore)
+- .url files in the folder (not recursive)
+  (url files are too tiny to bother, pu them in the files folder)
+- .py files from automation scripts
+  (py files wont be on directories anymore)
+****** TODO delete the file
+*** TODO script to copy all python scripts from current directory into nested folders
+ideally this script will not be needed
+
+wont be needed anymore
+*** TODO script to remove all python scripts from each emediate nested folders
+py scripts wont be in the folders anymore
+**** algorithm
+***** common logic from parent
+excecute script on each folder
+****** TODO get all items in the directory
+****** TODO filter only files
+****** TODO filter only .py files
+****** TODO delete every .py file
+*** TODO script to mark a folder as of having a concatenated video inside
+obsolete, the new scripts will move the folder to a completed folder
+
+a folder with a concatenated video has a video with the same name of the folder
+
+there should be better ways of checking if the convertion and concatenation is finished
+like checking the number of videos in the converted directory against the videos directory
+
+there is also the problem of a concatenated video being invalid because some converted video is corrupted
+* pipeline
+** folder hierarcy:
+*** auto_process
+**** 00_strait_out_of_torrents/
+
+(folder in torrents drive)
+
+the first folder where the completed downloads are moved (manually)
+
+script *separate_torrent_types* watches this folder
+
+*separate_torrents* should move the folders from *00_strait_out_of_torrents/* to *01_separated_torrent_types/* based on the type of file that is more prominent in the folder
+
+if there are files in this folder, create a folter with the same name of the file and move it in there before moving the created folder to *02_separate_videos_subs_files*
+
+**** 01_separated_torrent_types/
+
+(folder in torrents drive)
+
+this directory has the category folders:
+
+0_videos/
+0_books/
+0_audios/
+0_software/
+0_compressed/
+0_others/
+
+move folders (manually) in *videos/* to *V_Videos/02_unprocessed_videos/*
+
+**** V_Videos/
+(folder in processing drive (storage))
+***** 02_unprocessed_videos/
+
+folder containing only other folders
+each folder contains videos in subfolders or on the root folder
+
+run *separate_videos_subs_files* here
+
+*separate_videos_subs_files* should create 3 folders:
+
+videos/
+subs/
+files/
+
+*separate_videos_subs_files* should move the appropriate files to each folder.
+
+move all folders to *0000_videos_separated/*
+
+***** 03_get_video_info_csv/
+
+this folder contains other folders with videos in their root
+
+run *get_video_info_csv* here
+
+*get_video_info_csv* should:
+
+move the folder to a *00_getting_video_info_csv/* folder
+create a .csv file with the following columns:
+
+| filename | duration_in_seconds | duration_in_hours | accumulated_duration_in_seconds | accumulated_duration_in_hours | width | height | aspect_ratio | size | accumulated_size | codec info |
+
+use a combination of ffmpeg, ffmprobe, mediainfo and opencv
+
+also use multiprocessing
+
+***** 04_check_for_subtitles/
+
+*check_for_subtitles* checks the subs/ and the videos/ folder to check if each video has subtitle
+
+move the root folder to *06_embed_subtitles/* folder if has sub
+
+move the root folder to *YT_upload_to_youtube/* if hasnt sub
+
+***** 05_embed_subtitles/
+****** look up how to do this
+
+Add video subtitles with ffmpeg
+https://www.youtube.com/watch?v=C6xa0RS0Ux8
+
+Use ffmpeg to add text subtitles [closed]
+https://stackoverflow.com/questions/8672809/use-ffmpeg-to-add-text-subtitles
+
+ffmpeg docs
+https://trac.ffmpeg.org/wiki/HowToBurnSubtitlesIntoVideo
+
+***** 06_separate_to_upload/
+
+a nested folder with less than 15 videos should be moved to *YT_upload_to_youtube*
+
+other folders move to *08_separate_videos_that_have_different_dimmensions/*
+
+***** 07_separate_videos_different_dimmensions/
+
+check the dimensions of every video from the .csv file
+
+if they are the same move folder to *AVIDEMUX_concatenate_videos/00_same_dimensions/*
+
+if they are different move folder to *08_resize_different_dimensions*
+
+***** 08_resize_different_dimensions/
+
+script *resize_videos* should:
+
+move the folder to *FFMPEG_resizing_videos/* folder
+
+resize all videos in each folder to a single dimension.
+    choosing the most common dimension if there is a dominant dimension on the list
+
+if there is no dominant dimension, scale to the lowest dimension
+
+remember to check aspect ratio
+
+move processed folder to *AVIDEMUX_concatenate_videos/01_same_dimensions/*
+
+***** 09_convert_videos/
+
+folder to put videos that didn't concatenate correctly
+
+watch folder for changes
+
+script *convert_videos* should:
+
+move folder to *FFMPEG_converting_videos/*
+
+convert each video to .mp4 with HEVC/H. 265 codec, optimized for web
+
+move folder to *AVIDEMUX_concatenate_videos/02_same_codecs/*
+
+***** FFMPEG_resizing_videos/
+***** FFMPEG_converting_videos/
+***** AVIDEMUX_concatenate_videos/
+
+check for accumulated duration of videos
+
+if the duration exceeds 12 hours
+then the concatenation needs to be split in chunks of less than 12 hours each
+
+****** 01_same_dimensions/
+******* 000_try_concatenation_first_time
+****** 02_same_codecs/
+***** YT_upload_to_youtube/
+***** XXX_concatenated/
+**** A_Audios
+- cut long audio book files into smaller files
+**** B_Books
+- optimize .pdf files for size
+- remove useless elements from safaribooks books
+*** scripts:
+**** separate_torrent_types
+**** separate_video_files
+**** separate_videos_subs_files
+**** get_videos_info_csv
+**** check_for_subtitles
+**** embed_subtitles
+**** separate_to_upload
+**** separate_based_on_dimension
+**** resize_videos
+**** convert_videos
+**** concatenate_videos
+**** upload_videos
+*** manual labor
+**** move folders from 01_separated_torrent_types to 02_unprocessed_videos/
+**** call separate_video_files
+**** move folders from 02_unprocessed_videos/ to  04_get_video_info/
+**** call get_video_info_csv
+* pipeline diagram
+.                    strait_out_of_torrents/
+.                               |
+.                               |   > run remove_special_characters.py
+.                               |
+.                               |   > run separate_torrent_types.py
+.                               v
+.                   separated_torrent_types/
+.                    /         |         \
+.         -----------          |          -------------------
+.         |                    |                            |
+.         v                    v                            v
+.      videos/               audio/                       books/
+.        |                     |                            |
+.        v                     V                            V
+. unprocessed_videos/         ...                          ...
+.        |
+.        |   > run separate_videos_subs_files.py
+.        v
+. unprocessed_videos/ 0000_videos_separated/
+.        |
+.        |   (move manually)
+.        v
+. get_videos_infos_csv/
+.        |
+.        |   > run get_videos_infos_csv.py
+.        v
+. get_video_info_csv/ 0000_info_extracted/
+.        |
+.        |   (move manually)
+.        v
+. check_for_subtitles/
+.        |  \_______
+.        |          \ > run check_for_subtitles.py
+.        |          |
+.        | (no)     | (yes)
+.        |          v
+.        |       embed_subtitles/
+.        |               |
+.        |               |   > run embed_subtitles.py
+.        |               v
+.        |       embed_subtitles/ 0000_subtitles_embeded/
+.        |               |
+.        |               |   (move manually)
+.        |               v
+. separate_videos_to_upload/ ----------------------------------------------------------------\
+.        |                                                                                   |
+.        |   > run separate_to_upload.py                                                     |
+.        v                                                                                   |
+. separate_videos_12_hours/                                                                  |
+.        |    \_____________________________________                                         |
+.        |                                          \                                        |
+.        |   > run separate_videos_12_hours.py       |                                       |
+.        |                                           |                                       |
+.        | (if less than 12 hours)                   |  (if more than 12 hours)              |
+.        |                                           |                                       |
+.        v                                           V                                       |
+. separate_videos_12_hours/ 0000_short/       separate_videos_12_hours/ 0000_long/           |
+.               |                              |                                             |
+.               |  (move manually)             |   > run separate_videos_in_sections.py      |
+.               |                              V                                             |
+.               |                         videos_separated_in_sections/                      |
+.               |                              |                                             |
+.               |                              | (move manullay)                             |
+.               v                              V                                             |
+.              separate_videos_different_dimensions/                                         |
+.                   |                       \                                                |
+.                   |                        \                                               |
+.                   |                        | > run separate_videos_different_dimensions.py |
+.                   |                        |                                               |
+.                   |  (yes)                 |  (no)                                         |
+.                   V                        |                                               |
+. resize_different_dimensions/               |                                               |
+.                          |                 |                                               |
+. > run resize_videos.py   |                 |                                               |
+.                          V                 v                                               /
+.                        AVIDEMUX_concatenate_videos/ same_dimensions/                      /
+.                          |                                                               /
+.                          |    > run concatenate_videos.py                               /
+.                          V                                                             /
+. AVIDEMUX_concatenate_videos/ concatenated/                                            /
+.      |                          \____________________________                        /
+.      | (move manualy)                 (move manually)        \                      /
+.      | if vieos are mesed up          if videos are ok        \                    /
+.      V                                                         \                  /
+. convert_videos/                                                 \                /
+.             |                                                    |              /
+.             |   > run convert_videos.py                          |             /
+.             V                                                    |            /
+. AVIDEMUX_concatenate_videos/ same_codecs/                        |            |
+.      |                                                           V            V
+.      |  > run concatenate_videos.py                           YT_upload_to_youtube/
+.      |                                                                |       |
+.      \___________________________       > run upload_to_youtube.py    |       |
+.                                  \_______________________                V       |
+.                                                          \        youtube.com  |
+.                                                           |                   |
+.                                                           V                   V
+.                                                       YT_upload_to_youtube/ 0000_uploaded/
+.                                                                       |
+.                                                                       |  > run compres_files.py
+.                                                                       V
+.                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
+* scripts for pipeline
+** TODO remove_special_character.py
+** STRT separate_torrent_types.py
+*** logic
+**** get all files and folders in cwd
+**** separate files from folders
+**** with the files put each one with a folder of the same name
+**** append the new folders to the separated fodlers
+**** for each folder
+***** get all files recursivelly
+***** make a dict with file extension as key and number of files as value
+***** for each file
+****** put the extension in the dict as key
+****** increment the value of the extension if it is already added
+***** for each key in the dict
+****** get the biggest value of them all
+****** store the extension (key) of the biggest
+***** check the extension against a table of expected extension
+***** move the folder to the appropriate category folder
+** DONE separate_videos_subs_files.py
+*** logic [9/9] [100%]
+**** DONE get the path of all files and folders recursivelly
+**** DONE filter only files
+**** DONE create 3 lists: videos, subs, files
+**** DONE for each file:
+***** DONE if the extension is a video extension
+video extensions =
+.WEBM
+.MPG, .MP2, .MPEG, .MPE, .MPV
+.ogv, .ogg
+.MP4, .M4P, .M4V
+.AVI
+.WMV
+.MOV, .QT
+.FLV, .SWF, .f4v
+.flv .f4v .f4p .f4a .f4b
+AVCHD
+.rmvb, .rm
+.vob
+.mkv
+.MTS, .M2TS, .TS
+.mng
+.gifv
+.gif
+.drc
+.xvid
+.asf
+.amv
+.mpg, .mpeg, .m2v
+.svi
+.3gp
+.mxf
+.roq
+.nsv
+.3g2
+
+video_extensions = ['.mp4', '.m4v', '.f4v', '.mkv', '.ts', '.avi', '.webm', '.flv', '.mov', '.wmv', '.vob', '.rmvb']
+
+maybe more
+****** add the file to the videos list
+***** DONE if the extension is a subtitle extension
+sub extensins = srt, vtt, ssa, ttml, sbv, dfxp, txt*
+****** add the file to the subs list
+***** DONE else
+****** add the file to the files list
+**** DONE create the folders
+videos/, subs/ and files/
+***** if any of the corresponding lists are empty
+don't create a folder
+**** DONE for each video in the videos list:
+***** separate the part of the path that does not have the cwd
+***** add the cwd + /videos/ + "the last part"
+***** substitute the element for a tupple (src_path, dst_path)
+**** DONE do the same as above to subs
+**** DONE do the same as above to files
+**** DONE for each of the lists move/rename the files from src > dst
+** DONE get_videos_info_csv.py
+*** logic
+**** DONE check if the folder has the right structure
+contains: videos/
+***** if there is no videos/ folder but there are videos in the root folder
+use the root folder as woring directory
+***** better yet get info for both
+**** DONE get every video into a list
+**** DONE naturally sort the list
+**** DONE for each video:
+***** DONE create an empty dict
+***** DONE get wether or not the video could be open
+working
+***** DONE video count (passed as parameter)
+***** DONE filename
+***** DONE get the full path of the file
+***** DONE convert length_sec to length_hour
+***** DONE get the number of frames in the video
+frame count
+***** DONE get length_sec
+***** DONE get width
+***** DONE get height
+***** DONE get aspect_ratio
+***** DONE get the size of the video
+***** DONE add all the variables to the dict
+**** DONE use subprocess
+**** DONE get the accumulated values
+***** DONE get the accumulated_duration_in_seconds
+***** DONE get the accumulated number of frames of the video
+***** DONE convert accumulated_duration_in_seconds in accumulated_duration_in_hours
+***** DONE get the accumulated_size
+***** DONE get the accumulated_size_bytes
+**** DONE create the csv file
+***** DONE write on the csv file
+to be used later by other scripts
+**** DONE create org file
+***** DONE write .org file
+to be used later by me to debug or fix problems
+
+each header containing a table
+****** DONE date/time of creation
+example:
+#+DATE: <2006-11-01 Wed 19:15>
+****** DONE top level header: name of the folder
+****** DONE sub header #1: durations
+alph_ord?
+working
+name, duration_sec, duration_hours, acc_duration, acc_duration_hours
+******* shrink the header names
+use:
+acc_dur_hrs, dur_hrs, acc_dur_sec, dur_sec
+****** DONE sub header #3: dimensions
+alph_ord, working
+name, width, height, aspect_ratio
+******* shrink header names
+a_r = aspect ratio
+a_r_fr = aspect ratio fraction
+
+****** DONE sub header #4: size
+alphabetical_order
+name, size, acc_size
+**** DONE add video count to files
+
+*** note
+** TODO check_for_subtitles.py
+** TODO embed_subtitles.py
+** TODO separate_to_upload.py
+** TODO separate_videos_12_hours.py
+** TODO separate_videos_in_sections.py
+** TODO separate_videos_different_dimensions.py
+** TODO resize_videos.py
+** TODO concatenate_videos.py
+*** logic
+**** get all videos in the converted/ folder if it exists
+**** get all videos in the videos/ folder if it doesn't
+**** ...
+should I create a .py file to run the avidemux command with?
+
+** TODO convert_videos.py
+** TODO upload_to_youtube.py
+** TODO compres_files.py
+* folders for pipeline
+** strait_out_of_torrents/
+** separated_torrent_types/
+*** videos/
+*** audio/
+*** books/
+** unprocessed_videos/
+*** 0000_videos_separated/
+** get_videos_infos_csv
+*** 0000_info_extracted/
+** check_for_subtitles/
+** embed_subtitles/
+*** 0000_subtitles_embeded/
+** separate_videos_to_upload/
+** separate_videos_12_hours/
+*** short/
+*** long/
+*** no_data/
+** videos_separated_in_sections/
+** separate_videos_different_dimensions/
+** esize_different_dimensions/
+** AVIDEMUX_concatenate_videos/
+*** same_dimensions/
+*** same_codecs/
+*** concatenated/
+** YT_upload_to_youtube/
+*** 0000_uploaded/
+**** 0000_files_compressed/
+* things to try
+** TODO import module from deployed file
+
+will the imported module work when the script is moved?
+
+do I need to put both scripts in the same folder?
+
+can the module be in a nested folder?
+
+** DONE try using py.test module
+** DONE setup the project using setuptools
+
+too complicated
+
+** DONE try using moviepy to concatenate videos
+
+worse idea ever, it reencodes the video if it is different
+and it becomes unwatchable, and it doesn't give a sign of
+failure
+** TODO try using avidemux python scripting to concatenate videos
+do the process outlined in this video
+
+https://www.youtube.com/watch?v=pxMeIU-ghXY&t=1445s
+
+instead of calling avidemux with parameters for each video
+
+*** findings
+**** I can open avidemux on the command line with --help to get help info on arguments
+it prints in the middle of alot of junk but it is there
+**** use the flag --run script_name.py to "load a project"
+a project in this case is a series of steps to be done in the gui program
+**** the flag --quit can be used to quit the program when done
+**** need to install libvdpau-va-gl1 from apt
+sudo apt install libvdpau-va-gl1
+**** the popup saying the codecs are different doesn't appear now
+but the video does not get concatenated
+*** steps
+**** get the current working directory
+**** get all the videos in the videos/ folder
+**** sort the videos
+**** contents of project.py:
+***** get an Avidemux() instance
+avidemux = Avidemux()
+***** load each video
+if not avidemux.loadVideo("/path/to/video.mp4"):
+    raise("Cannot load /path/to/video.mp4")
+***** clear segments
+avidemux.clearSegments()
+***** add a segment from each video
+avidemux.addSegment([video index], [start](always 0), [end](number of frames in the video))
+***** add markers for start and end
+avidemux.markerA = 0
+avidemux.markerB = [accumulated number of frames of last video]
+***** add codec info
+avidemux.videoCodec("Copy")
+***** clear audio tracks
+avidemux.audioClearTracks()
+***** set language for sound tracks
+avidemux.setSourceTrackLanguage(0, "und")
+***** check if video has audio track
+if adm.audioTotalTracksCount() <= 0:
+    raise("Cannot add audio track 0, total tracks: " + str(adm.audioTotalTracksCount()))
+***** add audio info
+adm.audioAddTrack(0)
+adm.audioCodec(0, "copy")
+adm.audioSetDrc(0, 0)
+adm.audioSetShift(0, 0, 0)
+***** container info
+adm.setContainer("MKV",
+                "forceAspectRatio=False",
+                "displayWidth=1280",
+                "displayAspectRatio=2",
+                "addColourInfo=False",
+                "colMatrixCoeff=2",
+                "colRange=0",
+                "colTransfer=2",
+                "colPrimaries=2")
+**** make project.py file in the directory
+*** reference/search links:
+**** Avidemux Append Loop Script
+https://www.youtube.com/watch?v=LI0DagwkLqg
+
+Here's a script I used to append several Everlong gameplay clips, which is far less error prone than appending each video manually.
+
+For most of the script, I just copied and pasted from generated scripts. The only part I did was the for loop to append all of the numbered videos in the folder.
+
+Whenever I need to reuse this script, I just change the dir and vid_count variables.
+
+***** script
+
+#+NAME: ever33.py
+#+BEGIN_SRC python
+
+#PY  <- Needed to identify #
+#--automatically built--
+
+adm = Avidemux()
+dir = "C:/Users/Example/Videos/EverlongVids/P33/"
+vid_count = 19
+container = ".flv"
+adm.loadVideo(dir + "01" + container)
+
+for i in range(2, vid_count + 1):
+   path = dir
+   if i < 10:
+      path = path + "0"
+   path = path + str(i) + container
+   adm.appendVideo(path)
+
+adm.videoCodec("x264",
+               "useAdvancedConfiguration=True",
+               "general.params=AQ=15",
+               "general.threads=0",
+               "general.preset=ultrafast",
+               "general.tuning=",
+               "general.profile=baseline",
+               "general.fast_decode=False",
+               "general.zero_latency=False",
+               "general.fast_first_pass=True",
+               "general.blueray_compatibility=False",
+               "general.fake_interlaced=False",
+               "level=-1",
+               "vui.sar_height=1",
+               "vui.sar_width=1",
+               "MaxRefFrames=3",
+               "MinIdr=25",
+               "MaxIdr=250", "i_scenecut_threshold=40",
+               "intra_refresh=False",
+               "MaxBFrame=3",
+               "i_bframe_adaptive=1",
+               "i_bframe_bias=0",
+               "i_bframe_pyramid=2",
+               "b_deblocking_filter=True",
+               "i_deblocking_filter_alphac0=0",
+               "i_deblocking_filter_beta=0",
+               "cabac=True",
+               "interlaced=False",
+               "constrained_intra=False",
+               "tff=True",
+               "fake_interlaced=False",
+               "analyze.b_8x8=True",
+               "analyze.b_i4x4=True",
+               "analyze.b_i8x8=True",
+               "analyze.b_p8x8=True",
+               "analyze.b_p16x16=False",
+               "analyze.b_b16x16=False",
+               "analyze.weighted_pred=2",
+               "analyze.weighted_bipred=True",
+               "analyze.direct_mv_pred=1",
+               "analyze.chroma_offset=0",
+               "analyze.me_method=1",
+               "analyze.me_range=16",
+               "analyze.mv_range=-1",
+               "analyze.mv_range_thread=-1", "analyze.subpel_refine=7",
+               "analyze.chroma_me=True",
+               "analyze.mixed_references=True",
+               "analyze.trellis=1",
+               "analyze.psy_rd=1.000000",
+               "analyze.psy_trellis=0.000000",
+               "analyze.fast_pskip=True",
+               "analyze.dct_decimate=True",
+               "analyze.noise_reduction=0",
+               "analyze.psy=True",
+               "analyze.intra_luma=11",
+               "analyze.inter_luma=21",
+               "ratecontrol.rc_method=0",
+               "ratecontrol.qp_constant=0",
+               "ratecontrol.qp_min=10",
+               "ratecontrol.qp_max=51",
+               "ratecontrol.qp_step=4",
+               "ratecontrol.bitrate=0",
+               "ratecontrol.rate_tolerance=1.000000",
+               "ratecontrol.vbv_max_bitrate=0",
+               "ratecontrol.vbv_buffer_size=0",
+               "ratecontrol.vbv_buffer_init=1",
+               "ratecontrol.ip_factor=1.400000",
+               "ratecontrol.pb_factor=1.300000",
+               "ratecontrol.aq_mode=1",
+               "ratecontrol.aq_strength=1.000000",
+               "ratecontrol.mb_tree=True",
+               "ratecontrol.lookahead=40")
+adm.audioClearTracks()
+adm.setSourceTrackLanguage(0,"
+unknown")
+adm.audioAddTrack(0)
+adm.audioCodec(0, "LavAAC", "bitrate=160");
+adm.audioSetDrc(0, 0)
+adm.audioSetShift(0, 0,0)
+adm.setContainer("MP4V2", "optimize=0", "add_itunes_metadata=0")
+
+#+END_SRC
+
+**** automkv.py
+https://fossies.org/linux/avidemux/scripts/automkv.py
+
+it is a conversion script with popup to choose aspect ratio
+
+***** script
+
+#+NAME: automkv.py
+#+BEGIN_SRC python
+
+# simple tinypy script that creates a MKV/AC3 file from input
+ #  a PAL DVB capture
+
+ adm=Avidemux()
+ gui=Gui()
+ #** Audio **
+ adm.audioReset()
+ adm.audioCodec("LavAC3",192)
+ #** Muxer **
+ adm.setContainer("MKV")
+ # Do we need to resize ?
+ width=adm.getWidth()
+ height=adm.getHeight()
+ fps=adm.getFps1000()
+ aspectW=adm.getPARWidth()
+ aspectH=adm.getPARHeight()
+ print('Aspect: ',aspectW,', ',aspectH,'\n')
+ #
+ aspect=(aspectW,aspectH)
+ ar=0
+ if aspect == (1,1):
+         ar=0
+ elif aspect == (16,15):
+         ar=1
+ elif aspect == (64,45):
+         ar=2
+ else:
+         print('Cannot guess aspect ratio')
+ ####################################################
+ # Create a display menu to select Aspect ratio
+ # And resize type 576p, 720p, ...
+ ####################################################
+ listOfWidth=[720,1280]
+ mnuSourceRatio = DFMenu("Source Aspect Ratio:");
+ mnuSourceRatio.addItem("1:1")
+ mnuSourceRatio.addItem("4:3")
+ mnuSourceRatio.addItem("16:9")
+ mnuSourceRatio.index=ar
+
+ mnuResize = DFMenu("Video to create :");
+ mnuResize.addItem("720 pixels")
+ mnuResize.addItem("1280 pixels")
+
+ toggleDeint = DFToggle("Deinterlace:");
+
+ dlgWizard = DialogFactory("Automkv Source Aspect Ratio ");
+ dlgWizard.addControl(mnuSourceRatio);
+ dlgWizard.addControl(mnuResize);
+ dlgWizard.addControl(toggleDeint);
+
+ res=dlgWizard.show()
+ if res==1:
+         ar=mnuSourceRatio.index
+         rsz=listOfWidth[mnuResize.index]
+         deinterlace=toggleDeint.value
+ else:
+         return
+ #################################################################
+ #  We have resize width, get resize Height from aspect ratio
+ #################################################################
+ if(ar==0) : # 1:1
+         newHeight=rsz
+ elif(ar==1): # 4:3
+         newHeight=(rsz*3)/4
+ elif(ar==2): # 16:9
+         newHeight=(rsz*9)/16
+ # roundup newHeight to closer multiple of 16
+ newHeight=newHeight>>4
+ newHeight=newHeight<<4
+ print("The end ar:",ar,"Width :",rsz," height:",newHeight)
+ # if deinterlace is set do it with vdpau
+ if(deinterlace):
+         str1="targetWidth="+str(rsz)
+         str2="targetHeight="+str(newHeight)
+         adm.addVideoFilter("vdpauDeint","resizeToggle=True","deintMode=2",str1,str2)
+ #else plain resize
+ else:
+         str1="width="+str(rsz)
+         str2="height="+str(newHeight)
+         adm.addVideoFilter("swscale",str1,str2,"algo=2","sourceAR=1","targetAR=1")
+
+ # Set video codec
+ adm.videoCodec("x264","params=AQ=18","MaxRefFrames=2","MinIdr=10","MaxIdr=150","threads=99","_8x8=True","_8x8P=True","_8x8B=True","_4x4=True" ,"_8x8I=True","_4x4I=True","MaxBFrame=2","profile=30","CABAC=True","Trellis=True")
+
+ # popup user
+ popupString="All set for "+str(rsz)+" wide video, x264/AC3/MKV."
+ if(deinterlace):
+         popupString=popupString+"\nDeinterlace is on (vdpau)."
+ gui.displayInfo("Ok",popupString)
+
+#+END_SRC
+
+**** others
+***** clemthi / avidemux-scripting / bulk-convert.py
+uses python
+
+****** script
+
+#+NAME: bulk-convert.py
+#+BEGIN_SRC python
+
+adm = Avidemux()
+gui = Gui()
+
+# file extension of input files
+input_ext = 'AVI'
+
+# file extension for output files
+output_ext = 'mp4'
+
+def convert_file(input_file, output_folder):
+    output_file = output_folder + '/' + basename(input_file)
+
+    adm.loadVideo(input_file)
+
+    # set the video codec
+    # adm.videoCodec("copy")
+    # video perso
+    adm.videoCodec("x264", "useAdvancedConfiguration=True", "general.params=AQ=25", "general.threads=0", "general.preset=ultrafast", "general.tuning=none", "general.profile=baseline", "general.fast_decode=False", "general.zero_latency=False"
+    , "general.fast_first_pass=True", "general.blueray_compatibility=False", "general.fake_interlaced=False", "level=31", "vui.sar_height=1", "vui.sar_width=1", "MaxRefFrames=2", "MinIdr=23", "MaxIdr=250"
+    , "i_scenecut_threshold=40", "intra_refresh=False", "MaxBFrame=3", "i_bframe_adaptive=1", "i_bframe_bias=0", "i_bframe_pyramid=2", "b_deblocking_filter=True", "i_deblocking_filter_alphac0=0", "i_deblocking_filter_beta=0"
+    , "cabac=True", "interlaced=False", "constrained_intra=False", "tff=True", "fake_interlaced=False", "analyze.b_8x8=True", "analyze.b_i4x4=True", "analyze.b_i8x8=True", "analyze.b_p8x8=False", "analyze.b_p16x16=True"
+    , "analyze.b_b16x16=True", "analyze.weighted_pred=1", "analyze.weighted_bipred=True", "analyze.direct_mv_pred=1", "analyze.chroma_offset=0", "analyze.me_method=1", "analyze.me_range=16", "analyze.mv_range=-1"
+    , "analyze.mv_range_thread=-1", "analyze.subpel_refine=6", "analyze.chroma_me=True", "analyze.mixed_references=True", "analyze.trellis=1", "analyze.psy_rd=1.000000", "analyze.psy_trellis=0.000000", "analyze.fast_pskip=True"
+    , "analyze.dct_decimate=True", "analyze.noise_reduction=0", "analyze.psy=True", "analyze.intra_luma=11", "analyze.inter_luma=21", "ratecontrol.rc_method=0", "ratecontrol.qp_constant=0", "ratecontrol.qp_min=0"
+    , "ratecontrol.qp_max=69", "ratecontrol.qp_step=4", "ratecontrol.bitrate=0", "ratecontrol.rate_tolerance=1.000000", "ratecontrol.vbv_max_bitrate=0", "ratecontrol.vbv_buffer_size=0", "ratecontrol.vbv_buffer_init=0"
+    , "ratecontrol.ip_factor=1.400000", "ratecontrol.pb_factor=1.300000", "ratecontrol.aq_mode=1", "ratecontrol.aq_strength=1.000000", "ratecontrol.mb_tree=True", "ratecontrol.lookahead=30")
+
+    adm.audioClearTracks()
+    adm.setSourceTrackLanguage(0,"eng")
+    adm.audioAddTrack(0)
+
+    # set the audio codec
+    # adm.audioCodec(0, "copy")
+    adm.audioCodec(0, "FDK_AAC", "bitrate=128", "afterburner=True", "profile=2", "sbr=False");
+
+    adm.audioSetDrc(0, 0)
+    adm.audioSetShift(0, 0,0)
+
+    # adm.setContainer("MKV", "forceDisplayWidth=False", "displayWidth=1280", "displayAspectRatio=0")
+    adm.setContainer("MP4V2", "optimize=0", "add_itunes_metadata=0")
+    adm.save(output_file)
+
+def main():
+    input_folder = gui.dirSelect("Select the source folder")
+    files = get_folder_content(input_folder, input_ext)
+
+    if files is None:
+        gui.displayError("Error", "Folder doesn't containt any ." + input_ext " file")
+        return 0
+
+    output_folder = gui.dirSelect("Select the output folder")
+
+    for one_file in files:
+            convert_file(one_file, output_folder)
+
+    print("Done")
+
+main()
+
+#+END_SRC
+***** avidemux wiki: scripting tutorial (javascript) (outdated)
+https://www.avidemux.org/admWiki/doku.php?id=tutorial:scripting_tutorial
+
+***** sourceforge documentation for avidemux (more recent?)
+gives exemples
+http://avidemux.sourceforge.net/doc/en/script.xml.html
+
+***** avidemux wiki: batch processing
+only bash(already tried, didnt quite work) and javascript
+https://www.avidemux.org/admWiki/doku.php?id=tutorial:batch_processing
+
+**** Using tinypy scripting documentation from wiki
+***** documentation fo the functions:
+****** Avidemux Class
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:avidemux
+****** GUI Class
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:gui
+
+***** Skeleton for batch processing
+
+
+#+NAME: bulk-convert.py
+#+BEGIN_SRC python
+
+#
+# Load all the files in c:\tmp with .mp4 extension.
+# That's it.
+#
+ext="mp4"
+inputFolder="c:\\tmp\\"
+#
+def convert(filein):
+    if(0 == adm.loadVideo(filein)):
+        ui.displayError("oops","cannot load "+filein)
+        raise
+    print("Done")
+
+#
+# Main
+#
+ui=Gui()
+adm=Avidemux()
+#
+list=get_folder_content(inputFolder,ext)
+if(list is None):
+    raise
+for i in list:
+        convert(i)
+print("Done")
+
+#+END_SRC
+***** Enhancing batch processing
+https://www.avidemux.org/admWiki/doku.php?id=tinypy:tinypybatch2
+
+** TODO try using pathlib module to handle files
+** TODO check the best way of getting video data
+** DONE remember how to cleanly get dict values into csv file
+https://www.youtube.com/watch?v=q5uM4VKywbA
+
+dictionary reader and writer:
+
+#+NAME write_dict_into_csv.py
+#+BEGIN_SRC python
+
+# raed a csv
+import csv
+with open("output.csv", "w") as output_file:
+    fieldnames = ["first_name", "last_name", "email"]
+
+    csv_writer = csv.DictWriter(output_file,
+                                fieldnames=fieldnames,
+                                delimiter=" | ")
+
+    csv_writer.writeheader()
+
+    for line in csv_reader:
+       # to delete a field before writing use:
+       # del line['email']
+
+       csv_writer.writerow(line)
+
+#+END_SRC
+
+#+NAME read_scv_into_dict.py
+#+BEGIN_SRC python
+
+# raed a csv
+import csv
+with open("file.csv", "r") as scv_file:
+    scv_reader = csv.DictReader(scv_file)
+
+    for ordered_dict in scv_reader:
+        prin(ordered_dict)
+#+END_SRC
+
+** TODO capture the output of the programs like ffmpeg and avidemux and put them into text files and also display them while they run
+** DONE remember how to use multiprocessing
+
+using the concurrent.futures std library
+
+*** ProcessPoolExecutor:
+
+#+BEGIN_SRC python
+
+import concurrent.futures
+
+def do_something(seconds):
+    time.sleep(seconds)
+    return "done sleeping"
+    ...
+
+with concurrent.futures.ProcessPoolExecutor() as executor:
+    # execute just one subprocess(not very useful)
+    # sxecutor.submit() schedules a function to be executed
+    # and returns a futures object
+    f1 = executor.submit(do_something, [args])
+    print(f1.result())
+
+    # executing a list of processies
+    # one for each element of the list
+    # using list comprehension:
+    results = [executor.submit(do_something, 1) for _ range(10)]
+    # using a loop: (translated by me, might be wrong)
+    results = []
+    for _ in range(10):
+       results.append(executor.submit(do_something, 1))
+
+    # prints the results in the order they are completed
+    for f in concurrent.futures.as_completed(results):
+        print(f.result())
+        ...
+
+    ...
+
+    # using ProcessPoolExecutor.map():
+
+    # return the items in the order they were started
+    secs = [1,2,3,4,5]
+    results = executor.map(do_something, secs)
+
+    for result in results:
+        print(result)
+        # handle exceptions here, not inside the function
+#+END_SRC

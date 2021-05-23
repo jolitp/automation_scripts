@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# my own
+**/test_bed/**
+*.mp4
+*.mkv
+testing_things_out/**
+
+.vscode/**
+.vscode/*
+.vscode/
