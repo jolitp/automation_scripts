@@ -132,6 +132,7 @@ dmypy.json
 **/test_bed/**
 *.mp4
 *.mkv
+*.webm
 testing_things_out/**
 
 .vscode/**
