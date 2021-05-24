@@ -328,6 +328,10 @@ there should be better ways of checking if the convertion and concatenation is f
 like checking the number of videos in the converted directory against the videos directory
 
 there is also the problem of a concatenated video being invalid because some converted video is corrupted
+** TODO todos
+*** TODO add rich traceback to all scripts
+*** TODO add rich printing to all scripts
+
 * pipeline
 ** folder hierarcy:
 *** auto_process
@@ -598,6 +602,11 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 .                                                                       V
 .                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
 * scripts for pipeline
+** TODO utils
+put common functionality used by other scripts here
+*** functionality
+**** getting items on a directory
+**** filtering videos, subtitles, folders from a list of items
 ** DONE remove_special_characters.py
 *** steps
 **** DONE function: remove_special_characters(input:srt)
@@ -622,7 +631,6 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 **** use click to turn the script into a CLI
 ***** parameters:
 -r/--recursive : change the names recursivelly (it is the default for now)
-
 ** STRT call_command_in_all_folders.py
 *** steps
 **** DONE get a list of the arguments passed to the script
@@ -778,7 +786,7 @@ name, size, acc_size
 *** note
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
-** DONE separate_to_upload.py
+** STRT separate_to_upload.py
 separate the folders of videos that have less than 15 videos in it to be uploaded to youtube
 *** logic
 **** DONE get all videos in root folder
@@ -788,17 +796,18 @@ separate the folders of videos that have less than 15 videos in it to be uploade
 ***** DONE move fodlder to YT_upload_to_youtube/
 **** DONE else
 ***** DONE move folder to separate_videos_12_hours/
-** TODO separate_videos_12_hours.py
+**** TODO make it not create folders that are not needed
+** STRT separate_videos_12_hours.py
 *** logic
-**** if there isd no csv file move folder to 0000_no_data/
-**** read csv file from hidden folders into list of dicts
-**** get the last element of the list
-**** get the accumulated duration of the video
-**** if duration > 12 hours or 43200 seconds
+**** TODO if there is no csv file move folder to 0000_no_data/
+**** DONE read csv file from hidden folders into list of dicts
+**** TODO get the last element of the list
+**** TODO get the accumulated duration of the video
+**** TODO if duration > 12 hours or 43200 seconds
 12 hours = 43200 seconds
-***** move folder to 0000_long/
-**** else:
-***** move folder to 0000_short/
+***** TODO move folder to 0000_long/
+**** TODO else:
+***** TODO move folder to 0000_short/
 ** TODO separate_videos_in_sections.py
 ** TODO separate_videos_different_dimensions.py
 ** TODO resize_videos.py
