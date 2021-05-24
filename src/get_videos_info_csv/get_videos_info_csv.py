@@ -72,7 +72,7 @@ def filter_subtitles(
     ]
     return filter_files_by_extension(files, subtitles_extensions)
     ...
-# endregion filter_videos
+# endregion filter_subtitles
 
 
 # TODO put function in a library
@@ -296,7 +296,7 @@ def process_folder(
     """process the videos that are in the root directory
 
     Args:
-        cwd (str): the current working directory
+        folder (str): the path to the folder to be processed
 
         immediate_videos (list):
     """
@@ -436,6 +436,7 @@ def create_org_file(
             f'{year:04d}-{month:02d}-{day:02d} {day_abbr} {hour:02d}:{minute:02d}'
         date_line = "#+DATE: <" + formatted_date + ">"
 
+# TODO refactor: remove repetition
         duration_table = ""
         for index, infos in enumerate(infos_list):
             if index == 0:
@@ -457,28 +458,52 @@ def create_org_file(
                     "| " + \
                     "| |\n"
 
-            try:
-                alpha_ord = infos["alphabetical_order"]
-                working = infos["working"]
-                name = infos["filename"]
-                dur_sec = int(infos["duration_seconds"])
-                dur_hr = infos["duration_hours"]
-                acc_dur_sec = infos["accumulated_duration_seconds"]
-                acc_dur_hr = infos["accumulated_duration_hours"]
-                duration_table \
-                    += f"| {alpha_ord}" + \
-                        f"| {working}" + \
-                        f"| {name}" + \
-                        f"| {dur_sec}" + \
-                        f"| {dur_hr}" + \
-                        f"| {acc_dur_sec:.3f}" + \
-                        f"| {acc_dur_hr} | \n"
-            except Exception:
-                print("|   infos = [")
-                for info in infos:
-                    print(info)
-                print("]")
-            ...
+            alpha_ord = infos["alphabetical_order"]
+            working = infos["working"]
+            name = infos["filename"]
+            dur_sec = int(infos["duration_seconds"])
+            dur_hr = infos["duration_hours"]
+            acc_dur_sec = infos["accumulated_duration_seconds"]
+            acc_dur_hr = infos["accumulated_duration_hours"]
+            duration_table \
+                += f"| {alpha_ord}" + \
+                    f"| {working}" + \
+                    f"| {name}" + \
+                    f"| {dur_sec}" + \
+                    f"| {dur_hr}" + \
+                    f"| {acc_dur_sec:.3f}" + \
+                    f"| {acc_dur_hr} | \n"
+
+        frames_table = ""
+        for index, infos in enumerate(infos_list):
+            if index == 0:
+                frames_table += \
+                    "| alpha_ord " + \
+                    "| working " + \
+                    "| name " + \
+                    "| fr_count " + \
+                    "| fps " + \
+                    "| acc_fr_cnt |\n"
+
+                frames_table += \
+                    "| " + \
+                    "| " + \
+                    "| " + \
+                    "| " + \
+                    "| |\n"
+
+            alpha_ord = infos["alphabetical_order"]
+            name = infos["filename"]
+            frame_count = infos["frame_count"]
+            fps = infos["fps"]
+            acc_frame_count = infos["accumulated_frame_count"]
+            frames_table \
+                += f"| {alpha_ord}" + \
+                    f"| {working}" + \
+                    f"| {name}" + \
+                    f"| {frame_count}" + \
+                    f"| {fps}" + \
+                    f"| {acc_frame_count} | \n"
 
         dimension_table = ""
         for index, infos in enumerate(infos_list):
@@ -542,6 +567,8 @@ def create_org_file(
         output_file.write(f"* {folder_name}\n")
         output_file.write(f"** duration table\n")
         output_file.write(duration_table)
+        output_file.write(f"** frames table\n")
+        output_file.write(frames_table)
         output_file.write(f"** dimension_table\n")
         output_file.write(dimension_table)
         output_file.write(f"** size_table\n")
@@ -661,7 +688,6 @@ def get_accumulated_values(
                 print("      {} : {}".format(key, infos[key]))
         print("]")
         print("| ):                                                                           |")
-
 
     accumulated_duration_seconds = 0
     # accumulated_duration_hours = convert()
