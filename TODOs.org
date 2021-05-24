@@ -598,7 +598,44 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 .                                                                       V
 .                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
 * scripts for pipeline
-** TODO remove_special_character.py
+** DONE remove_special_characters.py
+*** steps
+**** DONE function: remove_special_characters(input:srt)
+***** DONE remove the extension if its a file, put in basename
+***** DONE put the extension on ext
+***** DONE crate an output string
+***** DONE for each character of basename:
+****** DONE check if character is a letter or a number
+******* DONE add to output
+****** DONE else:
+******* DONE add a <space> to output
+***** DONE merge output and .ext into output
+***** DONE return output
+**** DONE get current working directory
+**** DONE get a list of every file in the directory
+**** DONE get a list of every folder in the directory
+**** DONE replace the starting ./ for /
+**** DONE map a new list of files with remove_special_characters() using subprocess
+**** DONE map a new list of folders with remove_special_characters() using subprocess
+**** DONE rename files
+*** improvements:
+**** use click to turn the script into a CLI
+***** parameters:
+-r/--recursive : change the names recursivelly (it is the default for now)
+
+** STRT call_command_in_all_folders.py
+*** steps
+**** DONE get a list of the arguments passed to the script
+**** DONE get current working directory
+**** DONE get all items in the directory
+**** DONE filter all items to have only folders
+**** TODO for each folder
+***** DONE print the folder it is in
+***** TODO for arguments 1 - n
+****** DONE change the directory to the folder directory, to change cwd
+****** DONE call the command from argument
+****** TODO print the command being called
+***** TODO print that this folder is done
 ** STRT separate_torrent_types.py
 *** logic
 **** get all files and folders in cwd
@@ -655,6 +692,8 @@ AVCHD
 
 video_extensions = ['.mp4', '.m4v', '.f4v', '.mkv', '.ts', '.avi', '.webm', '.flv', '.mov', '.wmv', '.vob', '.rmvb']
 
+.omg
+
 maybe more
 ****** add the file to the videos list
 ***** DONE if the extension is a subtitle extension
@@ -692,7 +731,7 @@ working
 ***** DONE convert length_sec to length_hour
 ***** DONE get the number of frames in the video
 frame count
-***** DONE get length_sec
+***** DONE get duration_sec
 ***** DONE get width
 ***** DONE get height
 ***** DONE get aspect_ratio
@@ -739,18 +778,99 @@ name, size, acc_size
 *** note
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
-** TODO separate_to_upload.py
+** DONE separate_to_upload.py
+separate the folders of videos that have less than 15 videos in it to be uploaded to youtube
+*** logic
+**** DONE get all videos in root folder
+**** DONE get all videos in videos/ folder
+**** DONE get the length of the list
+**** DONE if length is less than 15
+***** DONE move fodlder to YT_upload_to_youtube/
+**** DONE else
+***** DONE move folder to separate_videos_12_hours/
 ** TODO separate_videos_12_hours.py
+*** logic
+**** if there isd no csv file move folder to 0000_no_data/
+**** read csv file from hidden folders into list of dicts
+**** get the last element of the list
+**** get the accumulated duration of the video
+**** if duration > 12 hours or 43200 seconds
+12 hours = 43200 seconds
+***** move folder to 0000_long/
+**** else:
+***** move folder to 0000_short/
 ** TODO separate_videos_in_sections.py
 ** TODO separate_videos_different_dimensions.py
 ** TODO resize_videos.py
-** TODO concatenate_videos.py
-*** logic
-**** get all videos in the converted/ folder if it exists
-**** get all videos in the videos/ folder if it doesn't
-**** ...
-should I create a .py file to run the avidemux command with?
+** DONE concatenate_videos.py
 
+*** findings
+**** I can open avidemux on the command line with --help to get help info on arguments
+it prints in the middle of alot of junk but it is there
+**** use the flag --run script_name.py to "load a project"
+a project in this case is a series of steps to be done in the gui program
+**** the flag --quit can be used to quit the program when done
+**** need to install libvdpau-va-gl1 from apt
+sudo apt install libvdpau-va-gl1
+**** the popup saying the codecs are different doesn't appear now
+but the video does not get concatenated
+**** there is a shell in avidemux to try tinypy code
+*** steps
+**** DONE get the current working directory
+**** DONE get the data from .csv file
+**** DONE contents of project.py:
+***** DONE get an Avidemux() instance
+avidemux = Avidemux()
+***** DONE load each video
+if not avidemux.loadVideo("/path/to/video.mp4"):
+    raise("Cannot load /path/to/video.mp4")
+***** DONE clear segments
+avidemux.clearSegments()
+
+If you dont call clearSegments or addSegments, by default, when adding a video a segment of the whole video is automatically appended.
+
+but still need the duration in miliseconds because of markerB
+***** DONE add codec info
+avidemux.videoCodec("Copy")
+***** DONE clear audio tracks
+avidemux.audioClearTracks()
+***** DONE set language for sound tracks
+avidemux.setSourceTrackLanguage(0, "und")
+***** DONE check if video has audio track
+if adm.audioTotalTracksCount() <= 0:
+    raise("Cannot add audio track 0, total tracks: " + str(adm.audioTotalTracksCount()))
+***** DONE add audio info
+adm.audioAddTrack(0)
+adm.audioCodec(0, "copy")
+adm.audioSetDrc(0, 0)
+adm.audioSetShift(0, 0, 0)
+***** DONE container info
+adm.setContainer("MKV",
+                "forceAspectRatio=False",
+                "displayWidth=1280",
+                "displayAspectRatio=2",
+                "addColourInfo=False",
+                "colMatrixCoeff=2",
+                "colRange=0",
+                "colTransfer=2",
+                "colPrimaries=2")
+**** DONE make project.py file in the directory
+**** DONE call avidemux with project.py as parameter
+and --quit parameter
+--save parameter if necesary
+**** DONE check if the resulting video has the expected atributes:
+***** DONE duration
+*** cases:
+**** OKAY videos have the same dimension and same codecs
+**** TODO videos have the same codecs but different dimensions
+the UI will show an error dialog and the script will hang
+because of the opened dialog
+
+make sure that videos have the same dimension before running the script
+**** TODO videos have same dimensions and different codecs
+the resulting file wont have the same duration of the accumulated duration of the videos
+
+can use logic to check, and move the folder to the right place
 ** TODO convert_videos.py
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
@@ -801,23 +921,12 @@ too complicated
 worse idea ever, it reencodes the video if it is different
 and it becomes unwatchable, and it doesn't give a sign of
 failure
-** TODO try using avidemux python scripting to concatenate videos
+** DONE try using avidemux python scripting to concatenate videos
 do the process outlined in this video
 
 https://www.youtube.com/watch?v=pxMeIU-ghXY&t=1445s
 
 instead of calling avidemux with parameters for each video
-
-*** findings
-**** I can open avidemux on the command line with --help to get help info on arguments
-it prints in the middle of alot of junk but it is there
-**** use the flag --run script_name.py to "load a project"
-a project in this case is a series of steps to be done in the gui program
-**** the flag --quit can be used to quit the program when done
-**** need to install libvdpau-va-gl1 from apt
-sudo apt install libvdpau-va-gl1
-**** the popup saying the codecs are different doesn't appear now
-but the video does not get concatenated
 *** steps
 **** get the current working directory
 **** get all the videos in the videos/ folder
@@ -860,6 +969,7 @@ adm.setContainer("MKV",
                 "colTransfer=2",
                 "colPrimaries=2")
 **** make project.py file in the directory
+
 *** reference/search links:
 **** Avidemux Append Loop Script
 https://www.youtube.com/watch?v=LI0DagwkLqg
@@ -1200,7 +1310,6 @@ print("Done")
 https://www.avidemux.org/admWiki/doku.php?id=tinypy:tinypybatch2
 
 ** TODO try using pathlib module to handle files
-** TODO check the best way of getting video data
 ** DONE remember how to cleanly get dict values into csv file
 https://www.youtube.com/watch?v=q5uM4VKywbA
 
@@ -1241,6 +1350,9 @@ with open("file.csv", "r") as scv_file:
 #+END_SRC
 
 ** TODO capture the output of the programs like ffmpeg and avidemux and put them into text files and also display them while they run
+use the library rich for this
+
+export/save to html
 ** DONE remember how to use multiprocessing
 
 using the concurrent.futures std library
@@ -1289,3 +1401,71 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
         print(result)
         # handle exceptions here, not inside the function
 #+END_SRC
+** TODO figure out how to put subtitles on videos from python script
+** TODO effectivelly using the rich library
+*** how to use
+**** Console class
+https://rich.readthedocs.io/en/latest/console.html
+***** themes
+#+begin_src python
+from rich.console import Console
+
+custom_theme = Theme({
+    "good" : "green",
+    "bad" : "bold red"
+})
+c = Console(theme=custom_theme)
+c.print( "File download!" , style="good")
+c.print("the internet is [bad]down[/bad]")
+
+#+end_src
+
+you can put the parameters that are in the custom_theme
+dictionary into a configuration file
+***** log
+
+console.log() prints a timestamp to the left every second,
+the module file and line number on the right
+***** Rules/ ruler
+
+console.rule("[bold red] title")
+
+***** log_locals=True
+
+passing log_locals to the Console.log() function makes it
+print the local variables of the function in nicelly formatted
+boxes.
+
+***** save to html
+
+Console.save_html("filename.html")
+
+to not having a crash before printing the file, wrap main() call into a try/except Block
+and print the exception to the file on the except branch, then outside the except branch save to html
+
+
+#+begin_src python
+
+try:
+    main()
+except:
+    console.print_exception()
+console.save_html("file.html")
+
+#+end_src
+**** traceback
+you should have this on every python script from now on
+
+#+begin_src python
+from rich.traceback import install
+install()
+
+#+end_src
+** TODO create a color theme for outputting to the console
+*** script BEGIN/END
+*** function call BEGIN/END
+*** debug_function statements
+*** normal prompts
+like:
+    getting info from files
+    moving from src to dst
