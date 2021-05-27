@@ -879,33 +879,37 @@ can use logic to check, and move the folder to the right place
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
-** strait_out_of_torrents/
-** separated_torrent_types/
-*** videos/
-*** audio/
-*** books/
-** unprocessed_videos/
-*** 0000_videos_separated/
-** get_videos_infos_csv
-*** 0000_info_extracted/
-** check_for_subtitles/
-** embed_subtitles/
-*** 0000_subtitles_embeded/
-** separate_videos_to_upload/
-** separate_videos_12_hours/
-*** short/
-*** long/
-*** no_data/
-** videos_separated_in_sections/
-** separate_videos_different_dimensions/
-** esize_different_dimensions/
-** AVIDEMUX_concatenate_videos/
-*** same_dimensions/
-*** same_codecs/
-*** concatenated/
-** YT_upload_to_youtube/
-*** 0000_uploaded/
+** old layout
+*** DONE strait_out_of_torrents/
+*** DONE separated_torrent_types/
+**** DONE videos/
+**** DONE audio/
+**** DONE books/
+**** TODO more...
+*** DONE unprocessed_videos/
+**** DONE 0000_videos_separated/
+*** DONE get_videos_infos_csv
+**** DONE 0000_info_extracted/
+*** DONE check_for_subtitles/
+*** DONE embed_subtitles/
+**** DONE 0000_subtitles_embeded/
+*** DONE separate_videos_to_upload/
+*** DONE separate_videos_12_hours/
+**** DONE short/
+**** DONE long/
+**** DONE no_data/
+*** DONE videos_separated_in_sections/
+*** DONE separate_videos_different_dimensions/
+*** DONE resize_different_dimensions/
+*** TODO AVIDEMUX_concatenate_videos/
+**** TODO same_dimensions/
+**** TODO same_codecs/
+**** TODO concatenated/
+*** TODO YT_upload_to_youtube/
+**** TODO 0000_uploaded/
 **** 0000_files_compressed/
+** new layout
+*** ZZ pipeline
 * things to try
 ** TODO import module from deployed file
 
@@ -1473,3 +1477,4 @@ install()
 like:
     getting info from files
     moving from src to dst
+* TODO remake the diagram with the new folder layout

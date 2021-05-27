@@ -310,6 +310,7 @@ def process_folder(
         print("| ):                                                                           |")
 
     all_items = os.listdir(folder)
+    all_items = natsorted(all_items, alg=ns.PATH)
 
     if debug_function:
         print()
@@ -734,29 +735,12 @@ def main(
 
     all_immediate_items = os.listdir(cwd)
 
-    if debug_function:
-        print()
-        print("all_immediate_items = [")
-        for element in all_immediate_items:
-            print("  {}".format(element))
-        print("]")
-
-    immediate_videos = filter_videos(all_immediate_items)
-    # immediate_videos.sort()
-    immediate_videos = natsorted(immediate_videos, alg=ns.PATH)
-
-    if immediate_videos:
-        process_folder(cwd)
-
-    separated_videos = []
-    if "videos" in all_immediate_items:
-        separated_videos = os.listdir(cwd + "/videos")
-    # separated_videos.sort()
-    separated_videos = natsorted(separated_videos, alg=ns.PATH)
-
-    if separated_videos:
+    if "converted" in all_immediate_items:
+        process_folder(cwd + "/converted")
+    elif "videos" in all_immediate_items:
         process_folder(cwd + "/videos")
-        ...
+    else:
+        process_folder(cwd)
 
         print("---------=---------=---------=---------=---------=---------=---------=---------=")
         print("END   main")

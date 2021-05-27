@@ -169,7 +169,7 @@ def create_project_file(
 # endregion create_project_file
 
 
-# region
+# region compare_concatenated_video
 def compare_concatenated_video(
     concatenated_video_path: str,
     last_video_info: dict,
@@ -200,7 +200,8 @@ def compare_concatenated_video(
         print()
 
     return concatenated_video_duration == expected_duration
-# endregion
+# endregion compare_concatenated_video
+
 
 # region main
 def main(
@@ -215,10 +216,19 @@ def main(
         print(cwd)
 
     videos_folder_path = cwd + "/videos/"
+    converted_folder_path = cwd + "/converted/"
+
+    is_videos_folder = os.path.isdir(videos_folder_path)
+    is_converted_folder = os.path.isdir(converted_folder_path)
+
+    if debug_function:
+        print()
+        print(f"is_videos_folder = {is_videos_folder}")
+        print(f"is_converted_folder = {is_converted_folder}")
+
     all_immediate_items = os.listdir(cwd)
     all_nested_videos = os.listdir(videos_folder_path)
-    videos_infos_csv_file_on_root = cwd + "/.generated/video_infos.csv"
-    videos_infos_csv_file_on_videos = cwd + "/videos/.generated/video_infos.csv"
+    all_converted_videos = os.listdir(converted_folder_path)
 
     if debug_function:
         print()
@@ -232,13 +242,34 @@ def main(
             print("  {}".format(element))
         print("]")
         print()
+        print("all_converted_videos = [")
+        for element in all_converted_videos:
+            print("  {}".format(element))
+        print("]")
+        print()
+
+    videos_infos_csv_file_on_root = cwd + "/.generated/video_infos.csv"
+    videos_infos_csv_file_on_videos = cwd + "/videos/.generated/video_infos.csv"
+    videos_infos_csv_file_on_converted = cwd + "/converted/.generated/video_infos.csv"
+
+    if debug_function:
+        print()
         print("videos_infos_csv_file_on_root:")
         print(videos_infos_csv_file_on_root)
         print()
         print("videos_infos_csv_file_on_videos:")
         print(videos_infos_csv_file_on_videos)
+        print()
+        print("videos_infos_csv_file_on_converted:")
+        print(videos_infos_csv_file_on_converted)
 
-    video_info_list = load_video_infos_csv(videos_infos_csv_file_on_videos)
+    video_info_list = []
+    if is_converted_folder:
+        video_info_list = load_video_infos_csv(videos_infos_csv_file_on_converted)
+    elif is_videos_folder:
+        video_info_list = load_video_infos_csv(videos_infos_csv_file_on_videos)
+    else:
+        video_info_list = load_video_infos_csv(videos_infos_csv_file_on_root)
 
     project_file_path = cwd + "/project.py"
 
@@ -255,50 +286,50 @@ def main(
         concatenated_video_path
     ]
 
-    # subprocess.run(command) # comment to test
+    subprocess.run(command) # comment to test
 
-    last_video_info = video_info_list[len(video_info_list) - 1]
-    # for key in last_video_info:
-    #     print(key ,"=", last_video_info[key])
+#     last_video_info = video_info_list[len(video_info_list) - 1]
+#     # for key in last_video_info:
+#     #     print(key ,"=", last_video_info[key])
 
-    # TODO check if concatenated video exists
+#     # TODO check if concatenated video exists
 
-    if not os.path.exists(concatenated_video_path):
-        with open(concatenated_video_path, "w") as file:
-            file.write("an error has ocurred")
+#     if not os.path.exists(concatenated_video_path):
+#         with open(concatenated_video_path, "w") as file:
+#             file.write("an error has ocurred")
 
-    concatenate_video_okay \
-        = compare_concatenated_video(
-            concatenated_video_path,
-            last_video_info
-        )
+#     concatenate_video_okay \
+#         = compare_concatenated_video(
+#             concatenated_video_path,
+#             last_video_info
+#         )
 
-    this_folder_path = Path(cwd)
-    parent_folder = this_folder_path.parent
-    this_folder_name = os.path.basename(cwd)
+#     this_folder_path = Path(cwd)
+#     parent_folder = this_folder_path.parent
+#     this_folder_name = os.path.basename(cwd)
 
-# TODO move folder to directory
+# # TODO move folder to directory
 
-    directory_ok = Path(parent_folder / "000_converted")
-    if not os.path.exists(directory_ok):
-        os.mkdir(directory_ok)
+#     directory_ok = Path(parent_folder / "000_converted")
+#     if not os.path.exists(directory_ok):
+#         os.mkdir(directory_ok)
 
-    directory_error = Path(parent_folder / "000_error")
-    if not os.path.exists(directory_error):
-        os.mkdir(directory_error)
+#     directory_error = Path(parent_folder / "000_error")
+#     if not os.path.exists(directory_error):
+#         os.mkdir(directory_error)
 
-    concatenate_video_okay = False
-    src = cwd
-    if concatenate_video_okay:
-        dst = directory_ok / this_folder_name
-    else:
-        dst = directory_error / this_folder_name
+#     concatenate_video_okay = False
+#     src = cwd
+#     if concatenate_video_okay:
+#         dst = directory_ok / this_folder_name
+#     else:
+#         dst = directory_error / this_folder_name
 
-    print("moving: ")
-    print("src = " + str(src))
-    print("dst = " + str(dst))
+#     print("moving: ")
+#     print("src = " + str(src))
+#     print("dst = " + str(dst))
 
-    os.rename(src, dst)
+#     os.rename(src, dst)
 
     if debug_function:
         print("---------=---------=---------=---------=---------=---------=---------=---------=")
