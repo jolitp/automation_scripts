@@ -227,8 +227,12 @@ def main(
         print(f"is_converted_folder = {is_converted_folder}")
 
     all_immediate_items = os.listdir(cwd)
-    all_nested_videos = os.listdir(videos_folder_path)
-    all_converted_videos = os.listdir(converted_folder_path)
+    all_nested_videos = []
+    if is_videos_folder:
+        all_nested_videos = os.listdir(videos_folder_path)
+    all_converted_videos = []
+    if is_converted_folder:
+        all_converted_videos = os.listdir(converted_folder_path)
 
     if debug_function:
         print()
@@ -249,8 +253,12 @@ def main(
         print()
 
     videos_infos_csv_file_on_root = cwd + "/.generated/video_infos.csv"
-    videos_infos_csv_file_on_videos = cwd + "/videos/.generated/video_infos.csv"
-    videos_infos_csv_file_on_converted = cwd + "/converted/.generated/video_infos.csv"
+    videos_infos_csv_file_on_videos = ""
+    if is_videos_folder:
+        videos_infos_csv_file_on_videos = cwd + "/videos/.generated/video_infos.csv"
+    videos_infos_csv_file_on_converted = ""
+    if is_converted_folder:
+        videos_infos_csv_file_on_converted = cwd + "/converted/.generated/video_infos.csv"
 
     if debug_function:
         print()
