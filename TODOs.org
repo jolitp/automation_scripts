@@ -884,33 +884,182 @@ can use logic to check, and move the folder to the right place
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
-** strait_out_of_torrents/
-** separated_torrent_types/
-*** videos/
-*** audio/
-*** books/
-** unprocessed_videos/
-*** 0000_videos_separated/
-** get_videos_infos_csv
-*** 0000_info_extracted/
-** check_for_subtitles/
-** embed_subtitles/
-*** 0000_subtitles_embeded/
-** separate_videos_to_upload/
-** separate_videos_12_hours/
-*** short/
-*** long/
-*** no_data/
-** videos_separated_in_sections/
-** separate_videos_different_dimensions/
-** esize_different_dimensions/
-** AVIDEMUX_concatenate_videos/
-*** same_dimensions/
-*** same_codecs/
-*** concatenated/
-** YT_upload_to_youtube/
-*** 0000_uploaded/
-**** 0000_files_compressed/
+** old
+*** strait_out_of_torrents/
+*** separated_torrent_types/
+**** videos/
+**** audio/
+**** books/
+*** unprocessed_videos/
+**** 0000_videos_separated/
+*** get_videos_infos_csv
+**** 0000_info_extracted/
+*** check_for_subtitles/
+*** embed_subtitles/
+**** 0000_subtitles_embeded/
+*** separate_videos_to_upload/
+*** separate_videos_12_hours/
+**** short/
+**** long/
+**** no_data/
+*** videos_separated_in_sections/
+*** separate_videos_different_dimensions/
+*** esize_different_dimensions/
+*** AVIDEMUX_concatenate_videos/
+**** same_dimensions/
+**** same_codecs/
+**** concatenated/
+*** YT_upload_to_youtube/
+**** 0000_uploaded/
+***** 0000_files_compressed/
+** new
+*** ZZ pipeline
+make a folder sctructure using links
+
+**** "virtual pipeline tree"
+
+1. straight out of torrents
+2. remove special characters
+3. separate torrent types
+   - other
+   - videos
+     1. separate videos subs files
+     2. get video info
+     3. check for subtitles
+        - check if want to embed subtitles (if subtitles true)
+          + separate videos different dimension
+          + delete subtitles (if subtitles false)
+            - separate to upload
+        - separate to upload
+          + upload to youtube
+          + separate videos 12 hours
+            - no data found
+              - get video info
+            - accumulated duration short
+              + separate videos different dimension
+                - same dimension
+                  + join videos together
+                    - videos joined
+                      + check manually
+                        - upload to youtube
+                        - convert videos
+                    - error occurred
+                      + manually check
+                - different dimension
+                  + resize videos
+                    - videos resized
+                      + join videos together
+                        - videos joined
+                          + check manually
+            - accumulated duration long
+              + separate videos in sections
+                - video sections separated
+                  + separate video different dimension
+                    - same dimension
+                      + join videos together
+                        - videos joined
+                          + check manually
+                            - upload to youtube
+                            - convert videos
+                              + videos converted
+                                - concatenate videos
+                                  + upload to youtube
+                    - different dimensions
+                      + resize videos
+                        - videos resized
+                          + join videos together
+                            - videos joined
+                              + check manually
+                                - upload to youtube
+                                - convert videos
+                                  + videos converted
+                                    - join videos together
+                                      + upload to youtube
+
+text.....
+
+   - audio
+   - books
+   - compressed
+   - windows software
+**** real folder tree
+- ZZ pipeline/
+  1. straight out of torrents/
+  2. remove special characters
+  3. separate torrent types
+     a. other
+     b. audio
+     c. books
+     d. compressed
+     e. videos (. -> unprocessed videos, manually)
+     f. windows software
+  4. unprocessed videos
+  5. separate videos subs files
+  6. get video info
+  7. check for subtitles
+     a. check if want to embed subtitles (manually)
+        - yes (. -> convert videos)
+        - no (. -> delete subtitles)
+  8. delete subtitles
+  9. separate to upload
+  10. separate videos different dimensions
+  11. separate videos 12 hours
+      a. no data found
+      b. accumulated duration short
+      c. accumulated duration long
+  12. join videos together
+      a. videos joined
+         a. check joined videos with same the dimension only (manually)
+            - working (. -> upload to youtube)
+            - broken (. -> convert videos)
+  13. resize videos
+
+  14. convert videos
+      a. same dimension
+  15. upload to youtube
+      a. less than 15 videos
+      b. joined with same dimension only
+
+
+tsxt
+
+       - separate to upload
+         + separate videos 12 hours
+           - accumulated duration short
+             + separate videos different dimension
+
+               - different dimension
+                 + resize videos
+                   - videos resized
+                     + join videos together
+                       - videos joined
+                         + check manually
+           - accumulated duration long
+             + separate videos in sections
+               - video sections separated
+                 + separate video different dimension
+                   - same dimension
+                     + join videos together
+                       - videos joined
+                         + check manually
+                           - upload to youtube
+                           - convert videos
+                             + videos converted
+                               - concatenate videos
+                                 + upload to youtube
+                   - different dimensions
+                     + resize videos
+                       - videos resized
+                         + join videos together
+                           - videos joined
+                             + check manually
+                               - upload to youtube
+                               - convert videos
+                                 + videos converted
+                                   - join videos together
+                                     + upload to youtube
+
+
 * things to try
 ** TODO import module from deployed file
 
@@ -1411,6 +1560,15 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
         # handle exceptions here, not inside the function
 #+END_SRC
 ** TODO figure out how to put subtitles on videos from python script
+the command:
+
+ffmpeg -i input.mp4 -vf subtitles=input.srt output.mp4
+
+takes a while... it is processing at 2.1x - 2.5x on a test video
+
+may be worthwhile to do that while at the same time scale and concatenate the video
+
+
 ** TODO effectivelly using the rich library
 *** how to use
 **** Console class
