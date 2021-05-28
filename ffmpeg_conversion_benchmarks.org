@@ -1,0 +1,55 @@
+* test time to convert videos
+** imput video:
+- container: mkv
+- size: 20.5 MiB
+- duration: 1m 21s
+- video stream: AVC
+- audio stream Opus
+- dimensions: 1920:1080
+- fps: 24
+
+** sample command:
+
+ ffmpeg -i input.mkv -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k \
+-movflags +faststart -vf format=yuv420p output.mp4
+** -crf ? -preset medium
+*** 23
+output video:
+- container: mp4
+- size: 15.7 MiB
+- video stream: AVC
+- audio stream AVC
+
+1.7x - 1.4x at 1m
+*** 0
+output video:
+- container: mp4
+-
+- size: 389 MiB
+- video stream: AVC
+- audio stream AVC
+
+1.12x at 1m
+
+** -crf ? -prset fastest
+*** 23
+- size: 60.1 MiB
+
+7x at 12s
+*** 0
+- size: 614.2 MiB
+
+8.15x at 10s
+*** 1
+
+1.2x at 52s
+*** default
+size 60 M
+
+7x at 12s
+** preset default
+size 25 M
+
+1.4x at 1m
+** file downloaded from youtube
+size 13.9 M
