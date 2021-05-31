@@ -657,7 +657,7 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 ****** store the extension (key) of the biggest
 ***** check the extension against a table of expected extension
 ***** move the folder to the appropriate category folder
-** DONE separate_videos_subs_files.py
+** TODO separate_videos_subs_files.py
 *** logic [9/9] [100%]
 **** DONE get the path of all files and folders recursivelly
 **** DONE filter only files
@@ -716,6 +716,8 @@ don't create a folder
 **** DONE do the same as above to subs
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
+*** extra requirements
+**** TODO move the folders that remain to a folders/ directory
 ** DONE get_videos_info_csv.py
 *** logic
 **** DONE check if the folder has the right structure
