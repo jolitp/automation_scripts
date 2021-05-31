@@ -1,0 +1,111 @@
+* testing ffmpeg times
+testing video has 1 min
+
+| emb | scale | conv a | conv v | conv b |  mult | time   | note                            |
+|-----+-------+--------+--------+--------+-------+--------+---------------------------------|
+| xxx |       |        |        |        |    7x | 0m 8s  |                                 |
+|     |       |        | xxxxxx |        |  0.8x | 1m 5s  |                                 |
+|     |       | xxxxxx |        |        |   75x | 0m 1s  |                                 |
+|     |       |        |        | xxxxxx |  0.9x | 1m 7s  |                                 |
+|     | xxxxx |        |        |        |  1.8x | 0m 35s |                                 |
+| xxx |       |        | xxxxxx |        |  0.8x | 1m 11s |                                 |
+| xxx |       | xxxxxx |        |        |   n/a | n/a    | cant embed without changing c:v |
+| xxx | xxxxx |        |        |        |       |        | cant scale withou changing c:v  |
+|     | xxxxx |        | xxxxxx |        | 0.35x | 3m 0s  |                                 |
+|     | xxxxx | xxxxxx |        |        |   n/a | n/a    | cant scale without changing c:v |
+| xxx | xxxxx |        | xxxxxx |        | 0.38x | 3m 0s  |                                 |
+| xxx | xxxxx | xxxxxx |        |        |       |        | cant scale without changing c:v |
+| xxx | xxxxx |        |        | xxxxxx |  0.3x | 3m 10s |                                 |
+|-----+-------+--------+--------+--------+-------+--------+---------------------------------|
+| emb | scale | conv a | conv v | conv b |  mult | time   | note                            |
+|     |       |        |        |        |       |        |                                 |
+* conclusion
+embedding subtitles by itself doesnt take very long, but depending of the type of subtitle there will be a need to convert anyway.
+
+embedding subtitles and converting takes the same time as just converting.
+
+scaling is the opperation that takes the most time, and anything else done together wont change the time. If there is a need to scale it is best to also convert at the same time, so it garantees the resulting videos will be compatible with each other.
+* todo
+** DONE just embedding subtitles
+*** DONE mkv to mp4
+ffmpeg -i input.mkv -vf subtitles=input.vtt output_just_embed.mp4
+
+7x in 8s
+*** DONE mkv to mkv
+ffmpeg -i input.mkv -vf subtitles=input.vtt output_just_embed.mkv
+
+6.77x in 8s
+** DONE just converting video
+*** DONE mkv to mkv
+ffmpeg -i input.mkv -c:v vp9 -c:a copy output.mkv
+
+0.8x in 1m 5s
+** DONE just converting audio
+ffmpeg -i input.mp4 -c:v copy -c:a libvorbis output.mkv
+
+75x in less than 1 sec
+** DONE converting audio and video
+ffmpeg -i input.mp4 -c:v vp9 -c:a libvorbis output.mkv
+
+0.9x in 1m 7s
+** DONE just scalling
+❯ ffmpeg -i input.mkv -vf scale=1920:1080 output_just_scale.mkv
+
+1.8x in 35s
+** DONE embedding and converting video
+ffmpeg -i input.mkv -vf subtitles=input.vtt -c:v vp9 -c:a copy  output_embed_and_converting_video.mkv
+
+0.8x in 1m 11s
+** DONE embedding and converting audio
+ffmpeg -i input.mkv -vf subtitles=input.vtt -c:v copy -c:a libvorbis output_embed_and_converting_audio.mkv
+
+Filtergraph 'subtitles=input.vtt' was defined for video output stream 0:0 but codec copy was selected.
+Filtering and streamcopy cannot be used together.
+** DONE embedding and scalling
+ffmpeg -i input.mkv -vf scale=1920:1080 -c:v copy -c:a copy output_embed_and_scaling. mkv
+
+Filtergraph 'scale=1920:1080' was defined for video output stream 0:0 but codec copy was selected.
+Filtering and streamcopy cannot be used together.
+** DONE scalling and convertion video
+ffmpeg -i input.mkv -vf scale=1920:1080 -c:v vp9 -c:a copy output_embed_and_scaling. mkv
+
+0.35x in 2m 57s
+** DONE scalling and convertion audio
+ffmpeg -i input.mkv -vf scale=1920:1080 -c:v copy -c:a libvorbis output_scaling_and_converting audio.mkv
+
+Filtergraph 'scale=1920:1080' was defined for video output stream 0:0 but codec copy was selected.
+Filtering and streamcopy cannot be used together.
+** DONE embedding, scalling and convering video
+ffmpeg -i input.mkv -vf subtitles=input.vtt -vf scale=1920:1080 -c:v vp9 -c:a copy output_embed_sacale_comvert.mkv
+
+0.38x in 3m
+** DONE embedding, scalling and convering audio
+ffmpeg -i input.mkv -vf subtitles=input.vtt -vf scale=1920:1080 -c:v copy -c:a libvorbis output_embed_sacale_comvert.mkv
+
+Only '-vf scale=1920:1080' read, ignoring remaining -vf options: Use ',' to separate filters
+Filtergraph 'scale=1920:1080' was defined for video output stream 0:0 but codec copy was selected.
+Filtering and streamcopy cannot be used together.
+** DONE embedding, scalling and convering both
+ffmpeg -i input.mkv -vf subtitles=input.vtt -vf scale=1920:1080 -c:v vp9 -c:a libvorbis output_embed_sacale_comvert_both.mkv
+
+0.3x in 3m 10s
+** DONE check scaling to the same size and just converting
+the new video is 1920:1080, and has about 1 minute.
+
+the following tests are SUS
+
+do the tests again after the laptop cooldown
+do them in the oposite order
+*** DONE convert and scale to the same dimension
+ffmpeg -i input.mkv -vf scale=1920:1080 -c:v vp9 -c:a copy output_convert_scale_same_dimmension.mkv
+
+0.3x - 0.5x in 4m 19s
+0.3x in 4m 16s
+
+!!! dont compare with previous tests !!!
+!!! different files !!!
+*** DONE just convert without scaling
+ffmpeg -i input.mkv -c:v vp9 -c:a copy output_convert_same_dimmension.mkv
+
+0.24x - 0.35x in 6m 13s (low battery and hot)
+0.27x - 0.45x in 4m 23s

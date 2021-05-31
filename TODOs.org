@@ -332,6 +332,10 @@ there should be better ways of checking if the convertion and concatenation is f
 like checking the number of videos in the converted directory against the videos directory
 
 there is also the problem of a concatenated video being invalid because some converted video is corrupted
+** TODO todos
+*** TODO add rich traceback to all scripts
+*** TODO add rich printing to all scripts
+
 * pipeline
 ** folder hierarcy:
 *** auto_process
@@ -602,6 +606,11 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 .                                                                       V
 .                                         YT_upload_to_youtube/ 0000_uploaded/ 0000_files_compressed/
 * scripts for pipeline
+** TODO utils
+put common functionality used by other scripts here
+*** functionality
+**** getting items on a directory
+**** filtering videos, subtitles, folders from a list of items
 ** DONE remove_special_characters.py
 *** steps
 **** DONE function: remove_special_characters(input:srt)
@@ -626,7 +635,7 @@ then the concatenation needs to be split in chunks of less than 12 hours each
 **** use click to turn the script into a CLI
 ***** parameters:
 -r/--recursive : change the names recursivelly (it is the default for now)
-
+** TODO pad_zeroes_of_files_and_fodlers
 ** STRT call_command_in_all_folders.py
 *** steps
 **** DONE get a list of the arguments passed to the script
@@ -784,7 +793,7 @@ name, size, acc_size
 *** note
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
-** DONE separate_to_upload.py
+** STRT separate_to_upload.py
 separate the folders of videos that have less than 15 videos in it to be uploaded to youtube
 *** logic
 **** DONE get all videos in root folder
@@ -794,20 +803,290 @@ separate the folders of videos that have less than 15 videos in it to be uploade
 ***** DONE move fodlder to YT_upload_to_youtube/
 **** DONE else
 ***** DONE move folder to separate_videos_12_hours/
-** TODO separate_videos_12_hours.py
+**** TODO make it not create folders that are not needed
+** STRT separate_videos_12_hours.py
 *** logic
-**** if there isd no csv file move folder to 0000_no_data/
-**** read csv file from hidden folders into list of dicts
-**** get the last element of the list
-**** get the accumulated duration of the video
-**** if duration > 12 hours or 43200 seconds
+**** TODO if there is no csv file move folder to 0000_no_data/
+**** DONE read csv file from hidden folders into list of dicts
+**** TODO get the last element of the list
+**** TODO get the accumulated duration of the video
+**** TODO if duration > 12 hours or 43200 seconds
 12 hours = 43200 seconds
-***** move folder to 0000_long/
-**** else:
-***** move folder to 0000_short/
-** TODO separate_videos_in_sections.py
+***** TODO move folder to 0000_long/
+**** TODO else:
+***** TODO move folder to 0000_short/
+** STRT separate_videos_in_sections.py
+*** thinking about the problem
+given the list:
+
+01_section_1_video_1
+02_section_2_video_1
+02_section_2_video_2
+03_section_3_video_1
+03_section_3_video_2
+03_section_3_video_3
+10_section_10_video_1
+10_section_10_video_2
+section_without_numbers_01_video_1
+section_without_numbers_02_video_1
+section_without_numbers_a_video_1
+section_without_numbers_b_video_2
+
+should give the result:
+
+01_section_1 : [ 01_section_1_video_1 ]
+02_section_2 : [ 02_section_2_video_1, 02_section_2_video_2 ]
+03_section_3 : [ 03_section_3_video_1, 03_section_3_video_2, 03_section_3 ]
+10_section_10 : [ 10_section_10_video_1, 10_section_10_video_2 ]
+section_without_numbers : [
+    section_without_numbers_01_video_1,
+    section_without_numbers_02_video_1,
+    section_without_numbers_a_video_1,
+    section_without_numbers_b_video_2
+]
+
+what I (a human) do to get the expected result?
+
+go through the first letter of each name
+
+separate the files in sections based on the first latter
+
+{
+    "0"   : 01_section_1_video_1
+            02_section_2_video_1
+            02_section_2_video_2
+            03_section_3_video_1
+            03_section_3_video_2
+            03_section_3_video_3
+
+    "1"   : 10_section_10_video_1
+            10_section_10_video_2
+
+    "s"   : section_without_numbers_01_video_1
+            section_without_numbers_02_video_1
+            section_without_numbers_a_video_1
+            section_without_numbers_b_video_2
+}
+
+now go to the second letter and do the same, but isntead of using only one letter as key, use two
+
+{
+    "01"  : 01_section_1_video_1
+
+    "02"  : 02_section_2_video_1
+            02_section_2_video_2
+
+    "03" :  03_section_3_video_1
+            03_section_3_video_2
+            03_section_3_video_3
+
+    "10"  : 10_section_10_video_1
+            10_section_10_video_2
+
+    "se"  : section_without_numbers_01_video_1
+            section_without_numbers_02_video_1
+            section_without_numbers_a_video_1
+            section_without_numbers_b_video_2
+}
+
+the next iterations will be the same...
+keep doing this until you find something different
+the iteration where there will be new sections is 21 (actually it will be 12, but its okay):
+
+{
+    "01_section_1_video_1"  : 01_section_1_video_1
+
+    "02_section_2_video_1"  : 02_section_2_video_1
+
+    "02_section_2_video_2"  : 02_section_2_video_2
+
+    "03_section_3_video_1"  : 03_section_3_video_1
+
+    "03_section_3_video_2"  : 03_section_3_video_2
+
+    "03_section_3_video_3"  : 03_section_3_video_3
+
+    "10_section_10_video_1" : 10_section_10_video_1
+
+    "10_section_10_video_2" : 10_section_10_video_2
+
+    "section_without_numbe"   : section_without_numbers_01_video_1
+                                section_without_numbers_02_video_1
+                                section_without_numbers_a_video_1
+                                section_without_numbers_b_video_2
+}
+
+the next remarkable iterations are 24, 30, 31, where the "section_without_nubme" will split into 2 sections, and then into 4
+
+at this point we have several lists of sections, how to know which one is the right one?
+
+if at index 0 the section had more than one element, it is a section that have more than one element
+
+but what if there is only one element in a section that can't be checked at the first index?
+like in the following input/example:
+
+01_section_1_video_1
+02_section_2_video_1
+02_section_2_video_2
+03_section_3_video_1
+03_section_3_video_2
+
+actually in the initial example this happens
+
+actually what you want to do is stop late enough to not get everything put together in a face section
+but early enough that you dont get everything in theyr own section
+
+lets makit so each eteration is kept into a list with the index as the iteration number
+
+then the most likely scenario is that each section is numbered and each item inside each section is numbered, just like in the example
+
+if that is the case, we can make the stop points occur on the second set of numbers, if the start of the name starts with a number, and on the first set of numbers if the name starts with not a nubmer
+
+so lets have a variable to track how many sets numbers we need to see before stop
+
+for each filename mark where the numbers are, using the first example:
+
+01_section_1_video_1
+02_section_2_video_1
+02_section_2_video_2
+03_section_3_video_1
+03_section_3_video_2
+03_section_3_video_3
+10_section_10_video_1
+10_section_10_video_2
+section_without_numbers_01_video_1
+section_without_numbers_02_video_1
+section_without_numbers_a_video_1
+section_without_numbers_b_video_2
+
+where_numbers_are = {
+    01_section_1_video_1               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    02_section_2_video_1               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    02_section_2_video_2               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    03_section_3_video_1               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    03_section_3_video_2               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    03_section_3_video_3               : [ (  0 ,  1 ) , ( 11 , 11 ) ( 19 , 19 ) ]
+    10_section_10_video_1              : [ (  0 ,  1 ) , ( 11 , 12 ) ( 20 , 20 ) ]
+    10_section_10_video_2              : [ (  0 ,  1 ) , ( 11 , 12 ) ( 20 , 20 ) ]
+    section_without_numbers_01_video_1 : [ ( 22 , 23 ) , ( 31 , 31 ) ]
+    section_without_numbers_02_video_1 : [ ( 22 , 23 ) , ( 31 , 31 ) ]
+    section_without_numbers_a_video_1  : [ ( 30, 30 ) ]
+    section_without_numbers_b_video_2  : [ ( 30, 30 ) ]
+}
+
+now here we have a problem... the last saction have different sizes for number occurrences, so they will be separated into different sections.
+
+only way to fix it is to merge those together if this case appears
+
+now instead of getting the substrings letter by letter, I can use this data, and only cut substrings in those points where numbers appear
+
+what happens when there is no numbers on the name? the proram should pass on those? maybe
+
+*** logic
+**** DONE function: separate in sections(input list : list) -> sections : dict[ section(str) : list(str) ]
+***** DONE create variable: input_list_data :
+this variable should have the following format:
+
+{
+    "file_1" : {
+        "number locations" : [ (0, 1) ]
+        "sections" : [ "file_" , "1" ]
+    }
+}
+
+dict( key: name, value: dict { list( tupple ) )
+***** DONE for each file name in input list
+****** DONE add number locations of name to number locations list
+
+***** DONE for each input data in input list data
+now to get the sections based on the number locations
+****** DONE for each number location
+
+**** DONE function: get number locations(string : str) -> locations : list[ tupples() ]
+#+begin_src python
+import re
+for m in re.finditer("\d+", input_string):
+
+    # the 0 index means the entire match
+    # any subsequent indexes will be sub-matches
+    value = m.group(0)
+    position_start = m.start()
+    position_end = m.end()
+#+end_src
+
+***** DONE create variable: locations : list(tupple)
+***** DONE match against the regular expression above
+***** DONE for each match
+****** DONE add the match to list of locations
+format of each element : ( start, end )
+
+*** test cases
+**** separate in sections
+***** DONE input have one file should return one section
+input: ["single_file"]
+
+expected_output: { "single_file" : ["single_file"] }
+
+***** DONE input have two files should return two sections
+input: ["file_1", "file_2"]
+
+expected_output: {
+                    "file_" : [
+                        "file_1",
+                        "file_2"
+                    ]
+                }
+***** input have three files should return two sections
+input: ["sectio_1_file_1", "section_1_file_2", "section_2_file_1"]
+
+expected_output: {
+                "section_1" : [
+                    "section_1_file_1",
+                    "section_1_file_2"
+                ],
+                "section_2" : [
+                    "section_2_file_1"
+                ]
+}
+***** input have sections without numbers
+input: [
+    "section_a_video_1"
+    "section_a_video_2"
+    "section_b_video_1"
+    "section_b_video_2"
+]
+
+expected_output: {
+                "section_a" : [
+                    "section_a_file_1",
+                    "section_a_file_2"
+                ],
+                "section_b" : [
+                    "section_b_file_1"
+                    "section_b_file_2"
+                ]
+}
+***** input have S#E# format
+input: [
+    "seriesname_S1E1"
+    "seriesname_S1E2"
+    "seriesname_S2E1"
+    "seriesname_S2E2"
+]
+
+expected_output: {
+                "seriesname_S1" : [
+                    "seriesname_S1E1"
+                    "seriesname_S1E2"
+                ],
+                "seriesname_S2" : [
+                    "seriesname_S2E1"
+                    "seriesname_S2E2"
+                ]
+}
+
+
 ** TODO separate_videos_different_dimensions.py
-** TODO resize_videos.py
 ** DONE concatenate_videos.py
 
 *** findings
@@ -881,6 +1160,7 @@ can use logic to check, and move the folder to the right place
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
+<<<<<<< HEAD
 ** old layout
 *** DONE strait_out_of_torrents/
 *** DONE separated_torrent_types/
@@ -912,6 +1192,178 @@ can use logic to check, and move the folder to the right place
 **** 0000_files_compressed/
 ** new layout
 *** ZZ pipeline
+=======
+** old
+*** strait_out_of_torrents/
+*** separated_torrent_types/
+**** videos/
+**** audio/
+**** books/
+*** unprocessed_videos/
+**** 0000_videos_separated/
+*** get_videos_infos_csv
+**** 0000_info_extracted/
+*** check_for_subtitles/
+*** embed_subtitles/
+**** 0000_subtitles_embeded/
+*** separate_videos_to_upload/
+*** separate_videos_12_hours/
+**** short/
+**** long/
+**** no_data/
+*** videos_separated_in_sections/
+*** separate_videos_different_dimensions/
+*** esize_different_dimensions/
+*** AVIDEMUX_concatenate_videos/
+**** same_dimensions/
+**** same_codecs/
+**** concatenated/
+*** YT_upload_to_youtube/
+**** 0000_uploaded/
+***** 0000_files_compressed/
+** new
+*** ZZ pipeline
+make a folder sctructure using links
+
+**** "virtual pipeline tree"
+
+1. straight out of torrents
+2. remove special characters
+3. separate torrent types
+   - other
+   - videos
+     1. separate videos subs files
+     2. get video info
+     3. check for subtitles
+        - check if want to embed subtitles (if subtitles true)
+          + separate videos different dimension
+          + convert videos
+          + delete subtitles (if subtitles false)
+            - separate to upload
+        - separate to upload
+          + upload to youtube
+          + separate videos 12 hours
+            - no data found
+              - get video info
+            - accumulated duration short
+              + separate videos different dimension
+                - same dimension
+                  + join videos together
+                    - videos joined
+                      + check manually
+                        - upload to youtube
+                        - convert videos
+                    - error occurred
+                      + manually check
+                - different dimension
+                  + convert videos
+                    - videos resized
+                      + join videos together
+                        - videos joined
+                          + check manually
+            - accumulated duration long
+              + separate videos in sections
+                - video sections separated
+                  + separate video different dimension
+                    - same dimension
+                      + join videos together
+                        - videos joined
+                          + check manually
+                            - upload to youtube
+                            - convert videos
+                              + videos converted
+                                - concatenate videos
+                                  + upload to youtube
+                    - different dimensions
+                      + convert videos
+                        + join videos together
+                          - videos joined
+                            + check manually
+                              - upload to youtube
+                              - convert videos
+                                + videos converted
+                                  - join videos together
+                                    + upload to youtube
+
+text.....
+
+   - audio
+   - books
+   - compressed
+   - windows software
+**** real folder tree
+- ZZ pipeline/
+  1. straight out of torrents/
+  2. remove special characters
+  3. separate torrent types
+     a. other
+     b. audio
+     c. books
+     d. compressed
+     e. videos (. -> unprocessed videos, manually)
+     f. windows software
+  4. unprocessed videos
+  5. separate videos subs files
+  6. get video info
+  7. check for subtitles
+     a. check if want to embed subtitles (manually)
+        - yes (. -> convert videos)
+        - no (. -> delete subtitles)
+  8. delete subtitles
+  9. separate to upload
+  10. separate videos different dimensions
+  11. separate videos 12 hours
+      a. no data found
+      b. accumulated duration short
+      c. accumulated duration long
+  12. join videos together
+      a. videos joined
+         a. check joined videos with same the dimension only (manually)
+            - working (. -> upload to youtube)
+            - broken (. -> convert videos)
+  13. convert videos
+  14. upload to youtube
+
+
+tsxt
+
+       - separate to upload
+         + separate videos 12 hours
+           - accumulated duration short
+             + separate videos different dimension
+
+               - different dimension
+                 + resize videos
+                   - videos resized
+                     + join videos together
+                       - videos joined
+                         + check manually
+           - accumulated duration long
+             + separate videos in sections
+               - video sections separated
+                 + separate video different dimension
+                   - same dimension
+                     + join videos together
+                       - videos joined
+                         + check manually
+                           - upload to youtube
+                           - convert videos
+                             + videos converted
+                               - concatenate videos
+                                 + upload to youtube
+                   - different dimensions
+                     + resize videos
+                       - videos resized
+                         + join videos together
+                           - videos joined
+                             + check manually
+                               - upload to youtube
+                               - convert videos
+                                 + videos converted
+                                   - join videos together
+                                     + upload to youtube
+
+>>>>>>> 9a9b4445bc87d9408342dad0aa734c59e022a2e9
 * things to try
 ** TODO import module from deployed file
 
@@ -1412,6 +1864,14 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
         # handle exceptions here, not inside the function
 #+END_SRC
 ** TODO figure out how to put subtitles on videos from python script
+the command:
+
+ffmpeg -i input.mp4 -vf subtitles=input.srt output.mp4
+
+takes a while... it is processing at 2.1x - 2.5x on a test video
+
+may be worthwhile to do that while at the same time scale and concatenate the video
+
 ** TODO effectivelly using the rich library
 *** how to use
 **** Console class
@@ -1455,12 +1915,14 @@ and print the exception to the file on the except branch, then outside the excep
 
 
 #+begin_src python
+from rich.console import Console
 
+CONSOLE = Console()
 try:
     main()
 except:
-    console.print_exception()
-console.save_html("file.html")
+    CONSOLE.print_exception()
+CONSOLE.save_html("file.html")
 
 #+end_src
 **** traceback
