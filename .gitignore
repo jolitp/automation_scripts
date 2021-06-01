@@ -138,3 +138,5 @@ testing_things_out/**
 .vscode/**
 .vscode/*
 .vscode/
+
+*.html
