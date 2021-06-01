@@ -632,7 +632,14 @@ put common functionality used by other scripts here
 **** use click to turn the script into a CLI
 ***** parameters:
 -r/--recursive : change the names recursivelly (it is the default for now)
-** TODO pad_zeroes_of_files_and_fodlers
+** TODO pad_zeroes_of_videos
+*** steps
+**** TODO get all videos in cwd, videos, converted
+**** TODO for each of the 3 folders above
+***** TODO for each video
+****** TODO get only the basename without extension
+****** TODO separate the filename in sections of non-numbers and numbers
+****** TODO ...
 ** STRT call_command_in_all_folders.py
 *** steps
 **** DONE get a list of the arguments passed to the script
@@ -663,8 +670,8 @@ put common functionality used by other scripts here
 ****** store the extension (key) of the biggest
 ***** check the extension against a table of expected extension
 ***** move the folder to the appropriate category folder
-** DONE separate_videos_subs_files.py
-*** logic [9/9] [100%]
+** STRT separate_videos_subs_files.py
+*** logic [9/10] [90%]
 **** DONE get the path of all files and folders recursivelly
 **** DONE filter only files
 **** DONE create 3 lists: videos, subs, files
@@ -722,6 +729,7 @@ don't create a folder
 **** DONE do the same as above to subs
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
+**** TODO remove gif from the video list
 ** DONE get_videos_info_csv.py
 *** logic
 **** DONE check if the folder has the right structure
@@ -801,15 +809,52 @@ separate the folders of videos that have less than 15 videos in it to be uploade
 **** TODO make it not create folders that are not needed
 ** STRT separate_videos_12_hours.py
 *** logic
-**** TODO if there is no csv file move folder to 0000_no_data/
+**** DONE check if there is a csv file in the following locations:
+***** DONE videos/.generated
+**** DONE if there is no csv file move folder to 0000_no_data/
 **** DONE read csv file from hidden folders into list of dicts
-**** TODO get the last element of the list
-**** TODO get the accumulated duration of the video
-**** TODO if duration > 12 hours or 43200 seconds
-12 hours = 43200 seconds
-***** TODO move folder to 0000_long/
-**** TODO else:
-***** TODO move folder to 0000_short/
+**** DONE count the duration of the videos
+**** DONE ...
+*** make it better
+*** TODO make it separate based on sections
+**** example:
+input = [
+    "01_section_1_video_1" 4h
+    "01_section_1_video_2" 5h
+    "01_section_1_video_3" 1h
+    "02_section_2_video_1" 1h
+    "02_section_2_video_2" 3h
+    "02_section_2_video_3" 5h
+
+]
+
+result = {
+    0 = [
+        "01_section_1_video_1" 4h
+        "01_section_1_video_2" 5h
+        "01_section_1_video_3" 1h
+    ],
+    1 = [
+        "02_section_2_video_1" 1h
+        "02_section_2_video_2" 3h
+        "02_section_2_video_3" 5h
+    ]
+}
+
+result_right_now = [
+    0 = [
+        "01_section_1_video_1" 4h
+        "01_section_1_video_2" 5h
+        "01_section_1_video_3" 1h
+        "02_section_2_video_1" 1h
+    ],
+    1 = [
+        "02_section_2_video_2" 3h
+        "02_section_2_video_3" 5h
+    ]
+}
+]
+
 ** STRT separate_videos_in_sections.py
 *** thinking about the problem
 given the list:
@@ -1139,7 +1184,6 @@ expected_output: {
 }
 ** TODO separate_videos_different_dimensions.py
 ** DONE concatenate_videos.py
-
 *** findings
 **** I can open avidemux on the command line with --help to get help info on arguments
 it prints in the middle of alot of junk but it is there
@@ -1207,7 +1251,12 @@ make sure that videos have the same dimension before running the script
 the resulting file wont have the same duration of the accumulated duration of the videos
 
 can use logic to check, and move the folder to the right place
+*** make it better
+**** TODO handle the case where there are more than one videos/ or concatenate/ folder
 ** TODO convert_videos.py
+*** steps
+**** TODO ...
+
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
