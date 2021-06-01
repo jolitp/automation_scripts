@@ -331,7 +331,8 @@ there is also the problem of a concatenated video being invalid because some con
 ** TODO todos
 *** TODO add rich traceback to all scripts
 *** TODO add rich printing to all scripts
-
+*** TODO add debug_console specific for debugging in all scripts
+*** TODO add execution time benchmarking on each function
 * pipeline
 ** folder hierarcy:
 *** auto_process
@@ -1013,24 +1014,33 @@ for m in re.finditer("\d+", input_string):
 ***** DONE for each match
 ****** DONE add the match to list of locations
 format of each element : ( start, end )
+**** TODO get sections duration (sections : dict, video data : list(dict) ) -> dict
+adds a duration key to the sections dict based on video data
+***** logic
+****** _
+**** TODO main
+***** TODO get current working directory
+***** TODO filter only folders
+***** TODO check if there are special folders
+****** TODO converted/
+****** TODO vidoes/
+***** TODO for each folder
+put this part into a function
+****** TODO get all files for each folder
+****** TODO filter only videos for each folder
+****** TODO apply separate_in_sections function for vieos
+****** TODO get video data from file into dict
+****** TODO apply get section duration
+****** TODO ...
 
 *** test cases
 **** separate in sections
-***** DONE input have one file should return one section
+***** TODO tests are taking too long
+***** DONE input have 1 file should return 1 section
 input: ["single_file"]
 
 expected_output: { "single_file" : ["single_file"] }
-
-***** DONE input have two files should return two sections
-input: ["file_1", "file_2"]
-
-expected_output: {
-                    "file_" : [
-                        "file_1",
-                        "file_2"
-                    ]
-                }
-***** input have three files should return two sections
+***** DONE input have 3 files should return 2 sections 1 number
 input: ["sectio_1_file_1", "section_1_file_2", "section_2_file_1"]
 
 expected_output: {
@@ -1042,7 +1052,34 @@ expected_output: {
                     "section_2_file_1"
                 ]
 }
-***** input have sections without numbers
+***** DONE input have 3 files should return 2 sections 2 numbers
+***** DONE input have 3 file should return 2 section no number at the end
+input: ["sectio_1_file_a", "section_1_file_b", "section_2_file_a"]
+
+expected_output: {
+                "section_1" : [
+                    "section_1_file_a",
+                    "section_1_file_b"
+                ],
+                "section_2" : [
+                    "section_2_file_a"
+                ]
+}
+***** TODO input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file
+input: ["sectio_1_subsection_1_file_1",
+        "section_1_subsection_2_file_2",
+        "section_2_subsection_1_file_3"]
+
+expected_output: {
+                "section_1" : [
+                    "sectio_1_subsection_1_file_1"
+                    "sectio_1_subsection_2_file_2"
+                ],
+                "section_2" : [
+                    "section_2_subsection_1_file_3"
+                ]
+}
+***** TODO input have sections without numbers
 input: [
     "section_a_video_1"
     "section_a_video_2"
@@ -1060,7 +1097,7 @@ expected_output: {
                     "section_b_file_2"
                 ]
 }
-***** input have S#E# format
+***** TODO input have S#E# format
 input: [
     "seriesname_S1E1"
     "seriesname_S1E2"
@@ -1078,7 +1115,6 @@ expected_output: {
                     "seriesname_S2E2"
                 ]
 }
-
 
 ** TODO separate_videos_different_dimensions.py
 ** DONE concatenate_videos.py
