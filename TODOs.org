@@ -1065,7 +1065,7 @@ expected_output: {
                     "section_2_file_a"
                 ]
 }
-***** TODO input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file
+***** DONE input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file
 input: ["sectio_1_subsection_1_file_1",
         "section_1_subsection_2_file_2",
         "section_2_subsection_1_file_3"]
@@ -1080,6 +1080,9 @@ expected_output: {
                 ]
 }
 ***** TODO input have sections without numbers
+
+the current algorith has no way of making this happen
+
 input: [
     "section_a_video_1"
     "section_a_video_2"
@@ -1097,7 +1100,7 @@ expected_output: {
                     "section_b_file_2"
                 ]
 }
-***** TODO input have S#E# format
+***** DONE input have S#E# format
 input: [
     "seriesname_S1E1"
     "seriesname_S1E2"
@@ -1115,7 +1118,25 @@ expected_output: {
                     "seriesname_S2E2"
                 ]
 }
+***** TODO files without numbers in their names
+input: [
+    "section_a_file_a",
+    "section_a_file_b",
+    "section_b_file_a",
+    "section_b_file_b",
+]
 
+expected_output: {
+
+    "section_a_file_" = [
+        "section_a_file_a",
+        "section_a_file_b",
+    ]
+    "section_b_file_" = [
+        "section_b_file_a",
+        "section_b_file_b",
+    ]
+}
 ** TODO separate_videos_different_dimensions.py
 ** DONE concatenate_videos.py
 

@@ -164,9 +164,12 @@ def separate_into_sections(
 # region separate_into_sections implementation
     input_list_data = get_list_data(input_list)
     unique_first_sections = set()
-    for _, value in input_list_data.items():
+    for input_name, value in input_list_data.items():
         sections = value["sections"]
-        first_section = sections[0]
+        if sections:
+            first_section = sections[0]
+        else:
+            first_section = input_name
         unique_first_sections.add(first_section)
     sections = {}
     for section in unique_first_sections:
@@ -398,22 +401,19 @@ def current_manual_test():
     CONSOLE.print(" ==============================================")
 
     # setup
-
+    # setup
     input = [
-        "section_1_subsection_1_file_1",
-        "section_1_subsection_2_file_2",
-        "section_2_subsection_1_file_3"
+        "single_file"
     ]
 
     expected_output = {
-        "section_1" : [
-            "section_1_subsection_1_file_1",
-            "section_1_subsection_2_file_2"
-        ],
-        "section_2" : [
-            "section_2_subsection_1_file_3"
+        "single_file" : [
+            "single_file"
         ]
-    }
+        }
+
+
+
 
     CONSOLE.print(" ==============================================")
     CONSOLE.print("calling separate_into_sections(input)")
@@ -444,6 +444,61 @@ def current_manual_test():
     CONSOLE.print(" ==============================================")
     CONSOLE.print("test_have_three_files_should_return_two_sections")
     CONSOLE.print(" ==============================================")
+
+# IndexError: list index out of range
+# def test_input_have_1_file_should_return_1_section():
+#         # setup
+#         input = [
+#             "single_file"
+#         ]
+
+#         expected_output = {
+#             "single_file" : [
+#                 "single_file"
+#             ]
+#         }
+
+#         # act
+# >       actual_output = script.separate_into_sections(input)
+
+# test_separate_videos_in_sections.py:52:
+# _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+# input_list = ['single_file']
+
+#     def separate_into_sections(
+#         input_list : list,
+#         ) -> dict:
+#     # endregion separate_into_sections header
+#     # region separate_into_sections docs
+#         """separates a list of strings into sections
+
+#         Args:
+#             input_list (list): the input list
+
+#         Returns:
+#             dict: lists separated in categories
+#         """
+#     # endregion separate_into_sections docs
+#     # region separate_into_sections implementation
+#         input_list_data = get_list_data(input_list)
+#         unique_first_sections = set()
+#         for _, value in input_list_data.items():
+#             sections = value["sections"]
+# >           first_section = sections[0]
+# E           IndexError: list index out of range
+
+# separate_videos_in_sections.py:169: IndexError
+
+# --------------------------------- Captured Log ---------------------------------
+
+# --------------------------------- Captured Out ---------------------------------
+
+
+# --------------------------------- Captured Err ---------------------------------
+
+
+
 
     ...
 # endregion current_manual_test

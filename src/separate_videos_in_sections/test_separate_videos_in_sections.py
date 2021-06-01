@@ -142,12 +142,10 @@ def test_input_have_3_files_should_return_2_section_no_number_at_the_end():
 # endregion test_input_have_3_files_should_return_2_section_no_number_at_the_end
 
 
-from birdseye import eye
-
 # region test_input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file
-
-# @eye
 def test_input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file():
+
+    # setup
     input = [
         "section_1_subsection_1_file_1",
         "section_1_subsection_2_file_2",
@@ -169,42 +167,109 @@ def test_input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_f
 
     # assert
     assert expected_output == actual_output
-
-    # BUG
-
-        # assert
-# >       assert expected_output == actual_output
-# E       AssertionError: assert {'section_1':...on_1_file_3']} == {'section_1':...on_1_file_3']}
-# E         Differing items:
-# E         {'section_1':
-#               ['section_1_subsection_1_file_1',
-#                'section_1_subsection_2_file_2']}
-# !=
-#           {
-#             'section_1':
-#               ['section_1_subsection_1_file_1',
-#                'section_1_subsection_2_file_2',
-#                'section_2_subsection_1_file_3'
-#               ]
-#           }
-
-# E         {
-#            'section_2':
-#            [
-#               'section_2_subsection_1_file_3'
-#            ]
-#           }
-# !=
-#           {
-#           'section_2':
-#           [
-#           'section_1_subsection_2_file_2',
-#           'section_2_subsection_1_file_3'
-#           ]
-#           }
-# E         Use -v to get the full dif
-    ...
 # endregion test_input_have_3_files_should_return_2_sections_3_sets_of_numbers_in_each_file
+
+
+# region test_
+def test_():
+    input = [
+    ]
+
+    expected_output = {
+    }
+
+    # act
+    actual_output = script.separate_into_sections(input)
+
+    # assert
+    assert expected_output == actual_output
+# endregion test_
+
+
+# region test_input_have_season_episode_format
+def test_input_have_season_episode_format():
+    # setup
+    input = [
+        "seriesname_S1E1",
+        "seriesname_S1E2",
+        "seriesname_S2E1",
+        "seriesname_S2E2",
+    ]
+
+    expected_output = {
+        "seriesname_S1" : [
+            "seriesname_S1E1",
+            "seriesname_S1E2",
+        ],
+        "seriesname_S2" : [
+            "seriesname_S2E1",
+            "seriesname_S2E2",
+        ]
+    }
+
+
+    # act
+    actual_output = script.separate_into_sections(input)
+
+    # assert
+    assert expected_output == actual_output
+# endregion test_input_have_season_episode_format
+
+
+
+# BUG
+
+# AssertionError: assert {'section_a_f...on_b_file_b']} == {'section_a_f...on_b_file_b']}
+#   Left contains 2 more items:
+#   {'section_a_file_': ['section_a_file_a', 'section_a_file_b'],
+#    'section_b_file_': ['section_b_file_a', 'section_b_file_b']}
+#   Right contains 4 more items:
+#   {'section_a_file_a': ['section_a_file_a'],
+#    'section_a_file_b': ['section_a_file_b'],
+#    'section_b_file_a': ['section_b_file_a'],...
+
+#   ...Full output truncated (3 lines hidden), use '-vv' to show
+
+# E       AssertionError: assert {'section_a_f...on_b_file_b']} == {'section_a_f...on_b_file_b']}
+# E         Left contains 2 more items:
+# E         {'section_a_file_': ['section_a_file_a', 'section_a_file_b'],
+# E          'section_b_file_': ['section_b_file_a', 'section_b_file_b']}
+# E         Right contains 4 more items:
+# E         {'section_a_file_a': ['section_a_file_a'],
+# E          'section_a_file_b': ['section_a_file_b'],
+# E          'section_b_file_a': ['section_b_file_a'],...
+# E
+# E         ...Full output truncated (3 lines hidden), use '-vv' to show
+
+# region test_input_have_season_episode_format
+def test_files_without_numbers_in_their_names():
+
+    # setup
+    input = [
+        "section_a_file_a",
+        "section_a_file_b",
+        "section_b_file_a",
+        "section_b_file_b",
+    ]
+    expected_output = {
+        "section_a_file_" : [
+            "section_a_file_a",
+            "section_a_file_b",
+        ],
+        "section_b_file_" : [
+            "section_b_file_a",
+            "section_b_file_b",
+        ]
+    }
+
+    # act
+    actual_output = script.separate_into_sections(input)
+
+    # assert
+    assert expected_output == actual_output
+#
+    ...
+# endregion test_input_have_season_episode_format
 
 
 if __name__ == "__main__":
