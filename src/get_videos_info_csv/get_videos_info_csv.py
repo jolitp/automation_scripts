@@ -107,7 +107,6 @@ def filter_videos(
         "MTS", "M2TS", "TS",
         "MNG",
         "GIFV",
-        "GIF",
         "DRC",
         "XVID",
         "VIDX",
