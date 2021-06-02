@@ -83,27 +83,11 @@ def are_numbers_predicate(input:list):
     return result
 # endregion are_numbers_predicate
 
-# TODO make the function work with the following case:
-# input = [
-#   "1_section_part_1_name_1",
-#   "11_section_part_11_name_11",
-#   "22_section_name_222",
-#   "333_section",
-# ]
-# expected = [
-#   "001_section_part_001_name_01",
-#   "011_section_part_011_name_11",
-#   "022_section_name_222",
-#   "333_section",
-# ]
 
 # region pad_zeroes
-# @snoop
 def pad_zeroes(
     input: list,
 ):
-    output: list = []
-
     # separate numbers and non-numbers from each name
     names_separated = []
     for element in input:
@@ -111,6 +95,7 @@ def pad_zeroes(
         names_separated.append(separated_name)
     names_separated = add_blanks_to_the_end(names_separated)
     inverted_sections = transpose(names_separated)
+
     # check which sections are numbers
     are_numbers = []
     for element in inverted_sections:
@@ -118,17 +103,13 @@ def pad_zeroes(
         are_numbers.append(x)
     only_numbers = []
     for section in are_numbers:
-        # _all = all(section)
         _all = any(section)
         only_numbers.append(_all)
-    # print_logic(only_numbers)
     inverted_sections_padded = list(inverted_sections.copy())
     for section_index, are_all_numbers in enumerate(only_numbers):
         if are_all_numbers:
-            # print_logic(are_all_numbers)
             max_digits = 0
             for number in inverted_sections[section_index]:
-                # print_logic(number)
                 number_of_digits:int = len(number)
                 if number_of_digits > max_digits:
                     max_digits = number_of_digits
@@ -142,33 +123,24 @@ def pad_zeroes(
         else:
             inverted_sections_padded[section_index] = inverted_sections[section_index]
     restored_sections_padded = transpose(inverted_sections_padded)
-    # TODO filter the sections with only zeroes in them
 
+    # filter out sections with only zeroes
     restored_sections_padded_filtered = []
-    print_logic(restored_sections_padded)
     for index_section, section in enumerate(restored_sections_padded):
-        print("section")
-        print_logic(section)
         restored_sections_padded_filtered.append([])
         section_filtered = restored_sections_padded_filtered[index_section]
-        print_logic(section_filtered)
         for index_part, part in enumerate(section):
-            import re
-            print()
-            print_logic(part)
             m = re.match("0+",str(part))
             if m == None:
                 result = ""
             else:
                 result = m.group()
-            print_logic(result)
-
             if part == result:
                 restored_sections_padded_filtered[index_section].append("")
             else:
                 restored_sections_padded_filtered[index_section].append(part)
             ...
-    print_logic(restored_sections_padded_filtered)
+    # assemble strings back
     output = []
     for section in restored_sections_padded_filtered:
         joined_string = ""
@@ -392,9 +364,8 @@ def filter_subtitles(
     ...
 # endregion filter_subtitles
 
+# region retrieve_outermost_name
 import inspect
-
-
 def retrieve_outermost_name(var):
         """
         Gets the name of var. Does it from the
@@ -406,11 +377,12 @@ def retrieve_outermost_name(var):
             names = [var_name for var_name, var_val in fi.frame.f_locals.items() if var_val is var]
             if len(names) > 0:
                 return names[0]
+# endregion retrieve_outermost_name
 
 
 # region process_folder
 def process_folder(
-    folder:Path,
+    folder_path:Path,
     filter=filter_videos
     ):
     """
@@ -421,29 +393,63 @@ def process_folder(
         folder (Path): the path to the folder to process
 
         filter (function): the filter function to use
+
+    Returns:
+        (Path,Path) : a tuple of paths, first is source, second is destination
     """
-    print()
-    print("+" + 80 * "-" + "+")
-    print("| def process_folder(")
-    print("| \n| folder:Path -> {}" \
-        .format(folder))
-    print("| \n| filter -> {}" \
-        .format(filter))
-    print("| \n):")
+    # print()
+    # print("+" + 80 * "-" + "+")
+    # print("| def process_folder(")
+    # print("| \n| folder:Path -> {}" \
+    #     .format(folder_path))
+    # print("| \n| filter -> {}" \
+    #     .format(filter))
+    # print("| \n):")
 
-
-    folder_exists = os.path.isdir(folder)
+    folder_exists = os.path.isdir(folder_path)
     if folder_exists:
-        all_items = os.listdir(folder)
-        print_logic(all_items)
+        all_items = os.listdir(folder_path)
+        # print_logic(all_items)
         filtered_items = filter(all_items)
-        print_logic(filtered_items)
+        # print_logic(filtered_items)
 
-    print("returning form process_folder(...)")
-    print("+" + 80 * "-" + "+")
-    print()
+        # remove extension
+
+        items_no_ext_list = []
+        list_of_ext = []
+        for item in filtered_items:
+            item_no_ext, ext = os.path.splitext(item)
+            items_no_ext_list.append(item_no_ext)
+            list_of_ext.append(ext)
+
+        # print_logic(items_no_ext_list)
+        # print_logic(list_of_ext)
+
+        items_padded = pad_zeroes(items_no_ext_list)
+
+        # print_logic(items_padded)
+
+        src_dst_paths = []
+        for index, _ in enumerate(items_padded):
+            src = folder_path / filtered_items[index]
+            padded_item = items_padded[index] + list_of_ext[index]
+            dst = folder_path / padded_item
+            src_dst_paths.append((src,dst))
+            ...
+
+        # print_logic(src_dst_paths)
+    else:
+        # raise OSError("Folder {} does not exist.")
+        src_dst_paths = None
+        ...
+
+    # print("| returning form process_folder(...)")
+    # print("+" + 80 * "-" + "+")
+    # print()
+    return src_dst_paths
     ...
 # endregion process_folder
+
 
 # region main
 def main():
@@ -461,12 +467,32 @@ def main():
     subs_folder_path = cwd / "subs"
 
     # process_folder(cwd)
-    # process_folder(videos_folder_path)
+    files_to_move =  process_folder(videos_folder_path)
     # process_folder(converted_folder_path)
     # process_folder(subs_folder_path, filter_subtitles)
 
-    current_test()
+    move_files(files_to_move)
+    # current_test()
 # endregion main
+
+
+# region move_files
+def move_files(files_to_move):
+    for file in files_to_move:
+        src, dst = file
+
+        basename_src = os.path.basename(src)
+        basename_dst = os.path.basename(dst)
+
+        c = Console()
+        c.print("renaming: [purple]{}[/purple] to [magenta]{}[/magenta]"\
+            .format(basename_src, basename_dst))
+
+        os.rename(src, dst)
+
+        ...
+    ...
+# endregion move_files
 
 
 def current_test():
