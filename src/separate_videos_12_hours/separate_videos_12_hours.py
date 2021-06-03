@@ -120,7 +120,7 @@ def separate_videos_in_sections(
 # @snoop
 def main():
     cwd = Path(os.getcwd())
-    type(cwd)
+    print(cwd)
     all_nested_videos = []
     videos_folder_path = cwd / "videos"
     csv_file_path = None
@@ -172,13 +172,11 @@ def main():
         ...
     for loc in move_locations:
         src, dst = loc
-        src_pp = str(src).replace(str(cwd), "/...")
-        dst_pp = str(dst).replace(str(cwd), "/...")
 
         basename = os.path.basename(src)
         print()
-        CONSOLE.print("moving \"{}\"\nfrom: {}\nto:   {}"\
-            .format(basename, src_pp, dst_pp))
+        CONSOLE.print("moving \"{}\"\nfrom: \"{}\"\nto:   \"{}\""\
+            .format(basename, src, dst))
 
         os.rename(src, dst)
         ...

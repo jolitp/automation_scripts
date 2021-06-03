@@ -468,10 +468,14 @@ def main():
 
     # process_folder(cwd)
     files_to_move =  process_folder(videos_folder_path)
-    # process_folder(converted_folder_path)
-    # process_folder(subs_folder_path, filter_subtitles)
-
     move_files(files_to_move)
+
+    files_to_move =  process_folder(converted_folder_path)
+    move_files(converted_folder_path)
+
+    files_to_move =  process_folder(subs_folder_path, filter_subtitles)
+    move_files(subs_folder_path)
+
     # current_test()
 # endregion main
 
