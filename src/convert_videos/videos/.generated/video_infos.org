@@ -1,0 +1,22 @@
+#+DATE: <2021-06-03 Thu 18:04> 
+* convert_videos
+** duration table
+| alpha_ord | working | name | dur_sec | dur_hrs | acc_dur_sec | acc_dur_hrs |
+| | | | | | | |
+| 0| True| 1 hour video 1.mp4| 3623| 01:00:23| 3623.400| 01:00:23 | 
+| 1| True| 1 hour video 2.mp4| 3623| 01:00:23| 7246.800| 02:00:46 | 
+** frames table
+| alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
+| | | | | |
+| 0| True| 1 hour video 1.mp4| 36235| 10| 36235 | 
+| 1| True| 1 hour video 2.mp4| 36235| 10| 72470 | 
+** dimension_table
+| alpha_ord | working | name | width | height | AR | AR_frc |
+| | | | | | | |
+| 0 | True | 1 hour video 1.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 1 | True | 1 hour video 2.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+** size_table
+| alpha_ord | working | name | bytes | acc_bytes |
+| | | | | |
+| 0 | True | 1 hour video 1.mp4 | 97.6 MB | 97.6 MB |
+| 1 | True | 1 hour video 2.mp4 | 97.6 MB | 195.2 MB |

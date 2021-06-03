@@ -632,7 +632,7 @@ put common functionality used by other scripts here
 **** use click to turn the script into a CLI
 ***** parameters:
 -r/--recursive : change the names recursivelly (it is the default for now)
-** TODO pad_zeroes_of_videos
+** STRT pad_zeroes_of_videos
 *** steps
 **** TODO get all videos in cwd, videos, converted
 **** TODO for each of the 3 folders above
@@ -730,7 +730,7 @@ don't create a folder
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
 **** TODO remove gif from the video list
-** DONE get_videos_info_csv.py
+** STRT get_videos_info_csv.py
 *** logic
 **** DONE check if the folder has the right structure
 contains: videos/
@@ -793,7 +793,8 @@ alphabetical_order
 name, size, acc_size
 **** DONE add video count to files
 
-*** note
+**** TODO handle case: multiple videos folders
+
 ** TODO check_for_subtitles.py
 ** TODO embed_subtitles.py
 ** STRT separate_to_upload.py

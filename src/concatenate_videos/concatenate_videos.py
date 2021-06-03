@@ -14,7 +14,7 @@ from pathlib import Path
 from natsort import natsorted, ns
 import cv2
 
-# region load_video_infos_csv
+# region ========================================== load_video_infos_csv
 def load_video_infos_csv(
     file_path: str,
     debug_function: bool = None
@@ -62,10 +62,10 @@ def load_video_infos_csv(
         print("END   load_video_infos_csv")
     return video_info_list
     ...
-# endregion load_video_infos_csv
+# endregion --------------------------------------- load_video_infos_csv
 
 
-# region create_project_file
+# region =========================================== create_project_file
 def create_project_file(
     file_path:str,
     video_info_list:list,
@@ -166,10 +166,10 @@ def create_project_file(
         print()
         print("---------=---------=---------=---------=---------=---------=---------=---------=")
         print("END   create_project_file")
-# endregion create_project_file
+# endregion ----------------------------------------- create_project_file
 
 
-# region
+# region ===================================== compare_concatenated_video
 def compare_concatenated_video(
     concatenated_video_path: str,
     last_video_info: dict,
@@ -200,9 +200,10 @@ def compare_concatenated_video(
         print()
 
     return concatenated_video_duration == expected_duration
-# endregion
+# endregion ---------------------------------- compare_concatenated_video
 
-# region main
+
+# region =========================================================== main
 def main(
     debug_function = None
 ):
@@ -238,7 +239,8 @@ def main(
         print("videos_infos_csv_file_on_videos:")
         print(videos_infos_csv_file_on_videos)
 
-    video_info_list = load_video_infos_csv(videos_infos_csv_file_on_videos)
+    video_info_list = \
+        load_video_infos_csv(videos_infos_csv_file_on_videos)
 
     project_file_path = cwd + "/project.py"
 
@@ -265,48 +267,48 @@ def main(
 
     if not os.path.exists(concatenated_video_path):
         with open(concatenated_video_path, "w") as file:
-            file.write("an error has ocurred")
+            file.write("video was not concatenated")
 
-    concatenate_video_okay \
-        = compare_concatenated_video(
-            concatenated_video_path,
-            last_video_info
-        )
+    # concatenate_video_okay \
+    #     = compare_concatenated_video(
+    #         concatenated_video_path,
+    #         last_video_info
+    #     )
 
-    this_folder_path = Path(cwd)
-    parent_folder = this_folder_path.parent
-    this_folder_name = os.path.basename(cwd)
+    # this_folder_path = Path(cwd)
+    # parent_folder = this_folder_path.parent
+    # this_folder_name = os.path.basename(cwd)
 
 # TODO move folder to directory
 
-    directory_ok = Path(parent_folder / "000_converted")
-    if not os.path.exists(directory_ok):
-        os.mkdir(directory_ok)
+    # directory_ok = Path(parent_folder / "000_converted")
+    # if not os.path.exists(directory_ok):
+    #     os.mkdir(directory_ok)
 
-    directory_error = Path(parent_folder / "000_error")
-    if not os.path.exists(directory_error):
-        os.mkdir(directory_error)
+    # directory_error = Path(parent_folder / "000_error")
+    # if not os.path.exists(directory_error):
+    #     os.mkdir(directory_error)
 
-    concatenate_video_okay = False
-    src = cwd
-    if concatenate_video_okay:
-        dst = directory_ok / this_folder_name
-    else:
-        dst = directory_error / this_folder_name
+    # concatenate_video_okay = False
+    # src = cwd
+    # if concatenate_video_okay:
+    #     dst = directory_ok / this_folder_name
+    # else:
+    #     dst = directory_error / this_folder_name
 
-    print("moving: ")
-    print("src = " + str(src))
-    print("dst = " + str(dst))
+    # print("moving: ")
+    # print("src = " + str(src))
+    # print("dst = " + str(dst))
 
-    os.rename(src, dst)
+    # os.rename(src, dst)
 
     if debug_function:
         print("---------=---------=---------=---------=---------=---------=---------=---------=")
         print("END   main")
-# endregion main
+# endregion -------------------------------------------------------- main
 
 
-# region if __name__ == "__main__":
+# region ===================================== if __name__ == "__main__":
 if __name__ == "__main__":
     print()
     msg = "START concatenate_videos.py START"
@@ -320,4 +322,4 @@ if __name__ == "__main__":
     print(msg)
     print()
     ...
-# endregion if __name__ == "__main__":
+# endregion ---------------------------------- if __name__ == "__main__":
