@@ -37,7 +37,7 @@ class UnitTestIsVideo(unittest.TestCase):
 # cSpell: disable
         video_extensions = ['.mp4', '.m4v', '.mkv','.ts', '.avi',
                         '.webm', '.flv', '.mov', '.wmv', '.vob',
-                        '.ogm', '.mpg', '.divx','.rmvb',
+                        '.ogm', '.mpg', '.divx','.rmvb', '.f4v'
                         ]
 # cSpell: enable
         test_name : str = "dummy_video"

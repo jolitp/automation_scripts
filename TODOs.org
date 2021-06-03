@@ -111,12 +111,16 @@ the script receives the parameters:
 *** common logic
 **** algorithm
 *** TODO script to compress the files/ directory into a .7z file
+<<<<<<< HEAD
+*** DONE script to add to the start of the name of every file
+=======
 **** algorithm
 ***** get the working directory
 ***** get all items in working directory
 ***** filter only directories
 ***** filter files/ directory
 ***** call zip command with files/ directory as parameter
+>>>>>>> 103ae93fc5ff54ecf503c03be4c6cb8690b5a312
 *** TODO script to remove empty folders recursivelly from a directory
 *** TODO script to move all folders in a directory to a files/ directory
 *** TODO script to create an org file with videos as sub-headers
@@ -670,8 +674,13 @@ put common functionality used by other scripts here
 ****** store the extension (key) of the biggest
 ***** check the extension against a table of expected extension
 ***** move the folder to the appropriate category folder
+<<<<<<< HEAD
+** TODO separate_videos_subs_files.py
+*** logic [9/9] [100%]
+=======
 ** STRT separate_videos_subs_files.py
 *** logic [9/10] [90%]
+>>>>>>> 98b206622595bdd3db85e69c676b9504c3ba7cbf
 **** DONE get the path of all files and folders recursivelly
 **** DONE filter only files
 **** DONE create 3 lists: videos, subs, files
@@ -729,8 +738,17 @@ don't create a folder
 **** DONE do the same as above to subs
 **** DONE do the same as above to files
 **** DONE for each of the lists move/rename the files from src > dst
+<<<<<<< HEAD
+*** extra requirements
+**** TODO move the folders that remain to a folders/ directory
+=======
 **** TODO remove gif from the video list
+<<<<<<< HEAD
 ** STRT get_videos_info_csv.py
+=======
+>>>>>>> 98b206622595bdd3db85e69c676b9504c3ba7cbf
+** DONE get_videos_info_csv.py
+>>>>>>> d083a63b10f8872a681060382550924db5630cc4
 *** logic
 **** DONE check if the folder has the right structure
 contains: videos/
@@ -1261,6 +1279,39 @@ can use logic to check, and move the folder to the right place
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
+<<<<<<< HEAD
+** old layout
+*** DONE strait_out_of_torrents/
+*** DONE separated_torrent_types/
+**** DONE videos/
+**** DONE audio/
+**** DONE books/
+**** TODO more...
+*** DONE unprocessed_videos/
+**** DONE 0000_videos_separated/
+*** DONE get_videos_infos_csv
+**** DONE 0000_info_extracted/
+*** DONE check_for_subtitles/
+*** DONE embed_subtitles/
+**** DONE 0000_subtitles_embeded/
+*** DONE separate_videos_to_upload/
+*** DONE separate_videos_12_hours/
+**** DONE short/
+**** DONE long/
+**** DONE no_data/
+*** DONE videos_separated_in_sections/
+*** DONE separate_videos_different_dimensions/
+*** DONE resize_different_dimensions/
+*** TODO AVIDEMUX_concatenate_videos/
+**** TODO same_dimensions/
+**** TODO same_codecs/
+**** TODO concatenated/
+*** TODO YT_upload_to_youtube/
+**** TODO 0000_uploaded/
+**** 0000_files_compressed/
+** new layout
+*** ZZ pipeline
+=======
 ** old
 *** strait_out_of_torrents/
 *** separated_torrent_types/
@@ -1431,6 +1482,7 @@ tsxt
                                    - join videos together
                                      + upload to youtube
 
+>>>>>>> 9a9b4445bc87d9408342dad0aa734c59e022a2e9
 * things to try
 ** TODO import module from deployed file
 
@@ -2008,3 +2060,4 @@ install()
 like:
     getting info from files
     moving from src to dst
+* TODO remake the diagram with the new folder layout

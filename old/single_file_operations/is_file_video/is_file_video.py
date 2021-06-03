@@ -35,7 +35,7 @@ def is_video(filename : str,
     # region video_extensions
     video_extensions = ['.mp4', '.m4v', '.mkv','.ts', '.avi',
                         '.webm', '.flv', '.mov', '.wmv', '.vob',
-                        '.ogm', '.mpg', '.divx','.rmvb',
+                        '.ogm', '.mpg', '.divx','.rmvb', '.f4v'
                         ]
     # endregion video_extensions
 # cSpell: enable
