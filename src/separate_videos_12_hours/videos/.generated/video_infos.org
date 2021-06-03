@@ -1,0 +1,78 @@
+#+DATE: <2021-06-01 Tue 15:56> 
+* separate_videos_12_hours
+** duration table
+| alpha_ord | working | name | dur_sec | dur_hrs | acc_dur_sec | acc_dur_hrs |
+| | | | | | | |
+| 0| True| 1 hour video 1.mp4| 3623| 01:00:23| 3623.400| 01:00:23 | 
+| 1| True| 1 hour video 2.mp4| 3623| 01:00:23| 7246.800| 02:00:46 | 
+| 2| True| 1 hour video 3.mp4| 3623| 01:00:23| 10870.200| 03:01:10 | 
+| 3| True| 1 hour video 4.mp4| 3623| 01:00:23| 14493.600| 04:01:33 | 
+| 4| True| 1 hour video 5.mp4| 3623| 01:00:23| 18117.000| 05:01:57 | 
+| 5| True| 1 hour video 6.mp4| 3623| 01:00:23| 21740.400| 06:02:20 | 
+| 6| True| 1 hour video 7.mp4| 3623| 01:00:23| 25363.800| 07:02:43 | 
+| 7| True| 1 hour video 8.mp4| 3623| 01:00:23| 28987.200| 08:03:07 | 
+| 8| True| 1 hour video 9.mp4| 3623| 01:00:23| 32610.600| 09:03:30 | 
+| 9| True| 1 hour video 10.mp4| 3623| 01:00:23| 36234.000| 10:03:54 | 
+| 10| True| 1 hour video 11.mp4| 3623| 01:00:23| 39857.400| 11:04:17 | 
+| 11| True| 1 hour video 12.mp4| 3623| 01:00:23| 43480.800| 12:04:40 | 
+| 12| True| 1 hour video 13.mp4| 3623| 01:00:23| 47104.200| 13:05:04 | 
+| 13| True| 1 hour video 14.mp4| 3623| 01:00:23| 50727.600| 14:05:27 | 
+| 14| True| 1 hour video 15.mp4| 3623| 01:00:23| 54351.000| 15:05:51 | 
+| 15| True| 1 hour video 16.mp4| 3623| 01:00:23| 57974.400| 16:06:14 | 
+** frames table
+| alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
+| | | | | |
+| 0| True| 1 hour video 1.mp4| 36235| 10| 36235 | 
+| 1| True| 1 hour video 2.mp4| 36235| 10| 72470 | 
+| 2| True| 1 hour video 3.mp4| 36235| 10| 108705 | 
+| 3| True| 1 hour video 4.mp4| 36235| 10| 144940 | 
+| 4| True| 1 hour video 5.mp4| 36235| 10| 181175 | 
+| 5| True| 1 hour video 6.mp4| 36235| 10| 217410 | 
+| 6| True| 1 hour video 7.mp4| 36235| 10| 253645 | 
+| 7| True| 1 hour video 8.mp4| 36235| 10| 289880 | 
+| 8| True| 1 hour video 9.mp4| 36235| 10| 326115 | 
+| 9| True| 1 hour video 10.mp4| 36235| 10| 362350 | 
+| 10| True| 1 hour video 11.mp4| 36235| 10| 398585 | 
+| 11| True| 1 hour video 12.mp4| 36235| 10| 434820 | 
+| 12| True| 1 hour video 13.mp4| 36235| 10| 471055 | 
+| 13| True| 1 hour video 14.mp4| 36235| 10| 507290 | 
+| 14| True| 1 hour video 15.mp4| 36235| 10| 543525 | 
+| 15| True| 1 hour video 16.mp4| 36235| 10| 579760 | 
+** dimension_table
+| alpha_ord | working | name | width | height | AR | AR_frc |
+| | | | | | | |
+| 0 | True | 1 hour video 1.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 1 | True | 1 hour video 2.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 2 | True | 1 hour video 3.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 3 | True | 1 hour video 4.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 4 | True | 1 hour video 5.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 5 | True | 1 hour video 6.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 6 | True | 1 hour video 7.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 7 | True | 1 hour video 8.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 8 | True | 1 hour video 9.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 9 | True | 1 hour video 10.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 10 | True | 1 hour video 11.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 11 | True | 1 hour video 12.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 12 | True | 1 hour video 13.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 13 | True | 1 hour video 14.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 14 | True | 1 hour video 15.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+| 15 | True | 1 hour video 16.mp4 | 1920 | 1080 | 1.78 | 16:9 |
+** size_table
+| alpha_ord | working | name | bytes | acc_bytes |
+| | | | | |
+| 0 | True | 1 hour video 1.mp4 | 97.6 MB | 97.6 MB |
+| 1 | True | 1 hour video 2.mp4 | 97.6 MB | 195.2 MB |
+| 2 | True | 1 hour video 3.mp4 | 97.6 MB | 292.7 MB |
+| 3 | True | 1 hour video 4.mp4 | 97.6 MB | 390.3 MB |
+| 4 | True | 1 hour video 5.mp4 | 97.6 MB | 487.9 MB |
+| 5 | True | 1 hour video 6.mp4 | 97.6 MB | 585.5 MB |
+| 6 | True | 1 hour video 7.mp4 | 97.6 MB | 683.0 MB |
+| 7 | True | 1 hour video 8.mp4 | 97.6 MB | 780.6 MB |
+| 8 | True | 1 hour video 9.mp4 | 97.6 MB | 878.2 MB |
+| 9 | True | 1 hour video 10.mp4 | 97.6 MB | 975.8 MB |
+| 10 | True | 1 hour video 11.mp4 | 97.6 MB | 1.0 GB |
+| 11 | True | 1 hour video 12.mp4 | 97.6 MB | 1.1 GB |
+| 12 | True | 1 hour video 13.mp4 | 97.6 MB | 1.2 GB |
+| 13 | True | 1 hour video 14.mp4 | 97.6 MB | 1.3 GB |
+| 14 | True | 1 hour video 15.mp4 | 97.6 MB | 1.4 GB |
+| 15 | True | 1 hour video 16.mp4 | 97.6 MB | 1.5 GB |
