@@ -1,6 +1,8 @@
-#+DATE: <2021-06-04 Fri 00:13> 
-* concatenate_videos
-** duration table
-** frames table
-** dimension_table
-** size_table
+#+DATE: <2021-06-04 Fri 01:19> 
+* join_videos_together
+* relative paths
+
+* duration table
+* frames table
+* dimension_table
+* size_table

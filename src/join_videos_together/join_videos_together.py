@@ -5,21 +5,14 @@ concatenate(join) videos together using avidemux
 # cSpell: word jolitp pytest miliseconds avidemux isdigit
 import os
 import csv
-import datetime
-import calendar
-import concurrent.futures
-import subprocess
 from pathlib import Path
+import subprocess
 
-from natsort import natsorted, ns
 from rich.console import Console
 import cv2
 
 # region ========================================== load_video_infos_csv
-def load_video_infos_csv(
-    file_path: str,
-    debug_function: bool = None
-    ):
+def load_video_infos_csv(file_path: str):
     """load the values of a .csv file
     containing the info of all videos
     in the directory
@@ -32,16 +25,6 @@ def load_video_infos_csv(
     Returns:
         (list(dict)): the values from .csv file parsed into a dictionary
     """
-    # debug_function = True # comment to toggle
-
-    # if debug_function:
-    #     print()
-    #     print("START load_video_infos_csv")
-    #     print("---------=---------=---------=---------=---------=---------=---------=---------=")
-    #     print("| def load_video_infos_csv(                                                    |")
-    #     print(f"|   file_path = {file_path}")
-    #     print("|                                                                              |")
-
     if not os.path.isfile(file_path):
         return []
         ...
@@ -51,19 +34,6 @@ def load_video_infos_csv(
         for ordered_dict in csv_reader:
             video_info_list.append(ordered_dict)
 
-
-    # if debug_function:
-    #     print()
-    #     print("return video_infos = [                                                         |")
-    #     for element in video_info_list:
-    #         print("|   {                                                                          |")
-    #         for key in element:
-    #             print(f"|     '{key}': {element[key]}")
-    #         print("|   }                                                                          |")
-    #     print("|  ]")
-    #     print("| }                                                                            |")
-    #     print("---------=---------=---------=---------=---------=---------=---------=---------=")
-    #     print("END   load_video_infos_csv")
     return video_info_list
     ...
 # endregion --------------------------------------- load_video_infos_csv
@@ -86,16 +56,15 @@ def create_project_file(
     """
     c = Console()
 
-
     def project_py_lines(video_info_list:list):
         lines = ""
         lines += "#PY  <- Needed to identify #\n"
         lines += "#--automatically built--\n\n"
-        # lines += "# cSpell: word adm jolitp\n"
         lines += "adm = Avidemux()\n"
 
         for index, video_info in enumerate(video_info_list):
-            video_path = video_info["full_path"]
+            cwd = os.getcwd()
+            video_path = cwd + "/" + video_info["full_path"]
             if index == 0:
                 lines += \
                 f"if not adm.loadVideo(\"{video_path}\"):\n" + \
@@ -104,45 +73,11 @@ def create_project_file(
                 lines += \
                 f"if not adm.appendVideo(\"{video_path}\"):\n" + \
                 f"    raise(\"Cannot append {video_path}\")\n"
-        # lets try not aditing this
-        # lines += "adm.clearSegments()\n"
-        for video_info in video_info_list:
-            order = video_info["alphabetical_order"]
-            frame_count = video_info["frame_count"]
-            # the number passed to the 3rd parameter
-            # is not the frame count
-            # the documentation says it's duration
-            # the number given: 191668
-            # is actually 191 seconds
-            miliseconds = int(float(video_info["duration_seconds"]) * 1000)
-            # print(miliseconds)
-            # lines += f"adm.addSegment({order}, 0, {miliseconds})\n"
-            # print()
-            # for key in video_info:
-            #     print(f'{key} : {video_info[key]}')
-            # print()
-        # lines += "adm.markerA = 0\n"
-        acc_dur_sec = 0
-        if video_info_list:
-            last_video_info = len(video_info_list) -1
-        # acc_frame_count = video_info_list[last_video_info]["accumulated_frame_count"]
-            acc_dur_sec = video_info_list[last_video_info]["accumulated_duration_seconds"]
-        # change here too, it's not frame count
-        # it's accumulated duration in miliseconds
-        # lines += f"adm.markerB = {acc_frame_count}\n"
-        # lines += f"adm.markerB = {int(float(acc_dur_sec) * 1000)}\n"
         lines += "adm.videoCodec(\"Copy\")\n"
-        # lines += "adm.audioClearTracks()\n"
-        # do I need this?
-        # lines += "adm.setSourceTrackLanguage(0, \"und\")\n"
-        # lines += "if adm.audioTotalTracksCount() <= 0:\n"
-        # lines += "    raise(\"Cannot add audio track 0, total tracks: \" + str(adm.audioTotalTracksCount()))\n"
-        # lines += "adm.audioAddTrack(0)\n"
         lines += "adm.audioCodec(0, \"copy\")\n"
-        # lines += "adm.audioSetDrc(0, 0)\n"
-        # lines += "adm.audioSetShift(0, 0, 0)\n"
         lines += "adm.setContainer(\"MKV\")\n"
 
+        print(lines)
         return lines
 
     lines = project_py_lines(video_info_list)
@@ -160,7 +95,6 @@ def compare_concatenated_video(
     concatenated_video_path: str,
     last_video_info: dict,
 ):
-
     expected_duration = int(
         float(last_video_info["accumulated_duration_seconds"]))
 
@@ -180,7 +114,7 @@ def compare_concatenated_video(
 # region ================================================ process_folder
 def process_folder(folder_path:Path):
     c = Console()
-    c.print("\nprocessing folder: \n{}\n".format(folder_path))
+    c.print("\nprocessing folder: \n\"{}\"\n".format(folder_path))
 
     folder_basename = os.path.basename(folder_path)
     folder_number = ''
@@ -221,7 +155,7 @@ def process_folder(folder_path:Path):
 
     c.print("\njoining videos together: \n[bold purple]{}[/]\n" \
         .format(concatenated_video_path))
-    # subprocess.run(command) # comment to test
+    subprocess.run(command) # comment to test
 # endregion ---------------------------------------------- process_folder
 
 
@@ -245,67 +179,15 @@ def main():
     if converted_folder_paths:
         c.print("found \"converted\" folders")
         for path in converted_folder_paths:
+            c.print("\"{}\"".format(path))
             process_folder(path)
 
     if videos_folder_paths and not converted_folder_paths:
+        c.print("found \"videos\" folders")
         for path in videos_folder_paths:
+            c.print("\"{}\"".format(path))
             process_folder(path)
 
-
-
-    # videos_folder_path = cwd + "/videos/"
-    # converted_folder_path = cwd + "/converted/"
-
-    # is_videos_folder = os.path.isdir(videos_folder_path)
-    # is_converted_folder = os.path.isdir(converted_folder_path)
-
-    # TODO call process function for each dir that have
-    # converted or videos in the name
-    # if there are converted don't call videos
-
-
-    # all_immediate_items = os.listdir(cwd)
-    # all_nested_videos = []
-    # if is_videos_folder:
-    #     all_nested_videos = os.listdir(videos_folder_path)
-    # all_converted_videos = []
-    # if is_converted_folder:
-    #     all_converted_videos = os.listdir(converted_folder_path)
-
-
-    # videos_infos_csv_file_on_root = cwd + "/.generated/video_infos.csv"
-    # videos_infos_csv_file_on_videos = ""
-    # if is_videos_folder:
-    #     videos_infos_csv_file_on_videos = cwd + "/videos/.generated/video_infos.csv"
-    # videos_infos_csv_file_on_converted = ""
-    # if is_converted_folder:
-    #     videos_infos_csv_file_on_converted = cwd + "/converted/.generated/video_infos.csv"
-
-    # video_info_list = []
-    # if is_converted_folder:
-    #     video_info_list = load_video_infos_csv(videos_infos_csv_file_on_converted)
-    # elif is_videos_folder:
-    #     video_info_list = load_video_infos_csv(videos_infos_csv_file_on_videos)
-    # else:
-    #     video_info_list = load_video_infos_csv(videos_infos_csv_file_on_root)
-
-    # project_file_path = cwd + "/project.py"
-
-    # create_project_file(project_file_path, video_info_list)
-    # concatenated_video_path = cwd + "/" + os.path.basename(cwd) + ".mkv"
-    # avidemux_path = "/home/jolitp/Applications/avidemuxLinux.appImage"
-    # command = [
-    #     avidemux_path,
-    #     "--run",
-    #     project_file_path,
-    #     "--quit",
-    #     "--save",
-    #     concatenated_video_path
-    # ]
-
-    # subprocess.run(command) # comment to test
-
-# ====
 #     last_video_info = video_info_list[len(video_info_list) - 1]
 #     # for key in last_video_info:
 #     #     print(key ,"=", last_video_info[key])
@@ -348,22 +230,10 @@ def main():
 #     print("dst = " + str(dst))
 
 #     os.rename(src, dst)
-
 # endregion -------------------------------------------------------- main
 
 
 # region ===================================== if __name__ == "__main__":
 if __name__ == "__main__":
-    # print()
-    msg = "START concatenate_videos.py START"
-    # print(msg)
-    # print()
-
     main()
-
-    # msg = "END concatenate_videos.py END"
-    # print()
-    # print(msg)
-    # print()
-    ...
 # endregion ---------------------------------- if __name__ == "__main__":

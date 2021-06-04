@@ -1,0 +1,6 @@
+alphabetical_order,working,filename,full_path,duration_seconds,duration_hours,frame_count,fps,width,height,size,size_bytes,aspect_ratio_fraction,aspect_ratio,accumulated_duration_seconds,accumulated_duration_hours,accumulated_frame_count,accumulated_size,accumulated_size_bytes
+0,True,1_sec_VIDEO_1.mkv,videos1/1_sec_VIDEO_1.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,1.0677333333333334,00:00:01,32,9829,9.6 KB
+1,True,1_sec_VIDEO_2.mkv,videos1/1_sec_VIDEO_2.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,2.135466666666667,00:00:02,64,19658,19.2 KB
+2,True,1_sec_VIDEO_3.mkv,videos1/1_sec_VIDEO_3.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,3.2032000000000003,00:00:03,96,29487,28.8 KB
+3,True,1_sec_VIDEO_4.mkv,videos1/1_sec_VIDEO_4.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,4.270933333333334,00:00:04,128,39316,38.4 KB
+4,True,1_sec_VIDEO_5.mkv,videos1/1_sec_VIDEO_5.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,5.338666666666667,00:00:05,160,49145,48.0 KB

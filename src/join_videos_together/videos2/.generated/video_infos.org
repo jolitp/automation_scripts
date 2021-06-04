@@ -1,0 +1,76 @@
+#+DATE: <2021-06-04 Fri 00:56> 
+* get_videos_info_csv
+* relative paths
+
+videos2/1_sec_VIDEO_1.mkv
+
+videos2/1_sec_VIDEO_2.mkv
+
+videos2/1_sec_VIDEO_3.mkv
+
+videos2/1_sec_VIDEO_4.mkv
+
+videos2/1_sec_VIDEO_5.mkv
+
+videos2/1_sec_VIDEO_6.mkv
+
+videos2/1_sec_VIDEO_7.mkv
+
+videos2/1_sec_VIDEO_8.mkv
+
+videos2/1_sec_VIDEO_9.mkv
+
+videos2/1_sec_VIDEO_10.mkv
+
+** duration table
+| alpha_ord | working | name | dur_sec | dur_hrs | acc_dur_sec | acc_dur_hrs |
+| | | | | | | |
+| 0| True| 1_sec_VIDEO_1.mkv| 1| 00:00:01| 1.068| 00:00:01 | 
+| 1| True| 1_sec_VIDEO_2.mkv| 1| 00:00:01| 2.135| 00:00:02 | 
+| 2| True| 1_sec_VIDEO_3.mkv| 1| 00:00:01| 3.203| 00:00:03 | 
+| 3| True| 1_sec_VIDEO_4.mkv| 1| 00:00:01| 4.271| 00:00:04 | 
+| 4| True| 1_sec_VIDEO_5.mkv| 1| 00:00:01| 5.339| 00:00:05 | 
+| 5| True| 1_sec_VIDEO_6.mkv| 1| 00:00:01| 6.406| 00:00:06 | 
+| 6| True| 1_sec_VIDEO_7.mkv| 1| 00:00:01| 7.474| 00:00:07 | 
+| 7| True| 1_sec_VIDEO_8.mkv| 1| 00:00:01| 8.542| 00:00:08 | 
+| 8| True| 1_sec_VIDEO_9.mkv| 1| 00:00:01| 9.610| 00:00:09 | 
+| 9| True| 1_sec_VIDEO_10.mkv| 1| 00:00:01| 10.677| 00:00:10 | 
+** frames table
+| alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
+| | | | | |
+| 0| True| 1_sec_VIDEO_1.mkv| 32| 29| 32 | 
+| 1| True| 1_sec_VIDEO_2.mkv| 32| 29| 64 | 
+| 2| True| 1_sec_VIDEO_3.mkv| 32| 29| 96 | 
+| 3| True| 1_sec_VIDEO_4.mkv| 32| 29| 128 | 
+| 4| True| 1_sec_VIDEO_5.mkv| 32| 29| 160 | 
+| 5| True| 1_sec_VIDEO_6.mkv| 32| 29| 192 | 
+| 6| True| 1_sec_VIDEO_7.mkv| 32| 29| 224 | 
+| 7| True| 1_sec_VIDEO_8.mkv| 32| 29| 256 | 
+| 8| True| 1_sec_VIDEO_9.mkv| 32| 29| 288 | 
+| 9| True| 1_sec_VIDEO_10.mkv| 32| 29| 320 | 
+** dimension_table
+| alpha_ord | working | name | width | height | AR | AR_frc |
+| | | | | | | |
+| 0 | True | 1_sec_VIDEO_1.mkv | 320 | 240 | 1.33 | 4:3 |
+| 1 | True | 1_sec_VIDEO_2.mkv | 320 | 240 | 1.33 | 4:3 |
+| 2 | True | 1_sec_VIDEO_3.mkv | 320 | 240 | 1.33 | 4:3 |
+| 3 | True | 1_sec_VIDEO_4.mkv | 320 | 240 | 1.33 | 4:3 |
+| 4 | True | 1_sec_VIDEO_5.mkv | 320 | 240 | 1.33 | 4:3 |
+| 5 | True | 1_sec_VIDEO_6.mkv | 320 | 240 | 1.33 | 4:3 |
+| 6 | True | 1_sec_VIDEO_7.mkv | 320 | 240 | 1.33 | 4:3 |
+| 7 | True | 1_sec_VIDEO_8.mkv | 320 | 240 | 1.33 | 4:3 |
+| 8 | True | 1_sec_VIDEO_9.mkv | 320 | 240 | 1.33 | 4:3 |
+| 9 | True | 1_sec_VIDEO_10.mkv | 320 | 240 | 1.33 | 4:3 |
+** size_table
+| alpha_ord | working | name | bytes | acc_bytes |
+| | | | | |
+| 0 | True | 1_sec_VIDEO_1.mkv | 9.6 KB | 9.6 KB |
+| 1 | True | 1_sec_VIDEO_2.mkv | 9.6 KB | 19.2 KB |
+| 2 | True | 1_sec_VIDEO_3.mkv | 9.6 KB | 28.8 KB |
+| 3 | True | 1_sec_VIDEO_4.mkv | 9.6 KB | 38.4 KB |
+| 4 | True | 1_sec_VIDEO_5.mkv | 9.6 KB | 48.0 KB |
+| 5 | True | 1_sec_VIDEO_6.mkv | 9.6 KB | 57.6 KB |
+| 6 | True | 1_sec_VIDEO_7.mkv | 9.6 KB | 67.2 KB |
+| 7 | True | 1_sec_VIDEO_8.mkv | 9.6 KB | 76.8 KB |
+| 8 | True | 1_sec_VIDEO_9.mkv | 9.6 KB | 86.4 KB |
+| 9 | True | 1_sec_VIDEO_10.mkv | 9.6 KB | 96.0 KB |
