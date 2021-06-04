@@ -1,34 +1,8 @@
-#+DATE: <2021-05-22 Sat 14:28> 
+#+DATE: <2021-06-04 Fri 00:56> 
 * get_videos_info_csv
+* relative paths
+
 ** duration table
-| alpha_ord | working | name | dur_sec | dur_hrs | acc_dur_sec | acc_dur_hrs |
-| | | | | | | |
-| 0| True| 1_sec_1920:1080.mkv| 1| 00:00:01| 1.068| 00:00:01 | 
-| 1| True| 1_sec_VIDEO_1.mkv| 1| 00:00:01| 2.135| 00:00:02 | 
-| 2| True| 5_min_video.mkv| 299| 00:04:59| 301.635| 00:05:01 | 
-| 3| True| big_video.mp4| 38890| 10:48:10| 39191.652| 10:53:11 | 
-| 4| False| dummy_video_file.mkv| 0| 00:00:00| 39191.652| 10:53:11 | 
 ** frames table
-| alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
-| | | | | |
-| 0| False| 1_sec_1920:1080.mkv| 32| 29| 32 | 
-| 1| False| 1_sec_VIDEO_1.mkv| 32| 29| 64 | 
-| 2| False| 5_min_video.mkv| 8976| 29| 9040 | 
-| 3| False| big_video.mp4| 1165535| 29| 1174575 | 
-| 4| False| dummy_video_file.mkv| 0| 0| 1174575 | 
 ** dimension_table
-| alpha_ord | working | name | width | height | AR | AR_frc |
-| | | | | | | |
-| 0 | True | 1_sec_1920:1080.mkv | 1920 | 1080 | 1.78 | 16:9 |
-| 1 | True | 1_sec_VIDEO_1.mkv | 320 | 240 | 1.33 | 4:3 |
-| 2 | True | 5_min_video.mkv | 320 | 240 | 1.33 | 4:3 |
-| 3 | True | big_video.mp4 | 1920 | 1080 | 1.78 | 16:9 |
-| 4 | False | dummy_video_file.mkv | 0 | 0 | 0.00 | 0 |
 ** size_table
-| alpha_ord | working | name | bytes | acc_bytes |
-| | | | | |
-| 0 | True | 1_sec_1920:1080.mkv | 18.4 KB | 18.4 KB |
-| 1 | True | 1_sec_VIDEO_1.mkv | 9.6 KB | 28.0 KB |
-| 2 | True | 5_min_video.mkv | 12.2 MB | 12.2 MB |
-| 3 | True | big_video.mp4 | 6.4 GB | 6.4 GB |
-| 4 | False | dummy_video_file.mkv | 2.0 bytes | 6.4 GB |

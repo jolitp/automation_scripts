@@ -9,8 +9,10 @@ import csv
 import datetime
 import calendar
 import concurrent.futures
+import sys
 
 from natsort import natsorted, ns
+from rich.console import Console
 
 # TODO put function in a library
 # region filter_files_by_extension
@@ -230,6 +232,8 @@ def get_video_info(
         print("|   video_path = {}".format(video_path))
         print("| ):                                                                           |")
 
+    c = Console()
+    c.print("\ngetting info for: \n\"{}\"\n".format(video_path))
     info = {}
 
     capture = cv2.VideoCapture(video_path)
@@ -281,7 +285,7 @@ def get_video_info(
         print("| }                                                                            |")
         print("---------=---------=---------=---------=---------=---------=---------=---------=")
         print("END   get_info_for_video")
-
+    # sys.stdout.flush()
     return info
     ...
 # endregion
@@ -299,7 +303,8 @@ def process_folder(
 
         immediate_videos (list):
     """
-    # debug_function = True # comment to toggle
+    debug_function = True # comment to toggle
+
     if debug_function:
         print()
         print("START process_folder")
@@ -311,23 +316,8 @@ def process_folder(
     all_items = os.listdir(folder)
     all_items = natsorted(all_items, alg=ns.PATH)
 
-    if debug_function:
-        print()
-        print("all_immediate_items = [")
-        for element in all_items:
-            print("  {}".format(element))
-        print("]")
-
     videos = filter_videos(all_items)
-    # videos.sort()
     videos = natsorted(videos, alg=ns.PATH)
-
-    if debug_function:
-        print()
-        print("immediate_videos = [")
-        for element in videos:
-            print("  {}".format(element))
-        print("]")
 
     video_paths = []
     for video in videos:
@@ -335,7 +325,7 @@ def process_folder(
 
     if debug_function:
         print()
-        print("immediate_video_paths = [")
+        print("video_paths = [")
         for element in video_paths:
             print("  {}".format(element))
         print("]")
@@ -352,10 +342,10 @@ def process_folder(
         # video_infos = executor.map(get_video_info, video_paths)
         ...
         results = []
-        for index, item in enumerate(video_paths):
-            print(f"index: {index}")
-            print(f"item: {item}")
-            results.append(executor.submit(get_video_info, item, index))
+        for index, path in enumerate(video_paths):
+            # print(f"index: {index}")
+            # print(f"item: {item}")
+            results.append(executor.submit(get_video_info, path, index))
 
         # prints the results in the order they are completed
         for result in concurrent.futures.as_completed(results):
@@ -363,16 +353,16 @@ def process_folder(
             video_infos[result.result()["alphabetical_order"]] = result.result()
             ...
 
-    video_infos = get_accumulated_values(video_infos)
+    video_infos = add_accumulated_values(video_infos)
 
-    if debug_function:
-        print()
-        print("video_infos = [")
-        for infos in video_infos:
-            print()
-            for key in infos:
-                print("  {} : {}".format(key, infos[key]))
-        print("]")
+    # if debug_function:
+    #     print()
+    #     print("video_infos = [")
+    #     for infos in video_infos:
+    #         print()
+    #         for key in infos:
+    #             print("  {} : {}".format(key, infos[key]))
+    #     print("]")
 
     dot_generated_folder_path = folder + "/.generated"
     if not os.path.exists(dot_generated_folder_path):
@@ -400,7 +390,7 @@ def create_org_file(
 
         file_path (str): the path to save the .org file to
     """
-    debug_function = True # comment to toggle
+    # debug_function = True # comment to toggle
 
     if debug_function:
         print()
@@ -437,6 +427,7 @@ def create_org_file(
         date_line = "#+DATE: <" + formatted_date + ">"
 
 # TODO refactor: remove repetition
+# have a make table function
         duration_table = ""
         for index, infos in enumerate(infos_list):
             if index == 0:
@@ -563,15 +554,23 @@ def create_org_file(
                 += f"| {alpha_ord} | {working} | {name} | {size_bytes} | {acc_size_bytes} |\n"
             ...
 
+        rel_paths = ""
+        for index, infos in enumerate(infos_list):
+            current_path = infos['full_path']
+            rel_paths += '\n' + current_path + '\n'
+        rel_paths += "\n"
+
         output_file.write(f"{date_line} \n")
         output_file.write(f"* {folder_name}\n")
-        output_file.write(f"** duration table\n")
+        output_file.write(f"* relative paths\n")
+        output_file.write(rel_paths)
+        output_file.write(f"* duration table\n")
         output_file.write(duration_table)
-        output_file.write(f"** frames table\n")
+        output_file.write(f"* frames table\n")
         output_file.write(frames_table)
-        output_file.write(f"** dimension_table\n")
+        output_file.write(f"* dimension_table\n")
         output_file.write(dimension_table)
-        output_file.write(f"** size_table\n")
+        output_file.write(f"* size_table\n")
         output_file.write(size_table)
         ...
 
@@ -659,7 +658,7 @@ def create_csv_file(
 
 
 # region get_accumulated_values
-def get_accumulated_values(
+def add_accumulated_values(
     infos_list: dict,
     debug_function = None
     ):
@@ -733,18 +732,25 @@ def main(
         print(cwd)
 
     all_immediate_items = os.listdir(cwd)
+    all_folders = []
+    for item in all_immediate_items:
+        if os.path.isdir(item):
+            all_folders.append(item)
+    all_videos_folders = []
+    all_converted_folders = []
+    for folder in all_folders:
+        if "videos" in folder:
+            all_videos_folders.append(folder)
+        if "converted" in folder:
+            all_videos_folders.append(folder)
 
-    if "converted" in all_immediate_items:
-        process_folder(cwd + "/converted")
-    elif "videos" in all_immediate_items:
-        process_folder(cwd + "/videos")
-    else:
-        process_folder(cwd)
-
-        print("---------=---------=---------=---------=---------=---------=---------=---------=")
-        print("END   main")
-
-
+    if all_videos_folders:
+        for folder in all_videos_folders:
+            process_folder(folder)
+    if all_converted_folders:
+        for folder in all_converted_folders:
+            process_folder(folder)
+    process_folder(cwd)
 # endregion main
 
 
