@@ -7,6 +7,7 @@ import os
 import csv
 from pathlib import Path
 import subprocess
+import sys
 
 from rich.console import Console
 import cv2
@@ -141,7 +142,6 @@ def process_folder(folder_path:Path):
 
     create_project_file(project_file_path, videos_data_list)
 
-    # print(folder_number)
     concatenated_video_path = cwd / Path(file_name)
     avidemux_path = "/home/jolitp/Applications/avidemuxLinux.appImage"
     command = [
@@ -150,12 +150,14 @@ def process_folder(folder_path:Path):
         project_file_path,
         "--quit",
         "--save",
-        concatenated_video_path
+        concatenated_video_path,
     ]
 
-    c.print("\njoining videos together: \n[bold purple]{}[/]\n" \
-        .format(concatenated_video_path))
-    subprocess.run(command) # comment to test
+    subprocess.run(
+        command,
+        capture_output=True,
+        text=True
+        ) # comment to test
 # endregion ---------------------------------------------- process_folder
 
 
