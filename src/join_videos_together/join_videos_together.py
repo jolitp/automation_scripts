@@ -78,7 +78,7 @@ def create_project_file(
         lines += "adm.audioCodec(0, \"copy\")\n"
         lines += "adm.setContainer(\"MKV\")\n"
 
-        print(lines)
+        # print(lines)
         return lines
 
     lines = project_py_lines(video_info_list)
@@ -152,6 +152,9 @@ def process_folder(folder_path:Path):
         "--save",
         concatenated_video_path,
     ]
+
+    c.print("\njoining videos together: \n[magenta]{}[/]\n" \
+        .format(concatenated_video_path))
 
     subprocess.run(
         command,
