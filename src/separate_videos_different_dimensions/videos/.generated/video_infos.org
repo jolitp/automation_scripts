@@ -1,0 +1,8 @@
+#+DATE: <2021-06-04 Fri 12:33> 
+* separate_videos_different_dimensions
+* relative paths
+
+* duration table
+* frames table
+* dimension_table
+* size_table

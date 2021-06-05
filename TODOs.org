@@ -1188,7 +1188,54 @@ expected_output: {
         "section_b_file_b",
     ]
 }
-** TODO separate_videos_different_dimensions.py
+** STRT separate_videos_different_dimensions.py
+*** steps
+**** TODO check if there is one or more videos#/ folder
+**** TODO for each videos/ folder do:
+***** TODO get the folder number
+***** TODO check if there is a csv file in .generated/ folder inside the folder
+***** TODO ...
+*** DONE pseudo code and state diagrams
+**** debugging current code
+***** function: segment by dimensions( dimensions_list:list )
+dimensions list = [
+        (1920,1080), <- index 0
+        (1920,1080), <- index 1
+        (1080,720),  <- index 2
+        (1080,720),  <- index 3
+        (1920,1080), <- index 4
+        (1920,1080), <- index 5
+]
+****** new variable: segments
+segments = []
+****** new variable: previous dimension
+previous dimension = None
+****** new variable: current segment
+current segment = [0,0]
+****** for index, current dimension in dimensions list
+******* iteration 1
+index = 0
+current dimension = (1920,1080), <- index 0
+******** if index > 0
+0 > 0 -> false
+******** variable assignment: current dimension
+current dimension <- [index, index]
+current dimension <- [0, 0]
+******* iteration 2
+index = 1
+current dimension = (1920,1080), <- index 1
+******** if index > 0
+1 > 0 -> true
+********* if current dimension =equals= previous dimension
+current dimension = (1920,1080), <- index 1
+previous dimension = None
+********* else
+...
+
+
+** TODO revert_videos_separation
+move videos in videos#/ folders to videos/ folder
+
 ** DONE concatenate_videos.py
 *** findings
 **** I can open avidemux on the command line with --help to get help info on arguments
