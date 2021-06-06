@@ -5,15 +5,23 @@ separate files into folders:
 videos/
 subs/
 files/
+folders/
 """
+# FIXME it is working on laptop
+# BUG not getting any files in a real directory
+# the cwd is the right one
 
-# TODO make the print statements colored using the colored package
+# TODO move remaining folders to folders/ dolder
+# TODO ignore videos/ subs/ files/ folders/
+
+# TODO make the print statements colored using the rich package
+# TODO install rich traceback
 
 import os
 import os.path
 
 # TODO put function in a library
-# TODO make a non recursive version
+# TODO make a non recursive version, to be used by parameters
 # region get_nested_files
 def get_nested_files(
     path: str
@@ -383,6 +391,7 @@ def main():
 # endregion main
 
 
+# region if __name__ == "__main__":
 if __name__ == "__main__":
     print()
     msg = "START separate_videos_subs_files START"
@@ -396,3 +405,4 @@ if __name__ == "__main__":
     print(msg)
     print()
     ...
+# endregion if __name__ == "__main__":
