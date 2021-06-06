@@ -822,6 +822,7 @@ separate the folders of videos that have less than 15 videos in it to be uploade
 **** DONE count the duration of the videos
 **** DONE ...
 *** make it better
+**** TODO separate subtitles if there are any
 *** TODO make it separate based on sections
 **** example:
 input = [
@@ -1195,6 +1196,8 @@ expected_output: {
 ***** TODO get the folder number
 ***** TODO check if there is a csv file in .generated/ folder inside the folder
 ***** TODO ...
+*** TODO handle case of videos have more than 12 hours
+if the videos are already separated
 *** DONE pseudo code and state diagrams
 **** debugging current code
 ***** function: segment by dimensions( dimensions_list:list )
@@ -1231,7 +1234,6 @@ current dimension = (1920,1080), <- index 1
 previous dimension = None
 ********* else
 ...
-
 
 ** TODO revert_videos_separation
 move videos in videos#/ folders to videos/ folder
@@ -1306,10 +1308,11 @@ the resulting file wont have the same duration of the accumulated duration of th
 can use logic to check, and move the folder to the right place
 *** make it better
 **** TODO handle the case where there are more than one videos/ or concatenate/ folder
-** TODO convert_videos.py
+** STRT convert_videos.py
 *** steps
-**** TODO ...
-
+**** DONE ...
+*** make it better
+**** TODO have a progress bar show while the video is being converted
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline

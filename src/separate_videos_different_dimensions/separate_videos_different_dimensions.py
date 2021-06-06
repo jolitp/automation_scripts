@@ -151,6 +151,7 @@ def filter_domensions(data_list:list):
 # endregion filter_data ------------------------------------ filter_data
 
 
+# TODO add to printing library
 # region print_range_in_list ======================= print_range_in_list
 # @snoop
 def print_range_in_list(
@@ -205,6 +206,7 @@ def print_range_in_list(
 # endregion print_range_in_list -------------------- print_range_in_list
 
 
+# TODO add to printing library
 # region print_popsition_in_list =============== print_popsition_in_list
 # @snoop
 def print_popsition_in_list(
@@ -276,8 +278,10 @@ def segment_by_dimensions(dimensions_list:list):
         (list(list)): a list of segments(start,end)
     """
     # c = Console()
-    # c.print("[green]# region ================================================ process_folder[/]")
-    # c.print("[green]# region segment_by_dimensions =================== segment_by_dimensions[/]")
+    c.print("[green]# region segment_by_dimensions =============================== segment_by_dimensions [/]")
+    c.print("[blue]def[/] [yellow]segment_by_dimensions[/]([cyan]dimensions_list[/]:[green]list[/]):")
+    c.print("[cyan]                          dimensions_list[/]:[green]list[/]) -> [cyan]{}[/]:[green]{}[/]"\
+        .format(dimensions_list,type(dimensions_list)))
 # TODO fix bug: last segment is missing
     segments_list = []
     previous_dimension = None
@@ -297,15 +301,52 @@ def segment_by_dimensions(dimensions_list:list):
                 current_segment = [index, index]
         previous_dimension = current_dimension
         # print(f"iteration {index} ----------------------------------------------- iteration {index}")
-    # c.print("[green]# region segment_by_dimensions ------------------- segment_by_dimensions[/]")
 
     segments = []
     for element in segments_list:
         begin, end = element
         segments.append((begin,end))
         ...
+    c.print("[green]# region segment_by_dimensions ------------------------------- segment_by_dimensions [/]")
     return segments
 # endregion segment_by_dimensions ---------------- segment_by_dimensions
+
+
+def get_folder_number(folder_path:Path):
+    cwd = Path(os.getcwd())
+    folder_basename = os.path.basename(folder_path)
+    folder_number = ''
+    last_character_of_folder_basename_is_digit = str(folder_path)[-1].isdigit()
+    if last_character_of_folder_basename_is_digit:
+        if "videos" in folder_basename:
+            only_number = folder_basename.replace("videos", "")
+            folder_number = only_number
+    return folder_number
+
+
+def get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list):
+    cwd = Path(os.getcwd())
+    segment_paths = []
+    for segment in segments:
+        begin, end = segment
+        length = end - begin
+        for data_index in range(length):
+            current_video_data = videos_data_list[data_index]
+            video_path = cwd / Path(current_video_data["full_path"])
+            # print(video_path)
+            segment_paths.append(video_path)
+            ...
+        ...
+    return segment_paths
+
+
+def get_segment_lengths(segments):
+    segment_lengths = []
+    for segment in segments:
+        begin, end = segment
+        segment_length = end - begin
+        segment_lengths.append(segment_length)
+    return segment_lengths
 
 
 # region process_folder ================================================ process_folder
@@ -313,15 +354,11 @@ def process_folder(folder_path:Path):
     c = Console()
     c.print("[green]# region ================================================ process_folder[/]")
     c.print("[blue]def[/] [yellow]process_folder[/]([cyan]folder_path[/]:[green]Path[/]):")
+    c.print("[cyan]                   folder_path[/]:[green]Path[/]) -> [cyan]{}[/]:[green]{}[/]"\
+        .format(folder_path,type(folder_path)))
 
-    cwd = Path(os.getcwd())
 
-    folder_basename = os.path.basename(folder_path)
-    folder_number = ''
-    if str(folder_path)[-1].isdigit():
-        if "videos" in folder_basename:
-            only_number = folder_basename.replace("videos", "")
-            folder_number = only_number
+    folder_number = get_folder_number(folder_path)
 
     csv_file = folder_path / ".generated/video_infos.csv"
     csv_file_exists = os.path.isfile(csv_file)
@@ -329,26 +366,29 @@ def process_folder(folder_path:Path):
         videos_data_list = load_video_infos_csv(csv_file)
         dimensions = filter_domensions(videos_data_list)
         segments = segment_by_dimensions(dimensions)
-        # c.print(segments)
-        segment_paths = []
-        for segment in segments:
-            begin, end = segment
-            length = end - begin
-            for data_index in range(length):
-                current_video_data = videos_data_list[data_index]
-                video_path = cwd / Path(current_video_data["full_path"])
-                print(video_path)
-                segment_paths.append(video_path)
-                ...
+        segment_paths = get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list)
+        segment_lengths = get_segment_lengths(segments)
+
+        n_of_segments = len(segments)
+        has_a_single_segment = n_of_segments == 1
+        print(has_a_single_segment)
+        # if has_a_single_segment:
+            # return None
+        if n_of_segments > 3:
             ...
-        c.print(segment_paths)
-        # TODO compare the segments with the source files
-        # if they are the same, don't do anything
-        # TODO check if segment list is not too fragmented
-        # is more than 5? maybe?
+            # TODO check if segments have many 1 video segment
+            # if have more than 3 segments that have 1 video only
+        sections_with_one_video = []
+        for length in segment_lengths:
+            predicate = None
+            if length == 1:
+                predicate = True
+            else:
+                predicate = False
+            sections_with_one_video.append(predicate)
+        c.print(sections_with_one_video)
         # TODO check if segments are short
         # meaning they have less than 5 elements per section
-
     else:
         c.print("[bold red]no csv file in path:{}[/]" \
             .format(csv_file))

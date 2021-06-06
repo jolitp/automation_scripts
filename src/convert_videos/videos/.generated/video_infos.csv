@@ -1,3 +1,3 @@
 alphabetical_order,working,filename,full_path,duration_seconds,duration_hours,frame_count,fps,width,height,size,size_bytes,aspect_ratio_fraction,aspect_ratio,accumulated_duration_seconds,accumulated_duration_hours,accumulated_frame_count,accumulated_size,accumulated_size_bytes
-0,True,1 hour video 1.mp4,/home/jolitp/Projects/automation_scripts/src/convert_videos/videos/1 hour video 1.mp4,3623.3999999999996,01:00:23,36235,10,1920,1080,102314924,97.6 MB,16:9,1.7777777777777777,3623.3999999999996,01:00:23,36235,102314924,97.6 MB
-1,True,1 hour video 2.mp4,/home/jolitp/Projects/automation_scripts/src/convert_videos/videos/1 hour video 2.mp4,3623.3999999999996,01:00:23,36235,10,1920,1080,102314924,97.6 MB,16:9,1.7777777777777777,7246.799999999999,02:00:46,72470,204629848,195.2 MB
+0,True,input.mkv,videos/input.mkv,61.31035864556201,00:01:01,1836,29,1920,1080,28652053,27.3 MB,16:9,1.7777777777777777,61.31035864556201,00:01:01,1836,28652053,27.3 MB
+1,True,input with space.mkv,videos/input with space.mkv,61.31035864556201,00:01:01,1836,29,1920,1080,28652053,27.3 MB,16:9,1.7777777777777777,122.62071729112402,00:02:02,3672,57304106,54.6 MB

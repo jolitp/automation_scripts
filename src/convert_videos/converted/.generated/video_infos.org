@@ -2,27 +2,21 @@
 * convert_videos
 * relative paths
 
-videos/input.mkv
-
-videos/input with space.mkv
+converted/input.mkv
 
 * duration table
 | alpha_ord | working | name | dur_sec | dur_hrs | acc_dur_sec | acc_dur_hrs |
 | | | | | | | |
 | 0| True| input.mkv| 61| 00:01:01| 61.310| 00:01:01 | 
-| 1| True| input with space.mkv| 61| 00:01:01| 122.621| 00:02:02 | 
 * frames table
 | alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
 | | | | | |
 | 0| True| input.mkv| 1836| 29| 1836 | 
-| 1| True| input with space.mkv| 1836| 29| 3672 | 
 * dimension_table
 | alpha_ord | working | name | width | height | AR | AR_frc |
 | | | | | | | |
 | 0 | True | input.mkv | 1920 | 1080 | 1.78 | 16:9 |
-| 1 | True | input with space.mkv | 1920 | 1080 | 1.78 | 16:9 |
 * size_table
 | alpha_ord | working | name | bytes | acc_bytes |
 | | | | | |
-| 0 | True | input.mkv | 27.3 MB | 27.3 MB |
-| 1 | True | input with space.mkv | 27.3 MB | 54.6 MB |
+| 0 | True | input.mkv | 31.3 MB | 31.3 MB |
