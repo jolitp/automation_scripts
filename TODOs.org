@@ -1313,6 +1313,7 @@ can use logic to check, and move the folder to the right place
 **** DONE ...
 *** make it better
 **** TODO have a progress bar show while the video is being converted
+**** TODO have the current folder print
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
