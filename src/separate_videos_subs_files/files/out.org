@@ -1,0 +1,11 @@
+
+START separate_videos_subs_files START
+
+cwd: /home/jolitp/Projects/automation_scripts/src/separate_videos_subs_files
+
+directory already exists at path: 
+/home/jolitp/Projects/automation_scripts/src/separate_videos_subs_files/files
+moving: out.org
+directory already exists at path: 
+/home/jolitp/Projects/automation_scripts/src/separate_videos_subs_files/folders
+[PosixPath('/home/jolitp/Projects/automation_scripts/src/separate_videos_subs_files/folders')]

@@ -9,7 +9,6 @@ from pathlib import Path
 
 from rich.console import Console
 import snoop
-from snoop import spy
 
 
 # TODO move to utils module
@@ -312,6 +311,7 @@ def segment_by_dimensions(dimensions_list:list):
 # endregion segment_by_dimensions ---------------- segment_by_dimensions
 
 
+# region get_folder_number ============================ get_folder_number
 def get_folder_number(folder_path:Path):
     cwd = Path(os.getcwd())
     folder_basename = os.path.basename(folder_path)
@@ -322,8 +322,10 @@ def get_folder_number(folder_path:Path):
             only_number = folder_basename.replace("videos", "")
             folder_number = only_number
     return folder_number
+# endregion get_folder_number ----------------------------- get_folder_number
 
 
+# region ====================== get_absolute_paths_to_videos_in_each_segment
 def get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list):
     cwd = Path(os.getcwd())
     segment_paths = []
@@ -338,8 +340,10 @@ def get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list):
             ...
         ...
     return segment_paths
+# endregion ----------------------- get_absolute_paths_to_videos_in_each_segment
 
 
+# region get_segment_lengths ======================= get_segment_lengths
 def get_segment_lengths(segments):
     segment_lengths = []
     for segment in segments:
@@ -347,6 +351,7 @@ def get_segment_lengths(segments):
         segment_length = end - begin
         segment_lengths.append(segment_length)
     return segment_lengths
+# region get_segment_lengths ------------------------ get_segment_lengths
 
 
 # region process_folder ================================================ process_folder
@@ -448,14 +453,11 @@ def current_test():
     for index, item in enumerate(expected_output):
         assertion = expected_output[index] == actual_output[index]
         assertions.append(assertion)
-        ...
-    # assertion = expected_output == actual_output
 
     c.print("input: {}".format(input))
     c.print("expected_output : {}".format(expected_output ))
     c.print("actual_output : {}".format(actual_output))
     c.print("assertion : {}".format(assertions))
-    ...
 
     c.print("    [white]...[/]", style="white")
     c.print("# endregion current_test ---------------------------------- current_test",style="green")

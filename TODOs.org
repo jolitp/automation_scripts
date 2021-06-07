@@ -1314,9 +1314,8 @@ can use logic to check, and move the folder to the right place
 *** make it better
 **** DONE have a progress bar show while the video is being converted
 **** TODO put the name of the folder just before the name of the current video
-**** TODO print ffmpeg output to file when done
-**** TODO check if dependencies are available
-**** TODO have an overall progressbar for all videos in folder
+**** DONE print ffmpeg output to file when done
+**** DONE have an overall progressbar for all videos in folder
 ** TODO clean up .generated folders
 that is just a problem for the .generated folder on root...
 the other ones will be deleted in the end with parent folder

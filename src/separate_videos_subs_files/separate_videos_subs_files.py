@@ -25,6 +25,7 @@ from rich.console import Console
 from rich.traceback import install as install_rich_traceback
 import snoop
 
+CONSOLE = Console()
 install_rich_traceback()
 
 # TODO put function in a library
@@ -230,7 +231,7 @@ def ignore_project_files(files: list):
             if key in file:
                 ignored_items[key].append(file)
 
-    # c.print(ignored_items)
+    # CONSOLE.print(ignored_items)
 
     for key in ignored_items:
         for item in ignored_items[key]:
@@ -247,7 +248,7 @@ def print_list(list_name:str,list:list):
     print()
     print(f"{list_name} = [")
     for element in list:
-        c.print("  {}".format(element))
+        CONSOLE.print("  {}".format(element))
     print("]")
     print()
 # endregion print_list ------------------------------------- print_list
@@ -260,9 +261,9 @@ def print_src_dst_paths(name:str, src_dst_paths:dict):
     print(f"{name} = [")
     for element in src_dst_paths:
         print()
-        c.print("  'name': {}".format(element["name"]))
-        c.print("  'src': {}".format(element["src"]))
-        c.print("  'dst': {}".format(element["dst"]))
+        CONSOLE.print("  'name': {}".format(element["name"]))
+        CONSOLE.print("  'src': {}".format(element["src"]))
+        CONSOLE.print("  'dst': {}".format(element["dst"]))
         print()
     print("]")
     print()
@@ -274,11 +275,11 @@ def create_folder(path_to_directory:str):
     c = Console()
     p = Path(path_to_directory)
     if not p.exists():
-        c.print("creating directory:\n{}" \
+        CONSOLE.print("creating directory:\n{}" \
             .format(add_color("bold #00ff00",str(path_to_directory))))
         p.mkdir(exist_ok=True, parents=True)
     else:
-        c.print("directory already exists at path: \n{}" \
+        CONSOLE.print("directory already exists at path: \n{}" \
             .format(add_color("bold #ff0000",str(path_to_directory))))
     return p
 # endregion create_folder ------------------------------------------- create_folder
@@ -336,7 +337,7 @@ def move_files_from_list(folder_name:str, file_list:list):
     cwd = Path(os.getcwd())
     create_folder(cwd / folder_name)
     for video in get_src_dst_paths(folder_name, file_list):
-        c.print("moving: {}".format(video["name"]))
+        CONSOLE.print("moving: {}".format(video["name"]))
         os.rename(video["src"], video["dst"])
     ...
 # endregion move_files_from_list -------------------------- move_files_from_list
@@ -392,7 +393,7 @@ def move_folders_from_list(folder_name:str,folders_list:list):
 def main():
     cwd = Path(os.getcwd())
     c = Console()
-    c.print("cwd:", cwd)
+    CONSOLE.print("cwd:", cwd)
     print()
 
     all_nested_files = get_nested_files(cwd)
