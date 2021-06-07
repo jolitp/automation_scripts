@@ -734,6 +734,8 @@ don't create a folder
 **** TODO move the folders that remain to a folders/ directory
 =======
 **** TODO remove gif from the video list
+**** TODO write summary file
+**** TODO print colored tree of folder structure
 ** STRT get_videos_info_csv.py
 ** DONE get_videos_info_csv.py
 *** logic
@@ -800,8 +802,6 @@ name, size, acc_size
 
 **** TODO handle case: multiple videos folders
 
-** TODO check_for_subtitles.py
-** TODO embed_subtitles.py
 ** STRT separate_to_upload.py
 separate the folders of videos that have less than 15 videos in it to be uploaded to youtube
 *** logic
@@ -1312,7 +1312,14 @@ can use logic to check, and move the folder to the right place
 *** steps
 **** DONE ...
 *** make it better
-**** TODO have a progress bar show while the video is being converted
+**** DONE have a progress bar show while the video is being converted
+**** TODO put the name of the folder just before the name of the current video
+**** TODO print ffmpeg output to file when done
+**** TODO check if dependencies are available
+**** TODO have an overall progressbar for all videos in folder
+** TODO clean up .generated folders
+that is just a problem for the .generated folder on root...
+the other ones will be deleted in the end with parent folder
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
@@ -2096,3 +2103,4 @@ like:
     getting info from files
     moving from src to dst
 * TODO remake the diagram with the new folder layout
+* TODO add timeit reports to all scripts

@@ -19,6 +19,13 @@ folders/
 
 import os
 import os.path
+from pathlib import Path
+
+from rich.console import Console
+from rich.traceback import install as install_rich_traceback
+import snoop
+
+install_rich_traceback()
 
 # TODO put function in a library
 # TODO make a non recursive version, to be used by parameters
@@ -161,6 +168,18 @@ def filter_videos(
 # endregion filter_videos
 
 
+# region filter_folders ================================= filter_folders
+def get_all_folders(path:str):
+    nested_folders = []
+    for root, folders, _ in os.walk(path, topdown=False):
+        for name in folders:
+            full_path = (os.path.join(root, name))
+            nested_folders.append(full_path)
+    return nested_folders
+    ...
+# endregion filter_folders ------------------------------ filter_folders
+
+
 # TODO put function in a library
 # region _remove_dot_from_extension
 def _remove_dot_from_extension(
@@ -181,7 +200,7 @@ def _remove_dot_from_extension(
 
 
 # TODO put function in a library
-# region ignore_project_files
+# region ignore_project_files ======================= ignore_project_files
 def ignore_project_files(files: list):
     """remove the files that should
     only be present on the project folder
@@ -202,22 +221,16 @@ def ignore_project_files(files: list):
         "/videos/": [],
         "/subs/": [],
         "/files/": [],
+        "/folders/": [],
     }
-
-    not_ignored_files = [x for x in files if x not in ignored_items]
+    c = Console()
+    # not_ignored_files = [x for x in files if x not in ignored_items]
     for key in ignored_items:
         for file in files:
             if key in file:
                 ignored_items[key].append(file)
 
-    # print()
-    # print("  ignored_items = {")
-    # for key in ignored_items:
-    #     print("    {}: ".format(key))
-    #     for item in ignored_items[key]:
-    #         print("      {}".format(item))
-    # print("  }")
-    # print()
+    # c.print(ignored_items)
 
     for key in ignored_items:
         for item in ignored_items[key]:
@@ -225,170 +238,197 @@ def ignore_project_files(files: list):
                 files.remove(item)
 
     return files
+# endregion ignore_project_files ------------------- ignore_project_files
+
+
+# region print_list ======================================== print_list
+def print_list(list_name:str,list:list):
+    c = Console()
+    print()
+    print(f"{list_name} = [")
+    for element in list:
+        c.print("  {}".format(element))
+    print("]")
+    print()
+# endregion print_list ------------------------------------- print_list
+
+
+# region print_src_dst_paths ============================ print_src_dst_paths
+def print_src_dst_paths(name:str, src_dst_paths:dict):
+    c = Console()
+    print()
+    print(f"{name} = [")
+    for element in src_dst_paths:
+        print()
+        c.print("  'name': {}".format(element["name"]))
+        c.print("  'src': {}".format(element["src"]))
+        c.print("  'dst': {}".format(element["dst"]))
+        print()
+    print("]")
+    print()
+# endregion ----------------------------------------------- print_src_dst_paths
+
+
+# region create_folder =========================================== create_folder
+def create_folder(path_to_directory:str):
+    c = Console()
+    p = Path(path_to_directory)
+    if not p.exists():
+        c.print("creating directory:\n{}" \
+            .format(add_color("bold #00ff00",str(path_to_directory))))
+        p.mkdir(exist_ok=True, parents=True)
+    else:
+        c.print("directory already exists at path: \n{}" \
+            .format(add_color("bold #ff0000",str(path_to_directory))))
+    return p
+# endregion create_folder ------------------------------------------- create_folder
+
+
+# region get_src_dst_paths ============================== get_src_dst_paths
+def get_src_dst_paths(name:str, files:list):
+    cwd = Path(os.getcwd())
+    files_src_dst_paths = []
+    for nested_files_file_path in files:
+        nested_files_file_path:Path = nested_files_file_path
+        path_string_without_cwd = str(nested_files_file_path).replace(str(cwd), "")
+        path_string_without_cwd = path_string_without_cwd.replace("/", "...")
+        if path_string_without_cwd.startswith("..."):
+            path_string_without_cwd = path_string_without_cwd[3:]
+        file_destination_path = cwd / Path(name) / Path(path_string_without_cwd)
+        paths = {
+            "name": Path(os.path.basename(nested_files_file_path)),
+            "src": Path(nested_files_file_path),
+            "dst": Path(file_destination_path)
+        }
+        files_src_dst_paths.append(paths)
+    return files_src_dst_paths
+# endregion get_src_dst_paths ------------------------------- get_src_dst_paths
+
+
+# region delete_folders ================================== delete_folders
+def delete_folders(folder_list:list):
+    for folder in folder_list:
+        os.rmdir(folder)
+# endregion delete_folders ------------------------------- delete_folders
+
+
+# region
+# @snoop
+def filter_folders():
+    cwd = Path(os.getcwd())
+    nested_folders = get_all_folders(cwd)
+    nested_folders = ignore_project_files(nested_folders)
+
+    for folder in nested_folders:
+        basename = os.path.basename(folder)
+        ignored_names = ["videos","subs","files","folders"]
+        for name in ignored_names:
+            if name == basename:
+                nested_folders.remove(folder)
+    nested_folders = ignore_project_files(nested_folders)
+    return nested_folders
 # endregion
+
+
+# region move_files_from_list ========================== move_files_from_list
+def move_files_from_list(folder_name:str, file_list:list):
+    c = Console()
+    cwd = Path(os.getcwd())
+    create_folder(cwd / folder_name)
+    for video in get_src_dst_paths(folder_name, file_list):
+        c.print("moving: {}".format(video["name"]))
+        os.rename(video["src"], video["dst"])
+    ...
+# endregion move_files_from_list -------------------------- move_files_from_list
+
+
+# region move_folders_from_list ========================= move_folders_from_list
+def move_folders_from_list(folder_name:str,folders_list:list):
+    c = Console()
+    cwd = Path(os.getcwd())
+    create_folder(cwd / "folders")
+    folders_src_dst_paths = get_src_dst_paths("folders", folders_list)
+    # filter out created folders
+    for folder_data in folders_src_dst_paths:
+        if folder_data["name"] == Path("folders"):
+            folders_src_dst_paths.remove(folder_data)
+        if folder_data["name"] == Path("subs"):
+            folders_src_dst_paths.remove(folder_data)
+        if folder_data["name"] == Path("videos"):
+            folders_src_dst_paths.remove(folder_data)
+        if folder_data["name"] == Path("files"):
+            folders_src_dst_paths.remove(folder_data)
+    # create destination folders
+    src_folders = []
+    dst_folders = []
+    extraneous_folders = []
+    for folder_data in folders_src_dst_paths:
+        dst_folder = folder_data["dst"]
+        # create_folder(dst_folder)
+        if "folders" == os.path.basename(dst_folder):
+            continue
+        src_folders.append(folder_data["src"])
+        dst_folders.append(folder_data["dst"])
+        if "..." in str(dst_folder):
+            extraneous_folders.append(dst_folder)
+    dst_folders = sorted(dst_folders)
+    for dst in dst_folders:
+        # TODO create dst folders
+        create_folder(dst)
+        ...
+    src_folders = sorted(src_folders,reverse=True)
+    for src in src_folders:
+        src: Path = src
+        # TODO remove src folder
+        src.rmdir()
+        ...
+    # delete source folders and extraneous
+    # delete_folders(src_folders)
+    delete_folders(extraneous_folders)
+# endregion move_folders_from_list ---------------------- move_folders_from_list
 
 
 # region main
 def main():
-    cwd = os.getcwd()
+    cwd = Path(os.getcwd())
+    c = Console()
+    c.print("cwd:", cwd)
     print()
-    print("current_working_directory:")
-    print(cwd)
-    print()
-
-# TODO refactor repetitive statements
 
     all_nested_files = get_nested_files(cwd)
     all_nested_files = ignore_project_files(all_nested_files)
 
-    print()
-    print("all_nested_files = [")
-    for element in all_nested_files:
-        print("  {}".format(element))
-    print("]")
-    print()
-
     nested_videos = filter_videos(all_nested_files)
-
-    print()
-    print("nested_videos = [")
-    for element in nested_videos:
-        print("  {}".format(element))
-    print("]")
-    print()
-
     nested_subtitles = filter_subtitles(all_nested_files)
-
-    print()
-    print("nested_subtitles = [")
-    for element in nested_subtitles:
-        print("  {}".format(element))
-    print("]")
-    print()
-
     files_wo_videos \
         = [x for x in all_nested_files if x not in nested_videos]
-
     files_wo_videos_and_subtitles \
         = [x for x in files_wo_videos if x not in nested_subtitles]
-
-    print()
-    print("files w/o videos and subtitles = [")
-    for element in files_wo_videos_and_subtitles:
-        print("  {}".format(element))
-    print("]")
-    print()
-
     remaining_files = files_wo_videos_and_subtitles
+    nested_folders = filter_folders()
 
     if nested_videos:
-        videos_dir_path = cwd + "/videos/"
-        if not os.path.isdir(videos_dir_path):
-            print("creating directory: {}".format(videos_dir_path))
-            os.mkdir(videos_dir_path)
-
+        move_files_from_list("videos", nested_videos)
     if nested_subtitles:
-        subtitles_dir_path = cwd + "/subs/"
-        if not os.path.isdir(subtitles_dir_path):
-            print("creating directory: {}".format(subtitles_dir_path))
-            os.mkdir(subtitles_dir_path)
-
+        move_files_from_list("subs", nested_subtitles)
     if remaining_files:
-        remaining_files_dir_path = cwd + "/files/"
-        if not os.path.isdir(remaining_files_dir_path):
-            print("creating directory: {}".format(remaining_files_dir_path))
-            os.mkdir(remaining_files_dir_path)
+        move_files_from_list("files", remaining_files)
+    if nested_folders:
+        move_folders_from_list("folders", nested_folders)
 
-    files_src_dst_paths = []
-    for nested_files_file_path in remaining_files:
-        nested_files_file_path: str = nested_files_file_path
-        path_wo_cwd = nested_files_file_path.replace(cwd, "")
-        path_wo_cwd = path_wo_cwd.replace("/", "...")
-        if path_wo_cwd.startswith("..."):
-            path_wo_cwd = path_wo_cwd[3:]
-        file_destination_path = cwd + "/files/" + path_wo_cwd
-        src_str = {
-            "name": os.path.basename(nested_files_file_path),
-            "src": nested_files_file_path,
-            "dst": file_destination_path
-        }
-        files_src_dst_paths.append(src_str)
-
-    print()
-    print("file_src_dst_paths = [")
-    for element in files_src_dst_paths:
-        print()
-        print("  'name': {}".format(element["name"]))
-        print("  'src': {}".format(element["src"]))
-        print("  'dst': {}".format(element["dst"]))
-        print()
-    print("]")
-    print()
-
-    subtitles_src_dst_paths = []
-    for nested_subtitle_file_path in nested_subtitles:
-        nested_subtitle_file_path: str = nested_subtitle_file_path
-        path_wo_cwd = nested_subtitle_file_path.replace(cwd, "")
-        path_wo_cwd = path_wo_cwd.replace("/", "...")
-        if path_wo_cwd.startswith("..."):
-            path_wo_cwd = path_wo_cwd[3:]
-        subtitle_destination_path = cwd + "/subs/" + path_wo_cwd
-        src_str = {
-            "name": os.path.basename(nested_subtitle_file_path),
-            "src": nested_subtitle_file_path,
-            "dst": subtitle_destination_path
-        }
-        subtitles_src_dst_paths.append(src_str)
-
-    print()
-    print("subtitles_src_dst_paths = [")
-    for element in subtitles_src_dst_paths:
-        print()
-        print("  'name': {}".format(element["name"]))
-        print("  'src': {}".format(element["src"]))
-        print("  'dst': {}".format(element["dst"]))
-        print()
-    print("]")
-    print()
-
-    videos_src_dst_paths = []
-    for nested_video_file_path in nested_videos:
-        nested_video_file_path: str = nested_video_file_path
-        path_wo_cwd = nested_video_file_path.replace(cwd, "")
-        path_wo_cwd = path_wo_cwd.replace("/", "...")
-        if path_wo_cwd.startswith("..."):
-            path_wo_cwd = path_wo_cwd[3:]
-        video_destination_path = cwd + "/videos/" + path_wo_cwd
-        src_str = {
-            "name": os.path.basename(nested_video_file_path),
-            "src": nested_video_file_path,
-            "dst": video_destination_path
-        }
-        videos_src_dst_paths.append(src_str)
-
-    print()
-    print("videos_src_dst_paths = [")
-    for element in videos_src_dst_paths:
-        print()
-        print("  'name': {}".format(element["name"]))
-        print("  'src': {}".format(element["src"]))
-        print("  'dst': {}".format(element["dst"]))
-        print()
-    print("]")
-    print()
-
-    for video in videos_src_dst_paths:
-        print("moving: {}".format(video["name"]))
-        os.rename(video["src"], video["dst"])
-
-    for subtitle in subtitles_src_dst_paths:
-        print("moving: {}".format(subtitle["name"]))
-        os.rename(subtitle["src"], subtitle["dst"])
-
-    for file in files_src_dst_paths:
-        print("moving: {}".format(file["name"]))
-        os.rename(file["src"], file["dst"])
+    # TODO print the directory structure with colors for each type of file
+    # use this tutorial to make the tree structure:
+    # https://realpython.com/directory-tree-generator-python/
+    # TODO write a file with a summary of how many files were moved
+    # write the tree printed earlier
 # endregion main
+
+
+# TODO add to function library
+# region add_color =========================================== add_color
+def add_color(color, msg):
+    return "[" + color + "]" + msg + "[/]"
+# endregion add_color ---------------------------------------- add_color
 
 
 # region if __name__ == "__main__":
