@@ -9,7 +9,6 @@ from pathlib import Path
 
 from rich.console import Console
 import snoop
-from snoop import spy
 
 
 # TODO move to utils module
@@ -307,11 +306,14 @@ def segment_by_dimensions(dimensions_list:list):
         begin, end = element
         segments.append((begin,end))
         ...
+    # BUG last element missing if it is the last section and only one item
+    c.print("returning {}".format(segments))
     c.print("[green]# region segment_by_dimensions ------------------------------- segment_by_dimensions [/]")
     return segments
 # endregion segment_by_dimensions ---------------- segment_by_dimensions
 
 
+# region get_folder_number ============================ get_folder_number
 def get_folder_number(folder_path:Path):
     cwd = Path(os.getcwd())
     folder_basename = os.path.basename(folder_path)
@@ -322,8 +324,10 @@ def get_folder_number(folder_path:Path):
             only_number = folder_basename.replace("videos", "")
             folder_number = only_number
     return folder_number
+# endregion get_folder_number ----------------------------- get_folder_number
 
 
+# region ====================== get_absolute_paths_to_videos_in_each_segment
 def get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list):
     cwd = Path(os.getcwd())
     segment_paths = []
@@ -338,8 +342,10 @@ def get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list):
             ...
         ...
     return segment_paths
+# endregion ----------------------- get_absolute_paths_to_videos_in_each_segment
 
 
+# region get_segment_lengths ======================= get_segment_lengths
 def get_segment_lengths(segments):
     segment_lengths = []
     for segment in segments:
@@ -347,6 +353,7 @@ def get_segment_lengths(segments):
         segment_length = end - begin
         segment_lengths.append(segment_length)
     return segment_lengths
+# region get_segment_lengths ------------------------ get_segment_lengths
 
 
 # region process_folder ================================================ process_folder
@@ -356,7 +363,6 @@ def process_folder(folder_path:Path):
     c.print("[blue]def[/] [yellow]process_folder[/]([cyan]folder_path[/]:[green]Path[/]):")
     c.print("[cyan]                   folder_path[/]:[green]Path[/]) -> [cyan]{}[/]:[green]{}[/]"\
         .format(folder_path,type(folder_path)))
-
 
     folder_number = get_folder_number(folder_path)
 
@@ -369,26 +375,29 @@ def process_folder(folder_path:Path):
         segment_paths = get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list)
         segment_lengths = get_segment_lengths(segments)
 
-        n_of_segments = len(segments)
-        has_a_single_segment = n_of_segments == 1
-        print(has_a_single_segment)
-        # if has_a_single_segment:
-            # return None
-        if n_of_segments > 3:
-            ...
-            # TODO check if segments have many 1 video segment
-            # if have more than 3 segments that have 1 video only
-        sections_with_one_video = []
-        for length in segment_lengths:
-            predicate = None
-            if length == 1:
-                predicate = True
-            else:
-                predicate = False
-            sections_with_one_video.append(predicate)
-        c.print(sections_with_one_video)
-        # TODO check if segments are short
-        # meaning they have less than 5 elements per section
+        if videos_data_list:
+            n_of_segments = len(segments)
+            has_a_single_segment = n_of_segments == 1
+            print("has_a_single_segment",has_a_single_segment)
+            # if has_a_single_segment:
+                # return None
+            if n_of_segments > 3:
+                ...
+                # TODO check if segments have many 1 video segment
+                # if have more than 3 segments that have 1 video only
+            sections_with_one_video = []
+            for length in segment_lengths:
+                predicate = None
+                if length == 1:
+                    predicate = True
+                else:
+                    predicate = False
+                sections_with_one_video.append(predicate)
+            c.print("sections_with_one_video", sections_with_one_video)
+            # TODO check if segments are short
+            # meaning they have less than 5 elements per section
+        else:
+            c.print("[bold red]no videos in path[/]: {}".format(folder_path))
     else:
         c.print("[bold red]no csv file in path:{}[/]" \
             .format(csv_file))
@@ -448,14 +457,11 @@ def current_test():
     for index, item in enumerate(expected_output):
         assertion = expected_output[index] == actual_output[index]
         assertions.append(assertion)
-        ...
-    # assertion = expected_output == actual_output
 
     c.print("input: {}".format(input))
     c.print("expected_output : {}".format(expected_output ))
     c.print("actual_output : {}".format(actual_output))
     c.print("assertion : {}".format(assertions))
-    ...
 
     c.print("    [white]...[/]", style="white")
     c.print("# endregion current_test ---------------------------------- current_test",style="green")
@@ -469,6 +475,7 @@ if __name__ == "__main__":
 
     main()
     # current_test()
+    x = 0
 
     c.print("# endregion if __name__ == \"__main__\": ------ if __name__ == \"__main__\":",style="green")
 # endregion if __name__ == "__main__": ------- if __name__ == "__main__":

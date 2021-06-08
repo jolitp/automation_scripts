@@ -233,7 +233,7 @@ def get_video_info(
         print("| ):                                                                           |")
 
     c = Console()
-    c.print("\ngetting info for: \n\"{}\"\n".format(video_path))
+    CONSOLE.print("\ngetting info for: \n\"{}\"\n".format(video_path))
     info = {}
 
     capture = cv2.VideoCapture(video_path)
