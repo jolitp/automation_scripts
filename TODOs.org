@@ -1310,6 +1310,7 @@ can use logic to check, and move the folder to the right place
 *** steps
 **** DONE ...
 *** make it better
+<<<<<<< HEAD
 **** DONE have a progress bar show while the video is being converted
 **** DONE put the name of the folder just before the name of the current video
 actually I want to show the number of folders
@@ -1319,6 +1320,10 @@ actually I want to show the number of folders
 ** TODO clean up .generated folders
 that is just a problem for the .generated folder on root...
 the other ones will be deleted in the end with parent folder
+=======
+**** TODO have a progress bar show while the video is being converted
+**** TODO have the current folder print
+>>>>>>> 301e8442781f5a00d3aade7b075ffb73da6ab6cd
 ** TODO upload_to_youtube.py
 ** TODO compres_files.py
 * folders for pipeline
