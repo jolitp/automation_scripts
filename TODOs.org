@@ -641,6 +641,7 @@ put common functionality used by other scripts here
 ****** TODO get only the basename without extension
 ****** TODO separate the filename in sections of non-numbers and numbers
 ****** TODO ...
+** TODO check if videos are corrupted
 ** STRT call_command_in_all_folders.py
 *** steps
 **** DONE get a list of the arguments passed to the script
@@ -737,7 +738,6 @@ don't create a folder
 **** TODO write summary file
 **** TODO print colored tree of folder structure
 ** STRT get_videos_info_csv.py
-** DONE get_videos_info_csv.py
 *** logic
 **** DONE check if the folder has the right structure
 contains: videos/
@@ -799,9 +799,7 @@ a_r_fr = aspect ratio fraction
 alphabetical_order
 name, size, acc_size
 **** DONE add video count to files
-
 **** TODO handle case: multiple videos folders
-
 ** STRT separate_to_upload.py
 separate the folders of videos that have less than 15 videos in it to be uploaded to youtube
 *** logic
@@ -1238,7 +1236,7 @@ previous dimension = None
 ** TODO revert_videos_separation
 move videos in videos#/ folders to videos/ folder
 
-** DONE concatenate_videos.py
+** STRT concatenate_videos.py
 *** findings
 **** I can open avidemux on the command line with --help to get help info on arguments
 it prints in the middle of alot of junk but it is there
@@ -1313,9 +1311,11 @@ can use logic to check, and move the folder to the right place
 **** DONE ...
 *** make it better
 **** DONE have a progress bar show while the video is being converted
-**** TODO put the name of the folder just before the name of the current video
+**** DONE put the name of the folder just before the name of the current video
+actually I want to show the number of folders
 **** DONE print ffmpeg output to file when done
 **** DONE have an overall progressbar for all videos in folder
+**** TODO add command flag to force conversion on videos that have different aspect ratios
 ** TODO clean up .generated folders
 that is just a problem for the .generated folder on root...
 the other ones will be deleted in the end with parent folder

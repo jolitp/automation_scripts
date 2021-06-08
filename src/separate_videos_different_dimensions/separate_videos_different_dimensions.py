@@ -306,6 +306,8 @@ def segment_by_dimensions(dimensions_list:list):
         begin, end = element
         segments.append((begin,end))
         ...
+    # BUG last element missing if it is the last section and only one item
+    c.print("returning {}".format(segments))
     c.print("[green]# region segment_by_dimensions ------------------------------- segment_by_dimensions [/]")
     return segments
 # endregion segment_by_dimensions ---------------- segment_by_dimensions
@@ -362,7 +364,6 @@ def process_folder(folder_path:Path):
     c.print("[cyan]                   folder_path[/]:[green]Path[/]) -> [cyan]{}[/]:[green]{}[/]"\
         .format(folder_path,type(folder_path)))
 
-
     folder_number = get_folder_number(folder_path)
 
     csv_file = folder_path / ".generated/video_infos.csv"
@@ -374,26 +375,29 @@ def process_folder(folder_path:Path):
         segment_paths = get_absolute_paths_to_videos_in_each_segment(segments, videos_data_list)
         segment_lengths = get_segment_lengths(segments)
 
-        n_of_segments = len(segments)
-        has_a_single_segment = n_of_segments == 1
-        print(has_a_single_segment)
-        # if has_a_single_segment:
-            # return None
-        if n_of_segments > 3:
-            ...
-            # TODO check if segments have many 1 video segment
-            # if have more than 3 segments that have 1 video only
-        sections_with_one_video = []
-        for length in segment_lengths:
-            predicate = None
-            if length == 1:
-                predicate = True
-            else:
-                predicate = False
-            sections_with_one_video.append(predicate)
-        c.print(sections_with_one_video)
-        # TODO check if segments are short
-        # meaning they have less than 5 elements per section
+        if videos_data_list:
+            n_of_segments = len(segments)
+            has_a_single_segment = n_of_segments == 1
+            print("has_a_single_segment",has_a_single_segment)
+            # if has_a_single_segment:
+                # return None
+            if n_of_segments > 3:
+                ...
+                # TODO check if segments have many 1 video segment
+                # if have more than 3 segments that have 1 video only
+            sections_with_one_video = []
+            for length in segment_lengths:
+                predicate = None
+                if length == 1:
+                    predicate = True
+                else:
+                    predicate = False
+                sections_with_one_video.append(predicate)
+            c.print("sections_with_one_video", sections_with_one_video)
+            # TODO check if segments are short
+            # meaning they have less than 5 elements per section
+        else:
+            c.print("[bold red]no videos in path[/]: {}".format(folder_path))
     else:
         c.print("[bold red]no csv file in path:{}[/]" \
             .format(csv_file))
@@ -471,6 +475,7 @@ if __name__ == "__main__":
 
     main()
     # current_test()
+    x = 0
 
     c.print("# endregion if __name__ == \"__main__\": ------ if __name__ == \"__main__\":",style="green")
 # endregion if __name__ == "__main__": ------- if __name__ == "__main__":
