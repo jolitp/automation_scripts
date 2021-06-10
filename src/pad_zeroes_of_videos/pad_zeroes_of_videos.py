@@ -14,6 +14,9 @@ from natsort import natsorted, ns
 import snoop
 from rich.console import Console
 from rich.theme import Theme
+from rich.traceback import install as rich_install_traceback
+
+rich_install_traceback()
 
 C = Console()
 
@@ -364,6 +367,7 @@ def filter_subtitles(
     ...
 # endregion filter_subtitles
 
+
 # region retrieve_outermost_name
 import inspect
 def retrieve_outermost_name(var):
@@ -471,10 +475,10 @@ def main():
     move_files(files_to_move)
 
     files_to_move =  process_folder(converted_folder_path)
-    move_files(converted_folder_path)
+    move_files(files_to_move)
 
     files_to_move =  process_folder(subs_folder_path, filter_subtitles)
-    move_files(subs_folder_path)
+    move_files(files_to_move)
 
     # current_test()
 # endregion main
@@ -482,23 +486,25 @@ def main():
 
 # region move_files
 def move_files(files_to_move):
-    for file in files_to_move:
-        src, dst = file
+    if files_to_move:
+        for file in files_to_move:
+            src, dst = file
 
-        basename_src = os.path.basename(src)
-        basename_dst = os.path.basename(dst)
+            basename_src = os.path.basename(src)
+            basename_dst = os.path.basename(dst)
 
-        c = Console()
-        c.print("renaming: [purple]{}[/purple] to [magenta]{}[/magenta]"\
-            .format(basename_src, basename_dst))
+            c = Console()
+            c.print("renaming: [purple]{}[/purple] to [magenta]{}[/magenta]"\
+                .format(basename_src, basename_dst))
 
-        os.rename(src, dst)
+            os.rename(src, dst)
 
         ...
     ...
 # endregion move_files
 
 
+# region current_test
 def current_test():
 #     input = [
 #         '1_section_1_file_1',
@@ -535,6 +541,8 @@ def current_test():
     print_logic(expected)
     print_logic(actual)
     print_logic(result)
+# endregion current_test
+
 
 # region if __name__ == "__main__":
 if __name__ == "__main__":
