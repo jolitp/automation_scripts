@@ -456,6 +456,59 @@ def print_conversion_summary(folder_path,index):
 # endregion print_conversion_summary --------------- print_conversion_summary
 
 
+# region convert_video ==================================== convert_video
+def convert_video(
+    index,
+    videos_data,
+    folder_path,
+    src_paths,
+    dst_paths,
+    output_dimension
+    ):
+    max_videos = len(videos_data)
+    current_video_number = index + 1
+    src_path = src_paths[index]
+    subs_path = get_subs_path_from_video_path(src_path)
+    dst_path = dst_paths[index]
+    create_converted_folder(folder_path)
+    command = assemble_command(src_path,
+                                dst_path,
+                                subs_path,
+                                output_dimension)
+    cmd_string = subprocess.list2cmdline(command)
+    src_basename = os.path.basename(src_path)
+    msg = f"converting: {src_basename}"
+    print_entire_line(msg, "#03014f", "#cccccc")
+    print_info_panel(videos_data[index],
+                    src_basename,
+                    src_path,
+                    dst_path,
+                    subs_path,
+                    output_dimension)
+    new_cmd_string = ""
+    for part in command:
+        part = add_random_color(part,min=120)
+        new_cmd_string += " " + part + "\n"
+    CONSOLE.print(Panel(new_cmd_string, title="command parts"))
+    CONSOLE.print(Panel(cmd_string, title="command called"))
+    print_conversion_summary(folder_path,index)
+    print_progress_bar(
+        "folder",
+        CURRENT_FOLDER,
+        MAX_NUMBER_OF_FOLDERS,
+        foreground="bold #000000",
+        background="#aaaaaa")
+    print_progress_bar(
+        "video",
+        current_video_number,
+        max_videos,
+        foreground="bold #000000",
+        background="#aaaaaa")
+    os.system(cmd_string)
+    ...
+# endregion convert_video ------------------------------- convert_video
+
+
 # region process_folder ================================== process_folder
 def process_folder(
     folder_path:Path,
@@ -486,51 +539,29 @@ def process_folder(
             src_paths = get_src_paths(src_data)
             dst_paths = get_dst_paths(src_data)
             are_same_ar = are_aspect_ratios_the_same(src_data)
-            max_videos = len(videos_data)
             if are_same_ar:
-                output_dimmension = most_common_dimension(src_data)
-                for index, video_data in enumerate(videos_data):
-                    current_video_number = index + 1
-                    src_path = src_paths[index]
-                    subs_path = get_subs_path_from_video_path(src_path)
-                    dst_path = dst_paths[index]
-                    create_converted_folder(folder_path)
-                    command = assemble_command(src_path,
-                                                dst_path,
-                                                subs_path,
-                                                output_dimmension)
-                    cmd_string = subprocess.list2cmdline(command)
-                    src_basename = os.path.basename(src_path)
-                    msg = f"converting: {src_basename}"
-                    print_entire_line(msg, "#03014f", "#cccccc")
-                    print_info_panel(video_data,
-                                    src_basename,
-                                    src_path,
-                                    dst_path,
-                                    subs_path,
-                                    output_dimmension)
-                    new_cmd_string = ""
-                    for part in command:
-                        part = add_random_color(part,min=120)
-                        new_cmd_string += " " + part + "\n"
-                    CONSOLE.print(Panel(new_cmd_string, title="command parts"))
-                    CONSOLE.print(Panel(cmd_string, title="command called"))
-                    print_conversion_summary(folder_path,index)
-                    print_progress_bar(
-                        "folder",
-                        CURRENT_FOLDER,
-                        MAX_NUMBER_OF_FOLDERS,
-                        foreground="bold #000000",
-                        background="#aaaaaa")
-                    print_progress_bar(
-                        "video",
-                        current_video_number,
-                        max_videos,
-                        foreground="bold #000000",
-                        background="#aaaaaa")
-                    os.system(cmd_string)
+                output_dimension = most_common_dimension(src_data)
+                for index, _ in enumerate(videos_data):
+                    convert_video(
+                            index,
+                            videos_data,
+                            folder_path,
+                            src_paths,
+                            dst_paths,
+                            output_dimension)
             else:
                 CONSOLE.print("[bold red]the aspect ratio of videos are not the same![/]")
+                with open(folder_path / "_000_different_aspect_ratio", "w") as file:
+                    file.write("different_aspect_ratio")
+                output_dimension = most_common_dimension(src_data)
+                for index, _ in enumerate(videos_data):
+                    convert_video(
+                            index,
+                            videos_data,
+                            folder_path,
+                            src_paths,
+                            dst_paths,
+                            output_dimension)
         else:
             CONSOLE.print(f"[bold red]there are no videos in {folder_path}[/]")
     else:

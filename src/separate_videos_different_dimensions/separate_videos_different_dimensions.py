@@ -122,8 +122,6 @@ def load_video_infos_csv(file_path: str):
         (list(dict)): the values from .csv file parsed into a dictionary
     """
     c = Console()
-    c.print("[green]# region ========================================== load_video_infos_csv[/]")
-    c.print("[blue]def[/] [yellow]load_video_infos_csv[/]([cyan]file_path[/]: [green]str[/]):")
     if not os.path.isfile(file_path):
         return []
     video_info_list = []
@@ -132,7 +130,6 @@ def load_video_infos_csv(file_path: str):
         for ordered_dict in csv_reader:
             video_info_list.append(ordered_dict)
 
-    c.print("[green]# region ------------------------------------------ load_video_infos_csv[/]")
     return video_info_list
 # endregion --------------------------------------- load_video_infos_csv
 
@@ -152,7 +149,6 @@ def filter_domensions(data_list:list):
 
 # TODO add to printing library
 # region print_range_in_list ======================= print_range_in_list
-# @snoop
 def print_range_in_list(
     list_name:str,
     input_list:list,
@@ -207,7 +203,6 @@ def print_range_in_list(
 
 # TODO add to printing library
 # region print_popsition_in_list =============== print_popsition_in_list
-# @snoop
 def print_popsition_in_list(
     list_name:str,
     input_list:list,
@@ -227,7 +222,6 @@ def print_popsition_in_list(
     """
 
     c = Console()
-    c.print("[green]# region print_popsition_in_list =============== print_popsition_in_list[/]")
     header = "{} = [\n".format(list_name)
     lines = []
     footer = "]"
@@ -245,13 +239,11 @@ def print_popsition_in_list(
     output += footer
     if should_print:
         c.print(output)
-    c.print("[green]# region print_popsition_in_list ------------------- print_popsition_in_list[/]")
     return output
 # endregion print_popsition_in_list ------------ print_popsition_in_list
 
 
 # region segment_by_dimensions =================== segment_by_dimensions
-# @debug_decorator
 def segment_by_dimensions(dimensions_list:list):
     """
     separate a list of dimensions in a list of segments
@@ -277,38 +269,32 @@ def segment_by_dimensions(dimensions_list:list):
         (list(list)): a list of segments(start,end)
     """
     # c = Console()
-    c.print("[green]# region segment_by_dimensions =============================== segment_by_dimensions [/]")
-    c.print("[blue]def[/] [yellow]segment_by_dimensions[/]([cyan]dimensions_list[/]:[green]list[/]):")
-    c.print("[cyan]                          dimensions_list[/]:[green]list[/]) -> [cyan]{}[/]:[green]{}[/]"\
-        .format(dimensions_list,type(dimensions_list)))
 # TODO fix bug: last segment is missing
     segments_list = []
     previous_dimension = None
     dimensions_length = len(dimensions_list)
     current_segment = [0, 0]
     for index, current_dimension in enumerate(dimensions_list):
-        # print(f"iteration {index} ============================================ iteration {index}")
         if index > 0:
             if current_dimension == previous_dimension:
                 current_segment[1] += 1
-                # print(index)
-                # print("length ", str(dimensions_length))
                 if index == dimensions_length -1:
                     segments_list.append(current_segment)
+                else:
+                    ...
             else:
                 segments_list.append(current_segment)
                 current_segment = [index, index]
+        else:
+            ...
         previous_dimension = current_dimension
-        # print(f"iteration {index} ----------------------------------------------- iteration {index}")
+    # BUG last element missing if it is the last section and only one item
 
     segments = []
     for element in segments_list:
         begin, end = element
         segments.append((begin,end))
         ...
-    # BUG last element missing if it is the last section and only one item
-    c.print("returning {}".format(segments))
-    c.print("[green]# region segment_by_dimensions ------------------------------- segment_by_dimensions [/]")
     return segments
 # endregion segment_by_dimensions ---------------- segment_by_dimensions
 
@@ -353,16 +339,12 @@ def get_segment_lengths(segments):
         segment_length = end - begin
         segment_lengths.append(segment_length)
     return segment_lengths
-# region get_segment_lengths ------------------------ get_segment_lengths
+# endregion get_segment_lengths ------------------------ get_segment_lengths
 
 
 # region process_folder ================================================ process_folder
 def process_folder(folder_path:Path):
     c = Console()
-    c.print("[green]# region ================================================ process_folder[/]")
-    c.print("[blue]def[/] [yellow]process_folder[/]([cyan]folder_path[/]:[green]Path[/]):")
-    c.print("[cyan]                   folder_path[/]:[green]Path[/]) -> [cyan]{}[/]:[green]{}[/]"\
-        .format(folder_path,type(folder_path)))
 
     folder_number = get_folder_number(folder_path)
 
@@ -377,10 +359,6 @@ def process_folder(folder_path:Path):
 
         if videos_data_list:
             n_of_segments = len(segments)
-            has_a_single_segment = n_of_segments == 1
-            print("has_a_single_segment",has_a_single_segment)
-            # if has_a_single_segment:
-                # return None
             if n_of_segments > 3:
                 ...
                 # TODO check if segments have many 1 video segment
@@ -393,7 +371,6 @@ def process_folder(folder_path:Path):
                 else:
                     predicate = False
                 sections_with_one_video.append(predicate)
-            c.print("sections_with_one_video", sections_with_one_video)
             # TODO check if segments are short
             # meaning they have less than 5 elements per section
         else:
@@ -402,16 +379,11 @@ def process_folder(folder_path:Path):
         c.print("[bold red]no csv file in path:{}[/]" \
             .format(csv_file))
         return None
-    c.print("[green]# endregion --------------------------------------------- process_folder[/]")
 # endregion process_folder ---------------------------------------------- process_folder
 
 
 # region main =========================================================== main
 def main():
-    c = Console()
-    c.print("[green]# region main(): ================================================== main[/]", style="green")
-    c.print("[blue]def[/] [yellow]main[/]():")
-
     cwd = Path(os.getcwd())
 # TODO also process converted videos if they are available
     videos_folder_paths = []
@@ -421,12 +393,9 @@ def main():
             basename = os.path.basename(item_path)
             if "videos" in basename:
                 videos_folder_paths.append(item_path)
-
     if videos_folder_paths:
         for path in videos_folder_paths:
             process_folder(path)
-
-    c.print("[green]# endregion main(): ----------------------------------------------- main[/]", style="green")
 # endregion main -------------------------------------------------------- main
 
 
@@ -470,13 +439,8 @@ def current_test():
 
 # region if __name__ == "__main__": ========== if __name__ == "__main__":
 if __name__ == "__main__":
-    c = Console()
-    c.print("# region if __name__ == \"__main__\": ========= if __name__ == \"__main__\":", style="green")
-
     main()
     # current_test()
-    x = 0
 
-    c.print("# endregion if __name__ == \"__main__\": ------ if __name__ == \"__main__\":",style="green")
 # endregion if __name__ == "__main__": ------- if __name__ == "__main__":
 

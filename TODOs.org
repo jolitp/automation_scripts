@@ -656,8 +656,16 @@ put common functionality used by other scripts here
 ****** TODO print the command being called
 ***** TODO print that this folder is done
 *** make it better
+<<<<<<< HEAD
 **** TODO pass info to called scripts
 ***** TODO about how many folders were called
+=======
+**** TODO print a summary of the overall process
+like what I did with convert videos
+
+show circles inside a frame
+each circle is one folder
+>>>>>>> 615d288e52dba130f4bfb10e59d88d999c9af30a
 ** STRT separate_torrent_types.py
 *** logic
 **** get all files and folders in cwd
