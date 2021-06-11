@@ -397,16 +397,22 @@ def main():
     print()
 
     all_nested_files = get_nested_files(cwd)
-    all_nested_files = ignore_project_files(all_nested_files)
+    print_list("all_nested_files ", all_nested_files )
+    # all_nested_files = ignore_project_files(all_nested_files)
+    # print_list("all_nested_files after ignore_project_files ", all_nested_files )
 
     nested_videos = filter_videos(all_nested_files)
+    print_list("nested_videos", nested_videos)
     nested_subtitles = filter_subtitles(all_nested_files)
+    print_list("nested_subtitles", nested_subtitles)
     files_wo_videos \
         = [x for x in all_nested_files if x not in nested_videos]
     files_wo_videos_and_subtitles \
         = [x for x in files_wo_videos if x not in nested_subtitles]
     remaining_files = files_wo_videos_and_subtitles
+    print_list("remaining_files", remaining_files)
     nested_folders = filter_folders()
+    print_list("nested_folders", nested_folders)
 
     if nested_videos:
         move_files_from_list("videos", nested_videos)
