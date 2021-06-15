@@ -656,11 +656,16 @@ put common functionality used by other scripts here
 ****** TODO print the command being called
 ***** TODO print that this folder is done
 *** make it better
+<<<<<<< HEAD
+**** TODO pass info to called scripts
+***** TODO about how many folders were called
+=======
 **** TODO print a summary of the overall process
 like what I did with convert videos
 
 show circles inside a frame
 each circle is one folder
+>>>>>>> 615d288e52dba130f4bfb10e59d88d999c9af30a
 ** STRT separate_torrent_types.py
 *** logic
 **** get all files and folders in cwd
@@ -1242,7 +1247,7 @@ previous dimension = None
 ** TODO revert_videos_separation
 move videos in videos#/ folders to videos/ folder
 
-** STRT concatenate_videos.py
+** STRT join_videos_together.py
 *** findings
 **** I can open avidemux on the command line with --help to get help info on arguments
 it prints in the middle of alot of junk but it is there
@@ -1323,6 +1328,7 @@ actually I want to show the number of folders
 **** DONE print ffmpeg output to file when done
 **** DONE have an overall progressbar for all videos in folder
 **** TODO add command flag to force conversion on videos that have different aspect ratios
+**** TODO add estimated time based on previous elapsed time
 ** TODO clean up .generated folders
 that is just a problem for the .generated folder on root...
 the other ones will be deleted in the end with parent folder
