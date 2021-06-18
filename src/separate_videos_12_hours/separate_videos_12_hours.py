@@ -1,12 +1,7 @@
 #! /usr/bin/env python3
 """
-moves this folder depending on wether or not the video data in it
-have an accumulated duration of 12 hours or less
-
-if duration is more than 12 hours, move folder to:
-0000_long/
-else:
-0000_short/
+moves the videos inside the videos/ folder
+to videos#/ folders
 """
 # cSpell: word jolitp pytest miliseconds avidemux
 import os
@@ -82,6 +77,7 @@ def separate_videos_in_sections(
     # use less to be sure
     _12_hours_in_seconds = 43000
     _12_hours_in_string = "12:00:00"
+
     acc_duration = 0.0
     section = []
     for index, video_data in enumerate(video_data_list):

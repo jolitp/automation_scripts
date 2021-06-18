@@ -1,0 +1,40 @@
+#+DATE: <2021-06-07 Mon 18:04> 
+* separate_videos_different_dimensions
+* relative paths
+
+videos1/1_sec_VIDEO_1_320*240.mkv
+
+videos1/short_video_1_1920_x_822.mp4
+
+videos1/short_video_2_1920_x_822.mp4
+
+videos1/shorts_video_1080_x_1920.mkv
+
+* duration table
+| alpha_ord | working | name                         | dur_sec |  dur_hrs | acc_dur_sec | acc_dur_hrs |
+|           |         |                              |         |          |             |             |
+|         0 | True    | 1_sec_VIDEO_1_320*240.mkv    |       1 | 00:00:01 |       1.068 |    00:00:01 |
+|         1 | True    | short_video_1_1920_x_822.mp4 |     176 | 00:02:56 |     177.109 |    00:02:57 |
+|         2 | True    | short_video_2_1920_x_822.mp4 |     176 | 00:02:56 |     353.151 |    00:05:53 |
+|         3 | True    | shorts_video_1080_x_1920.mkv |      59 | 00:00:59 |     413.051 |    00:06:53 |
+* frames table
+| alpha_ord | working | name | fr_count | fps | acc_fr_cnt |
+| | | | | |
+| 0| True| 1_sec_VIDEO_1_320*240.mkv| 32| 29| 32 | 
+| 1| True| short_video_1_1920_x_822.mp4| 4225| 24| 4257 | 
+| 2| True| short_video_2_1920_x_822.mp4| 4225| 24| 8482 | 
+| 3| True| shorts_video_1080_x_1920.mkv| 1797| 30| 10279 | 
+* dimension_table
+| alpha_ord | working | name | width | height | AR | AR_frc |
+| | | | | | | |
+| 0 | True | 1_sec_VIDEO_1_320*240.mkv | 320 | 240 | 1.33 | 4:3 |
+| 1 | True | short_video_1_1920_x_822.mp4 | 1920 | 822 | 2.34 | 320:137 |
+| 2 | True | short_video_2_1920_x_822.mp4 | 1920 | 822 | 2.34 | 320:137 |
+| 3 | True | shorts_video_1080_x_1920.mkv | 1080 | 1920 | 0.56 | 9:16 |
+* size_table
+| alpha_ord | working | name | bytes | acc_bytes |
+| | | | | |
+| 0 | True | 1_sec_VIDEO_1_320*240.mkv | 9.6 KB | 9.6 KB |
+| 1 | True | short_video_1_1920_x_822.mp4 | 28.0 MB | 28.0 MB |
+| 2 | True | short_video_2_1920_x_822.mp4 | 28.0 MB | 56.0 MB |
+| 3 | True | shorts_video_1080_x_1920.mkv | 16.1 MB | 72.1 MB |

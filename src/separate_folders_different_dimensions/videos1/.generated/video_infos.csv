@@ -1,0 +1,5 @@
+alphabetical_order,working,filename,full_path,duration_seconds,duration_hours,frame_count,fps,width,height,size,size_bytes,aspect_ratio_fraction,aspect_ratio,accumulated_duration_seconds,accumulated_duration_hours,accumulated_frame_count,accumulated_size,accumulated_size_bytes
+0,True,1_sec_VIDEO_1_320*240.mkv,videos1/1_sec_VIDEO_1_320*240.mkv,1.0677333333333334,00:00:01,32,29,320,240,9829,9.6 KB,4:3,1.3333333333333333,1.0677333333333334,00:00:01,32,9829,9.6 KB
+1,True,short_video_1_1920_x_822.mp4,videos1/short_video_1_1920_x_822.mp4,176.04166666666666,00:02:56,4225,24,1920,822,29348925,28.0 MB,320:137,2.335766423357664,177.1094,00:02:57,4257,29358754,28.0 MB
+2,True,short_video_2_1920_x_822.mp4,videos1/short_video_2_1920_x_822.mp4,176.04166666666666,00:02:56,4225,24,1920,822,29348925,28.0 MB,320:137,2.335766423357664,353.1510666666667,00:05:53,8482,58707679,56.0 MB
+3,True,shorts_video_1080_x_1920.mkv,videos1/shorts_video_1080_x_1920.mkv,59.9,00:00:59,1797,30,1080,1920,16897687,16.1 MB,9:16,0.5625,413.05106666666666,00:06:53,10279,75605366,72.1 MB
